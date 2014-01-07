@@ -60,7 +60,7 @@ public class EditorBoard extends JPanel implements MouseListener,
 		ImageIcon iDamier = new ImageIcon("ImagesCircuit/Damier10.jpg");
 		Damier = iDamier.getImage();
 
-		ImageIcon iVoiture = new ImageIcon("ImagesCircuit/Voiture.gif");
+		ImageIcon iVoiture = new ImageIcon("ImagesCircuit/Voiture.png");
 		Voiture = iVoiture.getImage();
 
 		setFocusable(true);

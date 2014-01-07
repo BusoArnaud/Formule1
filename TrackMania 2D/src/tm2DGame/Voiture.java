@@ -11,7 +11,7 @@ public class Voiture {
 	int Vx, Vy;
 	int Ax, Ay;
 	Image Voiture;
-	ImageIcon iVoiture = new ImageIcon("ImagesCircuit/Voiture.gif");
+	ImageIcon iVoiture = new ImageIcon("ImagesCircuit/Voiture.png");
 
 	public Voiture(int Startx, int Starty) {
 		x = Startx;
