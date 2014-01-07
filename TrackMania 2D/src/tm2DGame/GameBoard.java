@@ -35,6 +35,7 @@ public class GameBoard extends JPanel implements KeyListener {
 	Mur mur;
 	Eau eau;
 	Damier damier;
+	Voiture voiture;
 	FileReader fr;
 
 	public GameBoard() {
