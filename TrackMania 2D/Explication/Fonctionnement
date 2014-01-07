@@ -1,0 +1,18 @@
+Le projet est composé de 3 packages pour classer les différentes classes et ainsi clarifier l'ensemble.
+
+	Le package "tm2D"
+		Il contient le main, permettant de lancer l'application.
+		Il sera completé par une class Menu permettant à l'utilisateur de choisir entre éditer un circuit ou jouer au jeu.
+		Peut-être une classe fin, pour finir le jeu.
+		
+	Le package "tm2DEditor"
+		Il contient la frame qui définit simplement la fenêtre d'affichage.
+		Et la board qui le fonctionnement de l'éditeur, le choix de la texture, la sauvegarde et la lecture du fichier pour
+		le modifier si besoin.
+		
+	Le package "tm2DGame"
+		Une classe terrain, définnisant intégralement toutes les textures utilisées.
+		Une classe voiture pour définir la voiture.
+		Une frame, comme précédemment.
+		Une board permetant le listing de chaque texture présente, et le paint dessinant le circuit.
+		Enfin une classe jeu, important terrain et voiture, définissant toutes les interactions.
