@@ -23,7 +23,7 @@ public class EditorBoard extends JPanel implements MouseListener,
 
 	String Editor[][] = new String[80][60];
 	String ImageSelect[] = { null, "PISTE", "HERBE", "BORDURE", "SABLE", "MUR",
-			"EAU", "DAMIER", "VOITURE" };
+			"EAU", "DAMIER"};
 	String ImageCourante = null;
 	int Sx, Sy; // Positions souris
 	int RInc; // Incrémenter rotation roulette souris
@@ -34,7 +34,6 @@ public class EditorBoard extends JPanel implements MouseListener,
 	Image Mur;
 	Image Eau;
 	Image Damier;
-	Image Voiture;
 	FileWriter fw;
 	FileReader fr;
 
@@ -59,9 +58,6 @@ public class EditorBoard extends JPanel implements MouseListener,
 
 		ImageIcon iDamier = new ImageIcon("ImagesCircuit/Damier10.jpg");
 		Damier = iDamier.getImage();
-
-		ImageIcon iVoiture = new ImageIcon("ImagesCircuit/Voiture.png");
-		Voiture = iVoiture.getImage();
 
 		setFocusable(true);
 
@@ -103,14 +99,6 @@ public class EditorBoard extends JPanel implements MouseListener,
 
 			}
 		}
-		
-		for (int i = 0; i < 80; i++) {
-			for (int j = 0; j < 60; j++) {
-				if (Editor[i][j] == "VOITURE") {
-					g2d.drawImage(Voiture, i * 10, j * 10, null);
-				}
-			}
-		}
 		if (ImageCourante == "PISTE") {
 			g2d.drawImage(Piste, Sx, Sy, null);
 		}
@@ -132,10 +120,6 @@ public class EditorBoard extends JPanel implements MouseListener,
 		if (ImageCourante == "DAMIER") {
 			g2d.drawImage(Damier, Sx, Sy, null);
 		}
-		if (ImageCourante == "VOITURE") {
-			g2d.drawImage(Voiture, Sx, Sy, null);
-		}
-
 	}
 
 	@Override
@@ -249,7 +233,7 @@ public class EditorBoard extends JPanel implements MouseListener,
 				RInc--;
 			}
 		} else if (rot > 0) {
-			if (RInc < 8) {
+			if (RInc < 7) {
 				RInc++;
 			}
 		}

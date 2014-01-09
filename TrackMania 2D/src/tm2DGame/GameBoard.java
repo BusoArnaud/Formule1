@@ -28,6 +28,7 @@ public class GameBoard extends JPanel implements KeyListener {
 	private static ArrayList<Mur> Murs;
 	private static ArrayList<Eau> Eaus;
 	private static ArrayList<Damier> Damiers;
+
 	Piste piste;
 	Herbe herbe;
 	Bordure bordure;
@@ -35,7 +36,9 @@ public class GameBoard extends JPanel implements KeyListener {
 	Mur mur;
 	Eau eau;
 	Damier damier;
-	Voiture voiture;
+	Voiture voiture = new Voiture(100,100);
+	
+
 	FileReader fr;
 
 	public GameBoard() {
@@ -48,7 +51,7 @@ public class GameBoard extends JPanel implements KeyListener {
 
 	public void ChargerCircuit() {
 		try {
-			fr = new FileReader("Tracks/");
+			fr = new FileReader("Tracks/Map1");
 			int x = 0;
 			int y = 0;
 			int i = 0;
@@ -154,6 +157,12 @@ public class GameBoard extends JPanel implements KeyListener {
 			damier = (Damier) Damiers.get(i);
 			g2d.drawImage(damier.getImage(), damier.getX(), damier.getY(), null);
 		}
+		for (int i = 0; i < Damiers.size(); i++) {
+			damier = (Damier) Damiers.get(i);
+			g2d.drawImage(damier.getImage(), damier.getX(), damier.getY(), null);
+		}
+		
+		// g2d.drawImage(voiture.getImage(),voiture.getX(), voiture.getY(),null);
 
 	}
 

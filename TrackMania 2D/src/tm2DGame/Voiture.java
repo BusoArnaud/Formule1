@@ -12,10 +12,12 @@ public class Voiture {
 	int Ax, Ay;
 	Image Voiture;
 	ImageIcon iVoiture = new ImageIcon("ImagesCircuit/Voiture.png");
-
+	
+	
 	public Voiture(int Startx, int Starty) {
 		x = Startx;
 		y = Starty;
+		Voiture = iVoiture.getImage();
 	}
 
 	public Rectangle getBounds() {
