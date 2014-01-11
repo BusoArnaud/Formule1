@@ -2,6 +2,7 @@ package tm2DGame;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.FileReader;
@@ -39,6 +40,7 @@ public class GameBoard extends JPanel implements KeyListener {
 	Mur mur;
 	Eau eau;
 	Damier damier;
+	Voiture voiture;
 
 	FileReader fr;
 
@@ -54,7 +56,7 @@ public class GameBoard extends JPanel implements KeyListener {
 
 		try {
 			fr = new FileReader("Tracks/Track" + Level);
-			
+
 			int x = 0;
 			int y = 0;
 			int i = 0;
@@ -159,11 +161,64 @@ public class GameBoard extends JPanel implements KeyListener {
 			damier = (Damier) Damiers.get(i);
 			g2d.drawImage(damier.getImage(), damier.getX(), damier.getY(), null);
 		}
+	}
+
+	public void NextTrack() {
+
+		Rectangle voitureRec;
+		voitureRec = voiture.getBounds();
+		Rectangle damierRec;
+		damierRec = damier.getBounds();
+
 		for (int i = 0; i < Damiers.size(); i++) {
 			damier = (Damier) Damiers.get(i);
-			g2d.drawImage(damier.getImage(), damier.getX(), damier.getY(), null);
+			if (voitureRec.intersects(damierRec)) {
+				Level++;
+				ChargerCircuit();
+			}
 		}
+	}
 
+	public void Collision() {
+
+		Rectangle voitureRec;
+		voitureRec = voiture.getBounds();
+		Rectangle herbeRec;
+		herbeRec = herbe.getBounds();
+		Rectangle sableRec;
+		sableRec = sable.getBounds();
+		Rectangle murRec;
+		murRec = mur.getBounds();
+		Rectangle eauRec;
+		eauRec = eau.getBounds();
+
+		for (int i = 0; i < Herbes.size(); i++) {
+			herbe = (Herbe) Herbes.get(i);
+			if(voitureRec.intersects(herbeRec)){
+				
+			}
+			
+		}
+		for (int i = 0; i < Sables.size(); i++) {
+			sable = (Sable) Sables.get(i);
+			if(voitureRec.intersects(sableRec)){
+				
+			}
+			
+		}
+		for (int i = 0; i < Murs.size(); i++) {
+			mur = (Mur) Murs.get(i);
+			if(voitureRec.intersects(murRec)){
+				
+			}
+		}
+		for (int i = 0; i < Eaus.size(); i++) {
+			eau = (Eau) Eaus.get(i);
+			if(voitureRec.intersects(eauRec)){
+				
+			}
+			
+		}
 	}
 
 	@Override
