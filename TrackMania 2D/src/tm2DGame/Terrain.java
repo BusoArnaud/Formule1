@@ -15,7 +15,6 @@ public class Terrain {
 		public Piste(int Startx, int Starty) {
 			x = Startx;
 			y = Starty;
-
 			ImageIcon iPiste = new ImageIcon("ImagesCircuit/Piste10.jpg");
 			Piste = iPiste.getImage();
 		}
@@ -36,7 +35,6 @@ public class Terrain {
 		public Image getImage() {
 			return Piste;
 		}
-
 	}
 
 	public class Bordure {
@@ -47,7 +45,6 @@ public class Terrain {
 		public Bordure(int Startx, int Starty) {
 			x = Startx;
 			y = Starty;
-
 			ImageIcon iBordure = new ImageIcon("ImagesCircuit/Bordure10.jpg");
 			Bordure = iBordure.getImage();
 		}
@@ -68,7 +65,6 @@ public class Terrain {
 		public Image getImage() {
 			return Bordure;
 		}
-
 	}
 
 	public class Herbe {
@@ -79,7 +75,6 @@ public class Terrain {
 		public Herbe(int Startx, int Starty) {
 			x = Startx;
 			y = Starty;
-
 			ImageIcon iHerbe = new ImageIcon("ImagesCircuit/Herbe10.jpg");
 			Herbe = iHerbe.getImage();
 		}
@@ -100,7 +95,6 @@ public class Terrain {
 		public Image getImage() {
 			return Herbe;
 		}
-
 	}
 
 	public class Sable {
@@ -110,7 +104,6 @@ public class Terrain {
 		public Sable(int Startx, int Starty) {
 			x = Startx;
 			y = Starty;
-
 			ImageIcon iSable = new ImageIcon("ImagesCircuit/Sable10.jpg");
 			Sable = iSable.getImage();
 		}
@@ -131,7 +124,6 @@ public class Terrain {
 		public Image getImage() {
 			return Sable;
 		}
-
 	}
 
 	public class Mur {
@@ -142,7 +134,6 @@ public class Terrain {
 		public Mur(int Startx, int Starty) {
 			x = Startx;
 			y = Starty;
-
 			ImageIcon iMur = new ImageIcon("ImagesCircuit/Mur10.jpg");
 			Mur = iMur.getImage();
 		}
@@ -163,7 +154,6 @@ public class Terrain {
 		public Image getImage() {
 			return Mur;
 		}
-
 	}
 
 	public class Eau {
@@ -173,7 +163,6 @@ public class Terrain {
 		public Eau(int Startx, int Starty) {
 			x = Startx;
 			y = Starty;
-
 			ImageIcon iEau = new ImageIcon("ImagesCircuit/Eau10.jpg");
 			Eau = iEau.getImage();
 		}
@@ -194,7 +183,6 @@ public class Terrain {
 		public Image getImage() {
 			return Eau;
 		}
-
 	}
 
 	public class Damier {
@@ -204,7 +192,6 @@ public class Terrain {
 		public Damier(int Startx, int Starty) {
 			x = Startx;
 			y = Starty;
-
 			ImageIcon iDamier = new ImageIcon("ImagesCircuit/Damier10.jpg");
 			Damier = iDamier.getImage();
 		}
@@ -225,7 +212,5 @@ public class Terrain {
 		public Image getImage() {
 			return Damier;
 		}
-
 	}
-
 }
