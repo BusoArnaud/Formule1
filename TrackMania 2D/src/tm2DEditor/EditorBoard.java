@@ -128,9 +128,9 @@ public class EditorBoard extends JPanel implements MouseListener,
 	@Override
 	public void keyReleased(KeyEvent arg0) {
 
-		int Key = arg0.getKeyCode();
+		int key = arg0.getKeyCode();
 
-		if (Key == KeyEvent.VK_S) {
+		if (key == KeyEvent.VK_S) {
 			try {
 				fw = new FileWriter(JOptionPane.showInputDialog(null,
 						"Track Name", "Track Constructor",
@@ -160,7 +160,7 @@ public class EditorBoard extends JPanel implements MouseListener,
 				fw.close();
 			} catch (Exception ex) {
 			}
-		} else if (Key == KeyEvent.VK_L) {
+		} else if (key == KeyEvent.VK_L) {
 
 			try {
 				fr = new FileReader(JOptionPane.showInputDialog(null,

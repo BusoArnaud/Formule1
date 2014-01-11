@@ -17,13 +17,14 @@ import tm2DGame.Terrain.Herbe;
 import tm2DGame.Terrain.Mur;
 import tm2DGame.Terrain.Piste;
 import tm2DGame.Terrain.Sable;
+import tm2DGame.Voiture;
 
 @SuppressWarnings("serial")
 public class GameBoard extends JPanel implements KeyListener {
 
 	String game[][] = new String[80][60];
 
-	int Level = 1;
+	int level = 1;
 
 	private static ArrayList<Piste> Pistes;
 	private static ArrayList<Herbe> Herbes;
@@ -40,22 +41,22 @@ public class GameBoard extends JPanel implements KeyListener {
 	Mur mur;
 	Eau eau;
 	Damier damier;
-	Voiture voiture;
+	Voiture voiture = new Voiture(45,545);
 
 	FileReader fr;
 
 	public GameBoard() {
 
-		ChargerCircuit();
+		LoadTrack();
 
 		setFocusable(true);
 		addKeyListener(this);
 	}
 
-	public void ChargerCircuit() {
+	public void LoadTrack() {
 
 		try {
-			fr = new FileReader("Tracks/Track" + Level);
+			fr = new FileReader("Tracks/Track" + level);
 
 			int x = 0;
 			int y = 0;
@@ -161,6 +162,8 @@ public class GameBoard extends JPanel implements KeyListener {
 			damier = (Damier) Damiers.get(i);
 			g2d.drawImage(damier.getImage(), damier.getX(), damier.getY(), null);
 		}
+		
+		g2d.drawImage(voiture.getImage(),voiture.getX(),voiture.getY(),null);
 	}
 
 	public void NextTrack() {
@@ -173,8 +176,8 @@ public class GameBoard extends JPanel implements KeyListener {
 		for (int i = 0; i < Damiers.size(); i++) {
 			damier = (Damier) Damiers.get(i);
 			if (voitureRec.intersects(damierRec)) {
-				Level++;
-				ChargerCircuit();
+				level++;
+				LoadTrack();
 			}
 		}
 	}
@@ -194,30 +197,30 @@ public class GameBoard extends JPanel implements KeyListener {
 
 		for (int i = 0; i < Herbes.size(); i++) {
 			herbe = (Herbe) Herbes.get(i);
-			if(voitureRec.intersects(herbeRec)){
-				
+			if (voitureRec.intersects(herbeRec)) {
+
 			}
-			
+
 		}
 		for (int i = 0; i < Sables.size(); i++) {
 			sable = (Sable) Sables.get(i);
-			if(voitureRec.intersects(sableRec)){
-				
+			if (voitureRec.intersects(sableRec)) {
+
 			}
-			
+
 		}
 		for (int i = 0; i < Murs.size(); i++) {
 			mur = (Mur) Murs.get(i);
-			if(voitureRec.intersects(murRec)){
-				
+			if (voitureRec.intersects(murRec)) {
+
 			}
 		}
 		for (int i = 0; i < Eaus.size(); i++) {
 			eau = (Eau) Eaus.get(i);
-			if(voitureRec.intersects(eauRec)){
-				
+			if (voitureRec.intersects(eauRec)) {
+
 			}
-			
+
 		}
 	}
 
@@ -229,8 +232,12 @@ public class GameBoard extends JPanel implements KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
-		// TODO Auto-generated method stub
 
+		int key = arg0.getKeyCode();
+
+		if (key == KeyEvent.VK_R) {
+			LoadTrack();
+		}
 	}
 
 	@Override

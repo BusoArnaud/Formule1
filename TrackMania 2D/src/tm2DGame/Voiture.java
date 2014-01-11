@@ -7,36 +7,52 @@ import javax.swing.ImageIcon;
 
 public class Voiture {
 
-	int x = 100;
-	int y = 100;
+	int aX = 0;
+	int aY = 0;
 
-	int Vx, Vy;
-	int Ax, Ay;
+	int vX = 0;
+	int vY = 0;
+
+	int pX= 45;
+	int pY= 545;
 
 	Image Voiture;
-	ImageIcon iVoiture = new ImageIcon("ImagesCircuit/Voiture.png");
 
 	public Voiture(int Startx, int Starty) {
-		x = Startx;
-		y = Starty;
+		pX = Startx;
+		pY = Starty;
+
+		ImageIcon iVoiture = new ImageIcon("ImagesCircuit/Voiture10.png");
 		Voiture = iVoiture.getImage();
 	}
 
 	public Rectangle getBounds() {
-		Rectangle Box = new Rectangle(x, y, 10, 10);
+		Rectangle Box = new Rectangle(pX, pY, 10, 10);
 		return Box;
 	}
 
 	public int getX() {
-		return x;
+		return pX;
 	}
 
 	public int getY() {
-		return y;
+		return pY;
 	}
 
 	public Image getImage() {
 		return Voiture;
+	}
+
+	public void setX(int newpX) {
+		this.pX = newpX;
+	}
+
+	public void setY(int newpY) {
+		this.pY = newpY;
+	}
+
+	public void Move() {
+
 	}
 
 }
