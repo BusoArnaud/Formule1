@@ -7,7 +7,8 @@ import javax.swing.ImageIcon;
 
 public class Voiture {
 
-	int x, y;
+	int x = 100;
+	int y = 100;
 	int Vx, Vy;
 	int Ax, Ay;
 	Image Voiture;

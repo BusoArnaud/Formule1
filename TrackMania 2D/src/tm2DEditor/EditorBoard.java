@@ -21,12 +21,14 @@ import javax.swing.JPanel;
 public class EditorBoard extends JPanel implements MouseListener,
 		MouseMotionListener, MouseWheelListener, KeyListener {
 
-	String Editor[][] = new String[80][60];
-	String ImageSelect[] = { null, "PISTE", "HERBE", "BORDURE", "SABLE", "MUR",
-			"EAU", "DAMIER"};
-	String ImageCourante = null;
-	int Sx, Sy; // Positions souris
-	int RInc; // Incrémenter rotation roulette souris
+	String editor[][] = new String[80][60];
+	String imageSelect[] = { null, "PISTE", "HERBE", "BORDURE", "SABLE", "MUR",
+			"EAU", "DAMIER" };
+	String imageCourante = null;
+
+	int sX, sY;
+	int rInc;
+
 	Image Piste;
 	Image Herbe;
 	Image Bordure;
@@ -34,6 +36,7 @@ public class EditorBoard extends JPanel implements MouseListener,
 	Image Mur;
 	Image Eau;
 	Image Damier;
+
 	FileWriter fw;
 	FileReader fr;
 
@@ -65,7 +68,6 @@ public class EditorBoard extends JPanel implements MouseListener,
 		addMouseMotionListener(this);
 		addMouseWheelListener(this);
 		addKeyListener(this);
-
 	}
 
 	public void paint(Graphics g) {
@@ -74,51 +76,50 @@ public class EditorBoard extends JPanel implements MouseListener,
 
 		for (int i = 0; i < 80; i++) {
 			for (int j = 0; j < 60; j++) {
-				if (Editor[i][j] == "PISTE") {
+				if (editor[i][j] == "PISTE") {
 					g2d.drawImage(Piste, i * 10, j * 10, null);
 				}
-				if (Editor[i][j] == "HERBE") {
+				if (editor[i][j] == "HERBE") {
 					g2d.drawImage(Herbe, i * 10, j * 10, null);
 				}
-				if (Editor[i][j] == "BORDURE") {
+				if (editor[i][j] == "BORDURE") {
 					g2d.drawImage(Bordure, i * 10, j * 10, null);
 				}
-				if (Editor[i][j] == "SABLE") {
+				if (editor[i][j] == "SABLE") {
 					g2d.drawImage(Sable, i * 10, j * 10, null);
 				}
-				if (Editor[i][j] == "MUR") {
+				if (editor[i][j] == "MUR") {
 					g2d.drawImage(Mur, i * 10, j * 10, null);
 				}
-				if (Editor[i][j] == "EAU") {
+				if (editor[i][j] == "EAU") {
 					g2d.drawImage(Eau, i * 10, j * 10, null);
 				}
-				if (Editor[i][j] == "DAMIER") {
+				if (editor[i][j] == "DAMIER") {
 					g2d.drawImage(Damier, i * 10, j * 10, null);
 				}
-				
 
 			}
 		}
-		if (ImageCourante == "PISTE") {
-			g2d.drawImage(Piste, Sx, Sy, null);
+		if (imageCourante == "PISTE") {
+			g2d.drawImage(Piste, sX, sY, null);
 		}
-		if (ImageCourante == "HERBE") {
-			g2d.drawImage(Herbe, Sx, Sy, null);
+		if (imageCourante == "HERBE") {
+			g2d.drawImage(Herbe, sX, sY, null);
 		}
-		if (ImageCourante == "BORDURE") {
-			g2d.drawImage(Bordure, Sx, Sy, null);
+		if (imageCourante == "BORDURE") {
+			g2d.drawImage(Bordure, sX, sY, null);
 		}
-		if (ImageCourante == "SABLE") {
-			g2d.drawImage(Sable, Sx, Sy, null);
+		if (imageCourante == "SABLE") {
+			g2d.drawImage(Sable, sX, sY, null);
 		}
-		if (ImageCourante == "MUR") {
-			g2d.drawImage(Mur, Sx, Sy, null);
+		if (imageCourante == "MUR") {
+			g2d.drawImage(Mur, sX, sY, null);
 		}
-		if (ImageCourante == "EAU") {
-			g2d.drawImage(Eau, Sx, Sy, null);
+		if (imageCourante == "EAU") {
+			g2d.drawImage(Eau, sX, sY, null);
 		}
-		if (ImageCourante == "DAMIER") {
-			g2d.drawImage(Damier, Sx, Sy, null);
+		if (imageCourante == "DAMIER") {
+			g2d.drawImage(Damier, sX, sY, null);
 		}
 	}
 
@@ -138,41 +139,33 @@ public class EditorBoard extends JPanel implements MouseListener,
 				fw = new FileWriter(JOptionPane.showInputDialog(null,
 						"Track Name", "Track Constructor",
 						JOptionPane.QUESTION_MESSAGE));
-				for (int i = 0; i < 80; i++) {
-					for (int j = 0; j < 60; j++) {
-						if (Editor[j][i] == "PISTE") {
-							fw.write("+");
-						}
-						if (Editor[j][i] == "HERBE") {
-							fw.write("¤");
-						}
-						if (Editor[j][i] == "BORDURE") {
-							fw.write("b");
-						}
-						if (Editor[j][i] == "SABLE") {
-							fw.write(".");
-						}
-						if (Editor[j][i] == "MUR") {
-							fw.write("#");
-						}
-						if (Editor[j][i] == "EAU") {
-							fw.write("o");
-						}
-						if (Editor[j][i] == "DAMIER") {
-							fw.write("$");
-						}
-						if (Editor[j][i] == null) {
+				for (int j = 0; j < 60; j++) {
+					for (int i = 0; i < 80; i++) {
+						if (editor[i][j] == "PISTE") {
 							fw.write(" ");
+						} else if (editor[i][j] == "HERBE") {
+							fw.write(".");
+						} else if (editor[i][j] == "BORDURE") {
+							fw.write("B");
+						} else if (editor[i][j] == "SABLE") {
+							fw.write("S");
+						} else if (editor[i][j] == "MUR") {
+							fw.write("#");
+						} else if (editor[i][j] == "EAU") {
+							fw.write("o");
+						} else if (editor[i][j] == "DAMIER") {
+							fw.write("D");
+						} else if (editor[i][j] == null) {
+							fw.write("*");
 						}
 					}
-					fw.write("\r");
-					fw.write("\n");
+					fw.write("\r\n");
 				}
 				fw.close();
 			} catch (Exception ex) {
-
 			}
 		} else if (Key == KeyEvent.VK_L) {
+
 			try {
 				fr = new FileReader(JOptionPane.showInputDialog(null,
 						"Track Name", "Track Constructor",
@@ -183,25 +176,25 @@ public class EditorBoard extends JPanel implements MouseListener,
 				int y = 0;
 
 				while ((i = fr.read()) != -1) {
-					char strImg = (char) i;
+					char txtImg = (char) i;
 
-					if (strImg == '+') {
-						Editor[x][y] = "PISTE";
-					} else if (strImg == '¤') {
-						Editor[x][y] = "HERBE";
-					} else if (strImg == 'b') {
-						Editor[x][y] = "BORDURE";
-					} else if (strImg == '.') {
-						Editor[x][y] = "SABLE";
-					} else if (strImg == '#') {
-						Editor[x][y] = "MUR";
-					} else if (strImg == 'o') {
-						Editor[x][y] = "EAU";
-					} else if (strImg == '$') {
-						Editor[x][y] = "DAMIER";
-					} else if (strImg == ' ') {
-						Editor[x][y] = null;
-					} else if (strImg == '\r' || strImg == '\n') {
+					if (txtImg == ' ') {
+						editor[x][y] = "PISTE";
+					} else if (txtImg == '.') {
+						editor[x][y] = "HERBE";
+					} else if (txtImg == 'B') {
+						editor[x][y] = "BORDURE";
+					} else if (txtImg == 'S') {
+						editor[x][y] = "SABLE";
+					} else if (txtImg == '#') {
+						editor[x][y] = "MUR";
+					} else if (txtImg == 'o') {
+						editor[x][y] = "EAU";
+					} else if (txtImg == 'D') {
+						editor[x][y] = "DAMIER";
+					} else if (txtImg == '*') {
+						editor[x][y] = null;
+					} else if (txtImg == '\r' || txtImg == '\n') {
 						x--;
 					}
 					if (x == 79) {
@@ -212,10 +205,8 @@ public class EditorBoard extends JPanel implements MouseListener,
 					}
 				}
 			} catch (Exception ex) {
-
 			}
 		}
-
 	}
 
 	@Override
@@ -226,21 +217,21 @@ public class EditorBoard extends JPanel implements MouseListener,
 
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent arg0) {
+
 		int rot = arg0.getWheelRotation();
 
 		if (rot < 0) {
-			if (RInc > 0) {
-				RInc--;
+			if (rInc > 0) {
+				rInc--;
 			}
 		} else if (rot > 0) {
-			if (RInc < 7) {
-				RInc++;
+			if (rInc < 7) {
+				rInc++;
 			}
 		}
 
-		ImageCourante = ImageSelect[RInc];
+		imageCourante = imageSelect[rInc];
 		repaint();
-
 	}
 
 	@Override
@@ -251,8 +242,9 @@ public class EditorBoard extends JPanel implements MouseListener,
 
 	@Override
 	public void mouseMoved(MouseEvent arg0) {
-		Sx = arg0.getX() - 5;
-		Sy = arg0.getY() - 5;
+		sX = arg0.getX() - 5;
+		sY = arg0.getY() - 5;
+
 		repaint();
 	}
 
@@ -282,14 +274,14 @@ public class EditorBoard extends JPanel implements MouseListener,
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
+
 		int x = arg0.getX() / 10;
 		int y = arg0.getY() / 10;
 
 		if (arg0.getButton() == MouseEvent.BUTTON1) {
-			Editor[x][y] = ImageCourante;
+			editor[x][y] = imageCourante;
 		} else if (arg0.getButton() == MouseEvent.BUTTON3) {
-			Editor[x][y] = null;
+			editor[x][y] = null;
 		}
-
 	}
 }
