@@ -1,0 +1,60 @@
+################################################################################
+#......BBBBBBBBBB        SSooSSS             #.........S.........   #....oooo..#
+#....                     SoooS              #.........SSSSS......  #.oooooooo.#
+#..                       ooooS              #..........SS......... #.ooooooo..#
+#..                o  SSSSSooSS              #...##.....SSSS..##... #..ooooooo.#
+#.               ooooooooSSooSSS#########    #...##...SSSS.SS### .. #..ooooooo.#
+#.    ##################oSoooSSSSSSSSooo#    ######.SSSSS#..####    #..ooooooo.#
+#.    ###############...ooooSSSSSSSooooo#        ####    ##.####    #..ooooooo.#
+#.    ###############..SooooooSSSSoooooo#        ####     ###..#    #..SSoooo..#
+#.    ######       ##..SSSoooooooooooooo#         ####     #...#    BSSSSSSoo.S#
+#.     ....#       ##...Sooooooooooooooo######    ####     ##..#     BSSSSSooSS#
+#.      ...#       ##..oSooooooooSSoooo...#..##   #####     #..#      BSSSSSoSS#
+#.B      ..#DDDDDDD##..oooooooooSSS.ooo...#...#   ######    #..#        SSSSSSS#
+#..B      .#DDDDDDD##....ooooooSS...oo....#...#   #######   #..##          SSSS#
+#.S.B     .#       ###.....oo...........###...#     #####   #..###          SSS#
+#.SSSB    .#       ####..oooo....#.##.#####...#     #####   #..########     BSS#
+#SSSSB    .#   o o #o####o#o######.#####......##     ####   #...SSSSSS##     BS#
+#SSSSS    .#   o   #oooooooo...................##     ###   #.....SSSSS#     BS#
+#.SSSS    .##     ##oooooooo....................##          #SS..SSSSSS##     B#
+#.SSSS    .### ooooooo..oooooo...oo..............#          #SSSSSSSSSSS##    B#
+#SSSSS    .### oooooo..ooooooo..ooo..............##         #SSSSSSSSSSS##    B#
+#.SSS.    .###   ooo...ooooooooooo................###      ##SSSS...SSSS##    B#
+#SSSS.    .###o ooooo..ooooooooo..............SS.....#######SSS.SS..SSSS##    B#
+#.SSS.    .###o oooo...oooooooo..........SS.S.SSSS.........SSS.......SSS##    B#
+#.SS..    .###  o######o##o#############..SSSSSSSS.S......SSS........SSS##    B#
+#.....    .##.  o oo...ooooo############...SSSSSSSSS....SSS...SSS..SS.SS##     #
+#.....    .##.  oooo....oooo##         ##...S...SSSS...SSSSSSSS.SS....S##B     #
+#.....    .##. oooooo..oooo##           #........SSSSS....SSSSSSSS.#####B      #
+#.....    .##.    o....ooo##            #############################BBB       #
+#.....    .##.     ...ooo##     #####                                          #
+#.....    .##.B    ....oo#     ##ooo##                                         #
+#SS.SS    .##.B    ....oo#    ##ooooo##                                       S#
+#SS..S    .##.B     ...oo#   ##oo###oo##                                  SSSSS#
+#S..SS    .##..B    ...oo#   #oo#####oo#SSSSSSSSSSSSSSSSSSSSSSSBBBBBBBSSSSSSSSS#
+#SSSSS    .##..B     ..oo#   #oo#####oo################################S#S#S#S##
+#SSSSS    .##..B     ..oo#   #oo#####oo#SSSSSSSSSSSSSSSSSSSSSSSSSSSSSS#SSSSSSSS#
+#SSSSS    .##..B     ..oo#   ##oo###oo##                              #SoooSSSS#
+#SSSSS    .##...B     .o.#    ##ooooo##                               #SoSSSSSS#
+#SSSSS    .##.S.B    ooo.#     ##ooo##                                #SooSSSSS#
+#SSS..    .##SS..B  oooo.#      #####                                 #SoooooSS#
+#SSS..    .##SSS..oooo ..##             ##########################    #ooooo####
+#SSS.B    .##SSSSoo    ...##            #SSSSSSSSSSSSSSSSSSSSSSSS#     ooooo...#
+#S...B    .##SSSoo#    B...##          ##S..SSSSSSSSSSSSSSSSSSSSS##. . ooooo...#
+#...B     .##oSooS#    B....############S.SSSSSSSSSSSSSSSSSSSSSSS## ....oooo...#
+#..B      .##ooooS#     B.......SSSSSSSSSSS.SSSSSSSSSSSSSSSSSSSSS#####...ooo...#
+#..      B.##oooSS##     B.....SSSSSS..SSSS.SSSSSSSSSSSSSSSSSSSSSSSSS#..ooo....#
+#..     B..##ooooS###     B....S..S...S..SSS.SSSSSSSSSSSSSSSSSSSSSSSS##ooooo...#
+#..    B...##oooooo###     B............SSSS..SSSSSSSSSSSSSSSSSSSSSSSS#S      .#
+#..    B...##oooooo.###     BB............SS..SSSSSSSSSSSSSSSSSSSSSSSS#S      .#
+#..    ....##oooooo..####                                SSSSSSSSSSSSSSSSS.   .#
+#..    ....##oooooo..####                                 ########SSSSSSSS... .#
+#..    ....##oooooo.....##                                       ##SSSSSSS . ..#
+#..    ....##ooooooo.SSS####                                      #SSSSSS   ...#
+#..    ....##oooSoSSSS.SS#######..SSSS....S........SSSS#          ##SSSSS   ...#
+#..    ....##oooSoSSSS..SS...............SS......SSSSSS####       SSSSSS   .oo.#
+#..    ....##oooSoooSSSSS..............SSSSSS...SSSSSSS#SS##        SS      ooo#
+#..    ....##SoooSoSSSSS...............SSSSS....SSSSSSSSSSS##             .oooo#
+#..........##SSooSSSoSS.................SSSSSS.SSSSSSSSSSSSS#             .oooo#
+#..........##SSooooSoSSS................SSSSSSSSSSSSSSSSSSSS#              oooo#
+################################################################################

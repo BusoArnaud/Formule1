@@ -41,6 +41,7 @@ public class EditorBoard extends JPanel implements MouseListener,
 	FileReader fr;
 
 	public EditorBoard() {
+
 		ImageIcon iPiste = new ImageIcon("ImagesCircuit/Piste10.jpg");
 		Piste = iPiste.getImage();
 
@@ -71,6 +72,7 @@ public class EditorBoard extends JPanel implements MouseListener,
 	}
 
 	public void paint(Graphics g) {
+
 		super.paint(g);
 		Graphics2D g2d = (Graphics2D) g;
 
@@ -102,23 +104,17 @@ public class EditorBoard extends JPanel implements MouseListener,
 		}
 		if (imageCourante == "PISTE") {
 			g2d.drawImage(Piste, sX, sY, null);
-		}
-		if (imageCourante == "HERBE") {
+		} else if (imageCourante == "HERBE") {
 			g2d.drawImage(Herbe, sX, sY, null);
-		}
-		if (imageCourante == "BORDURE") {
+		} else if (imageCourante == "BORDURE") {
 			g2d.drawImage(Bordure, sX, sY, null);
-		}
-		if (imageCourante == "SABLE") {
+		} else if (imageCourante == "SABLE") {
 			g2d.drawImage(Sable, sX, sY, null);
-		}
-		if (imageCourante == "MUR") {
+		} else if (imageCourante == "MUR") {
 			g2d.drawImage(Mur, sX, sY, null);
-		}
-		if (imageCourante == "EAU") {
+		} else if (imageCourante == "EAU") {
 			g2d.drawImage(Eau, sX, sY, null);
-		}
-		if (imageCourante == "DAMIER") {
+		} else if (imageCourante == "DAMIER") {
 			g2d.drawImage(Damier, sX, sY, null);
 		}
 	}

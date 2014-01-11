@@ -20,7 +20,10 @@ import tm2DGame.Terrain.Sable;
 @SuppressWarnings("serial")
 public class GameBoard extends JPanel implements KeyListener {
 
-	String Game[][] = new String[80][60];
+	String game[][] = new String[80][60];
+
+	int Level = 1;
+
 	private static ArrayList<Piste> Pistes;
 	private static ArrayList<Herbe> Herbes;
 	private static ArrayList<Bordure> Bordures;
@@ -36,8 +39,6 @@ public class GameBoard extends JPanel implements KeyListener {
 	Mur mur;
 	Eau eau;
 	Damier damier;
-	Voiture voiture = new Voiture(100,100);
-	
 
 	FileReader fr;
 
@@ -50,8 +51,10 @@ public class GameBoard extends JPanel implements KeyListener {
 	}
 
 	public void ChargerCircuit() {
+
 		try {
-			fr = new FileReader("Tracks/Map1");
+			fr = new FileReader("Tracks/Track" + Level);
+			
 			int x = 0;
 			int y = 0;
 			int i = 0;
@@ -67,44 +70,44 @@ public class GameBoard extends JPanel implements KeyListener {
 			while ((i = fr.read()) != -1) {
 				char strImg = (char) i;
 
-				if (strImg == '+') {
-					Game[x][y] = "PISTE";
+				if (strImg == ' ') {
+					game[x][y] = "PISTE";
 					Terrain terrain = new Terrain();
 					Terrain.Piste piste = terrain.new Piste(x * 10, y * 10);
 					Pistes.add(piste);
-				} else if (strImg == '¤') {
-					Game[x][y] = "HERBE";
+				} else if (strImg == '.') {
+					game[x][y] = "HERBE";
 					Terrain terrain = new Terrain();
 					Terrain.Herbe herbe = terrain.new Herbe(x * 10, y * 10);
 					Herbes.add(herbe);
-				} else if (strImg == 'b') {
-					Game[x][y] = "BORDURE";
+				} else if (strImg == 'B') {
+					game[x][y] = "BORDURE";
 					Terrain terrain = new Terrain();
 					Terrain.Bordure bordure = terrain.new Bordure(x * 10,
 							y * 10);
 					Bordures.add(bordure);
-				} else if (strImg == '.') {
-					Game[x][y] = "SABLE";
+				} else if (strImg == 'S') {
+					game[x][y] = "SABLE";
 					Terrain terrain = new Terrain();
 					Terrain.Sable sable = terrain.new Sable(x * 10, y * 10);
 					Sables.add(sable);
 				} else if (strImg == '#') {
-					Game[x][y] = "MUR";
+					game[x][y] = "MUR";
 					Terrain terrain = new Terrain();
 					Terrain.Mur mur = terrain.new Mur(x * 10, y * 10);
 					Murs.add(mur);
 				} else if (strImg == 'o') {
-					Game[x][y] = "EAU";
+					game[x][y] = "EAU";
 					Terrain terrain = new Terrain();
 					Terrain.Eau eau = terrain.new Eau(x * 10, y * 10);
 					Eaus.add(eau);
-				} else if (strImg == '$') {
-					Game[x][y] = "DAMIER";
+				} else if (strImg == 'D') {
+					game[x][y] = "DAMIER";
 					Terrain terrain = new Terrain();
 					Terrain.Damier damier = terrain.new Damier(x * 10, y * 10);
 					Damiers.add(damier);
 				} else if (strImg == ' ') {
-					Game[x][y] = null;
+					game[x][y] = null;
 				} else if (strImg == '\r' || strImg == '\n') {
 					x--;
 				}
@@ -114,17 +117,16 @@ public class GameBoard extends JPanel implements KeyListener {
 				} else {
 					x++;
 				}
-
 			}
 
 		} catch (Exception ex) {
-
 		}
 
 		repaint();
 	}
 
 	public void paint(Graphics g) {
+
 		super.paint(g);
 		Graphics2D g2d = (Graphics2D) g;
 
@@ -161,8 +163,6 @@ public class GameBoard extends JPanel implements KeyListener {
 			damier = (Damier) Damiers.get(i);
 			g2d.drawImage(damier.getImage(), damier.getX(), damier.getY(), null);
 		}
-		
-		// g2d.drawImage(voiture.getImage(),voiture.getX(), voiture.getY(),null);
 
 	}
 
