@@ -47,13 +47,13 @@ public class GameBoard extends JPanel implements KeyListener {
 
 	public GameBoard() {
 
-		LoadTrack();
+		loadTrack();
 
 		setFocusable(true);
 		addKeyListener(this);
 	}
 
-	public void LoadTrack() {
+	public void loadTrack() {
 
 		try {
 			fr = new FileReader("Tracks/Track" + level);
@@ -166,7 +166,7 @@ public class GameBoard extends JPanel implements KeyListener {
 		g2d.drawImage(voiture.getImage(), voiture.getX(), voiture.getY(), null);
 	}
 
-	public void NextTrack() {
+	public void nextTrack() {
 
 		Rectangle voitureRec;
 		voitureRec = voiture.getBounds();
@@ -177,12 +177,12 @@ public class GameBoard extends JPanel implements KeyListener {
 			damier = (Damier) Damiers.get(i);
 			if (voitureRec.intersects(damierRec)) {
 				level++;
-				LoadTrack();
+				loadTrack();
 			}
 		}
 	}
 
-	public void Collision() {
+	public void collision() {
 
 		Rectangle voitureRec;
 		voitureRec = voiture.getBounds();
@@ -238,50 +238,50 @@ public class GameBoard extends JPanel implements KeyListener {
 		if (key == KeyEvent.VK_T) {
 			voiture.setKey("T");
 			voiture.move();
-			Collision();
+			collision();
 
 		} else if (key == KeyEvent.VK_Y) {
 			voiture.setKey("Y");
 			voiture.move();
-			Collision();
+			collision();
 
 		} else if (key == KeyEvent.VK_U) {
 			voiture.setKey("U");
 			voiture.move();
-			Collision();
+			collision();
 
 		} else if (key == KeyEvent.VK_G) {
 			voiture.setKey("G");
 			voiture.move();
-			Collision();
+			collision();
 
 		} else if (key == KeyEvent.VK_H) {
 			voiture.setKey("H");
 			voiture.move();
-			Collision();
+			collision();
 
 		} else if (key == KeyEvent.VK_J) {
 			voiture.setKey("J");
 			voiture.move();
-			Collision();
+			collision();
 
 		} else if (key == KeyEvent.VK_V) {
 			voiture.setKey("V");
 			voiture.move();
-			Collision();
+			collision();
 
 		} else if (key == KeyEvent.VK_B) {
 			voiture.setKey("B");
 			voiture.move();
-			Collision();
+			collision();
 
 		} else if (key == KeyEvent.VK_N) {
 			voiture.setKey("N");
 			voiture.move();
-			Collision();
+			collision();
 
 		} else if (key == KeyEvent.VK_R) {
-			LoadTrack();
+			loadTrack();
 		}
 	}
 
