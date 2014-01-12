@@ -172,25 +172,25 @@ public class EditorBoard extends JPanel implements MouseListener,
 				int y = 0;
 
 				while ((i = fr.read()) != -1) {
-					char txtImg = (char) i;
+					char txt = (char) i;
 
-					if (txtImg == ' ') {
+					if (txt == ' ') {
 						editor[x][y] = "PISTE";
-					} else if (txtImg == '.') {
+					} else if (txt == '.') {
 						editor[x][y] = "HERBE";
-					} else if (txtImg == 'B') {
+					} else if (txt == 'B') {
 						editor[x][y] = "BORDURE";
-					} else if (txtImg == 'S') {
+					} else if (txt == 'S') {
 						editor[x][y] = "SABLE";
-					} else if (txtImg == '#') {
+					} else if (txt == '#') {
 						editor[x][y] = "MUR";
-					} else if (txtImg == 'o') {
+					} else if (txt == 'o') {
 						editor[x][y] = "EAU";
-					} else if (txtImg == 'D') {
+					} else if (txt == 'D') {
 						editor[x][y] = "DAMIER";
-					} else if (txtImg == '*') {
+					} else if (txt == '*') {
 						editor[x][y] = null;
-					} else if (txtImg == '\r' || txtImg == '\n') {
+					} else if (txt == '\r' || txt == '\n') {
 						x--;
 					}
 					if (x == 79) {

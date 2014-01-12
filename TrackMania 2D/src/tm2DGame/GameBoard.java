@@ -71,47 +71,47 @@ public class GameBoard extends JPanel implements KeyListener {
 			Damiers = new ArrayList<Damier>();
 
 			while ((i = fr.read()) != -1) {
-				char strImg = (char) i;
+				char txt = (char) i;
 
-				if (strImg == ' ') {
+				if (txt == ' ') {
 					game[x][y] = "PISTE";
 					Terrain terrain = new Terrain();
 					Terrain.Piste piste = terrain.new Piste(x * 10, y * 10);
 					Pistes.add(piste);
-				} else if (strImg == '.') {
+				} else if (txt == '.') {
 					game[x][y] = "HERBE";
 					Terrain terrain = new Terrain();
 					Terrain.Herbe herbe = terrain.new Herbe(x * 10, y * 10);
 					Herbes.add(herbe);
-				} else if (strImg == 'B') {
+				} else if (txt == 'B') {
 					game[x][y] = "BORDURE";
 					Terrain terrain = new Terrain();
 					Terrain.Bordure bordure = terrain.new Bordure(x * 10,
 							y * 10);
 					Bordures.add(bordure);
-				} else if (strImg == 'S') {
+				} else if (txt == 'S') {
 					game[x][y] = "SABLE";
 					Terrain terrain = new Terrain();
 					Terrain.Sable sable = terrain.new Sable(x * 10, y * 10);
 					Sables.add(sable);
-				} else if (strImg == '#') {
+				} else if (txt == '#') {
 					game[x][y] = "MUR";
 					Terrain terrain = new Terrain();
 					Terrain.Mur mur = terrain.new Mur(x * 10, y * 10);
 					Murs.add(mur);
-				} else if (strImg == 'o') {
+				} else if (txt == 'o') {
 					game[x][y] = "EAU";
 					Terrain terrain = new Terrain();
 					Terrain.Eau eau = terrain.new Eau(x * 10, y * 10);
 					Eaus.add(eau);
-				} else if (strImg == 'D') {
+				} else if (txt == 'D') {
 					game[x][y] = "DAMIER";
 					Terrain terrain = new Terrain();
 					Terrain.Damier damier = terrain.new Damier(x * 10, y * 10);
 					Damiers.add(damier);
-				} else if (strImg == ' ') {
+				} else if (txt == ' ') {
 					game[x][y] = null;
-				} else if (strImg == '\r' || strImg == '\n') {
+				} else if (txt == '\r' || txt == '\n') {
 					x--;
 				}
 				if (x == 79) {
@@ -236,22 +236,49 @@ public class GameBoard extends JPanel implements KeyListener {
 		int key = arg0.getKeyCode();
 
 		if (key == KeyEvent.VK_T) {
+			voiture.setKey("T");
+			voiture.move();
+			Collision();
 
 		} else if (key == KeyEvent.VK_Y) {
+			voiture.setKey("Y");
+			voiture.move();
+			Collision();
 
 		} else if (key == KeyEvent.VK_U) {
+			voiture.setKey("U");
+			voiture.move();
+			Collision();
 
 		} else if (key == KeyEvent.VK_G) {
+			voiture.setKey("G");
+			voiture.move();
+			Collision();
 
 		} else if (key == KeyEvent.VK_H) {
+			voiture.setKey("H");
+			voiture.move();
+			Collision();
 
 		} else if (key == KeyEvent.VK_J) {
+			voiture.setKey("J");
+			voiture.move();
+			Collision();
 
 		} else if (key == KeyEvent.VK_V) {
+			voiture.setKey("V");
+			voiture.move();
+			Collision();
 
 		} else if (key == KeyEvent.VK_B) {
+			voiture.setKey("B");
+			voiture.move();
+			Collision();
 
 		} else if (key == KeyEvent.VK_N) {
+			voiture.setKey("N");
+			voiture.move();
+			Collision();
 
 		} else if (key == KeyEvent.VK_R) {
 			LoadTrack();

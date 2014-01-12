@@ -13,10 +13,11 @@ public class Voiture {
 	int vX = 0;
 	int vY = 0;
 
-	int pX= 45;
-	int pY= 545;
+	int pX = 45;
+	int pY = 545;
 
 	Image Voiture;
+	String keyUse = null;
 
 	public Voiture(int Startx, int Starty) {
 		pX = Startx;
@@ -43,4 +44,63 @@ public class Voiture {
 		return Voiture;
 	}
 
+	public void setKey(String newKey) {
+		this.keyUse = newKey;
+	}
+
+	public void move() {
+		if (keyUse == "T") {
+			if (aX > 0) {
+				aX = aX - 1;
+			} else {
+				aX = aX + 0;
+			}
+			aY = aY + 1;
+		} else if (keyUse == "Y") {
+			aX = aX + 0;
+			aY = aY + 1;
+		} else if (keyUse == "U") {
+			aX = aX + 1;
+			aY = aY + 1;
+		} else if (keyUse == "G") {
+			if (aX > 0) {
+				aX = aX - 1;
+			} else {
+				aX = aX + 0;
+			}
+			aY = aY + 0;
+		} else if (keyUse == "H") {
+			aX = aX + 0;
+			aY = aY + 0;
+		} else if (keyUse == "J") {
+			aX = aX + 1;
+			aY = aY + 0;
+		} else if (keyUse == "V") {
+			if (aX > 0) {
+				aX = aX - 1;
+			} else {
+				aX = aX + 0;
+			}
+			if (aY > 0) {
+				aY = aY - 1;
+			} else {
+				aY = aY + 0;
+			}
+		} else if (keyUse == "B") {
+			aX = aX + 0;
+			if (aY > 0) {
+				aY = aY - 1;
+			} else {
+				aY = aY + 0;
+			}
+		} else if (keyUse == "N") {
+			aX = aX + 1;
+			if (aY > 0) {
+				aY = aY - 1;
+			} else {
+				aY = aY + 0;
+			}
+		}
+
+	}
 }
