@@ -43,16 +43,4 @@ public class Voiture {
 		return Voiture;
 	}
 
-	public void setX(int newpX) {
-		this.pX = newpX;
-	}
-
-	public void setY(int newpY) {
-		this.pY = newpY;
-	}
-
-	public void Move() {
-
-	}
-
 }

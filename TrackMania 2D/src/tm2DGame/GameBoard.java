@@ -41,7 +41,7 @@ public class GameBoard extends JPanel implements KeyListener {
 	Mur mur;
 	Eau eau;
 	Damier damier;
-	Voiture voiture = new Voiture(45,545);
+	Voiture voiture = new Voiture(45, 545);
 
 	FileReader fr;
 
@@ -162,8 +162,8 @@ public class GameBoard extends JPanel implements KeyListener {
 			damier = (Damier) Damiers.get(i);
 			g2d.drawImage(damier.getImage(), damier.getX(), damier.getY(), null);
 		}
-		
-		g2d.drawImage(voiture.getImage(),voiture.getX(),voiture.getY(),null);
+
+		g2d.drawImage(voiture.getImage(), voiture.getX(), voiture.getY(), null);
 	}
 
 	public void NextTrack() {
@@ -235,7 +235,25 @@ public class GameBoard extends JPanel implements KeyListener {
 
 		int key = arg0.getKeyCode();
 
-		if (key == KeyEvent.VK_R) {
+		if (key == KeyEvent.VK_T) {
+
+		} else if (key == KeyEvent.VK_Y) {
+
+		} else if (key == KeyEvent.VK_U) {
+
+		} else if (key == KeyEvent.VK_G) {
+
+		} else if (key == KeyEvent.VK_H) {
+
+		} else if (key == KeyEvent.VK_J) {
+
+		} else if (key == KeyEvent.VK_V) {
+
+		} else if (key == KeyEvent.VK_B) {
+
+		} else if (key == KeyEvent.VK_N) {
+
+		} else if (key == KeyEvent.VK_R) {
 			LoadTrack();
 		}
 	}
