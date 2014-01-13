@@ -231,7 +231,7 @@ public class GameBoard extends JPanel implements KeyListener {
 	}
 
 	@Override
-	public void keyReleased(KeyEvent arg0) {
+	public void keyReleased(KeyEvent arg0) { // faire rentre dans collision avant move pour changer v
 
 		int key = arg0.getKeyCode();
 
@@ -283,6 +283,8 @@ public class GameBoard extends JPanel implements KeyListener {
 		} else if (key == KeyEvent.VK_R) {
 			loadTrack();
 		}
+		repaint();
+		nextTrack();
 	}
 
 	@Override

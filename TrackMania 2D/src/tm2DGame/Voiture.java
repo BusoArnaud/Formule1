@@ -28,7 +28,7 @@ public class Voiture {
 	}
 
 	public Rectangle getBounds() {
-		Rectangle Box = new Rectangle(pX, pY, 10, 10);
+		Rectangle Box = new Rectangle(pX, pY, 10, 20);
 		return Box;
 	}
 
@@ -38,6 +38,14 @@ public class Voiture {
 
 	public int getY() {
 		return pY;
+	}
+
+	public void setX(int newpX) {
+		this.pX = newpX;
+	}
+
+	public void setY(int newpY) {
+		this.pY = newpY;
 	}
 
 	public Image getImage() {
@@ -50,57 +58,39 @@ public class Voiture {
 
 	public void move() {
 		if (keyUse == "T") {
-			if (aX > 0) {
-				aX = aX - 1;
-			} else {
-				aX = aX + 0;
-			}
-			aY = aY + 1;
+			aX = -1;
+			aY = -1;
 		} else if (keyUse == "Y") {
-			aX = aX + 0;
-			aY = aY + 1;
+			aX = +0;
+			aY = -1;
 		} else if (keyUse == "U") {
-			aX = aX + 1;
-			aY = aY + 1;
+			aX = +1;
+			aY = -1;
 		} else if (keyUse == "G") {
-			if (aX > 0) {
-				aX = aX - 1;
-			} else {
-				aX = aX + 0;
-			}
-			aY = aY + 0;
+			aX = -1;
+			aY = +0;
 		} else if (keyUse == "H") {
-			aX = aX + 0;
-			aY = aY + 0;
+			aX = +0;
+			aY = +0;
 		} else if (keyUse == "J") {
-			aX = aX + 1;
-			aY = aY + 0;
+			aX = +1;
+			aY = +0;
 		} else if (keyUse == "V") {
-			if (aX > 0) {
-				aX = aX - 1;
-			} else {
-				aX = aX + 0;
-			}
-			if (aY > 0) {
-				aY = aY - 1;
-			} else {
-				aY = aY + 0;
-			}
+			aX = -1;
+			aY = +1;
 		} else if (keyUse == "B") {
-			aX = aX + 0;
-			if (aY > 0) {
-				aY = aY - 1;
-			} else {
-				aY = aY + 0;
-			}
+			aX = 0;
+			aY = +1;
 		} else if (keyUse == "N") {
-			aX = aX + 1;
-			if (aY > 0) {
-				aY = aY - 1;
-			} else {
-				aY = aY + 0;
-			}
+			aX = +1;
+			aY = +1;
 		}
+
+		vX = vX + aX;
+		vY = vY + aY;
+
+		pX = pX + vX;
+		pY = pY + vY;
 
 	}
 }
