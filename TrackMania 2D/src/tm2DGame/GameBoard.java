@@ -163,6 +163,14 @@ public class GameBoard extends JPanel implements KeyListener {
 			g2d.drawImage(damier.getImage(), damier.getX(), damier.getY(), null);
 		}
 
+		if (Math.abs(voiture.getvX()) > 0 || Math.abs(voiture.getvY()) > 0) {
+			g2d.rotate(
+					(((Math.PI)) / 2)
+							+ Math.atan2(voiture.getvY(), voiture.getvX()),
+					voiture.getX(), voiture.getY());
+
+		}
+
 		g2d.drawImage(voiture.getImage(), voiture.getX(), voiture.getY(), null);
 	}
 
@@ -170,14 +178,16 @@ public class GameBoard extends JPanel implements KeyListener {
 
 		Rectangle voitureRec;
 		voitureRec = voiture.getBounds();
-		Rectangle damierRec;
-		damierRec = damier.getBounds();
-
+		
 		for (int i = 0; i < Damiers.size(); i++) {
 			damier = (Damier) Damiers.get(i);
+			Rectangle damierRec;
+		damierRec = damier.getBounds();
 			if (voitureRec.intersects(damierRec)) {
 				level++;
 				loadTrack();
+				
+				System.out.println("finish");
 			}
 		}
 	}
@@ -190,8 +200,6 @@ public class GameBoard extends JPanel implements KeyListener {
 		herbeRec = herbe.getBounds();
 		Rectangle sableRec;
 		sableRec = sable.getBounds();
-		Rectangle murRec;
-		murRec = mur.getBounds();
 		Rectangle eauRec;
 		eauRec = eau.getBounds();
 
@@ -211,7 +219,14 @@ public class GameBoard extends JPanel implements KeyListener {
 		}
 		for (int i = 0; i < Murs.size(); i++) {
 			mur = (Mur) Murs.get(i);
+			Rectangle murRec;
+			murRec = mur.getBounds();
 			if (voitureRec.intersects(murRec)) {
+				voiture.setaX(0);
+				voiture.setaY(0);
+				voiture.setvX(0);
+				voiture.setvY(0);
+				System.out.println("blabla");
 
 			}
 		}
@@ -231,7 +246,8 @@ public class GameBoard extends JPanel implements KeyListener {
 	}
 
 	@Override
-	public void keyReleased(KeyEvent arg0) { // faire rentre dans collision avant move pour changer v
+	public void keyReleased(KeyEvent arg0) { // faire rentre dans collision
+												// avant move pour changer v
 
 		int key = arg0.getKeyCode();
 

@@ -13,15 +13,15 @@ public class Voiture {
 	int vX = 0;
 	int vY = 0;
 
-	int pX = 45;
-	int pY = 545;
+	int pX;
+	int pY;
 
 	Image Voiture;
 	String keyUse = null;
 
-	public Voiture(int Startx, int Starty) {
-		pX = Startx;
-		pY = Starty;
+	public Voiture(int startX, int startY) {
+		pX = startX;
+		pY = startY;
 
 		ImageIcon iVoiture = new ImageIcon("ImagesCircuit/Voiture10.png");
 		Voiture = iVoiture.getImage();
@@ -40,12 +40,28 @@ public class Voiture {
 		return pY;
 	}
 
-	public void setX(int newpX) {
-		this.pX = newpX;
+	public int getvX() {
+		return vX;
 	}
 
-	public void setY(int newpY) {
-		this.pY = newpY;
+	public int getvY() {
+		return vY;
+	}
+
+	public void setvX(int newvX) {
+		vX = newvX;
+	}
+
+	public void setvY(int newvY) {
+		vY = newvY;
+	}
+	
+	public void setaX(int newaX){
+		aX=newaX;
+	}
+	
+	public void setaY(int newaY){
+		aY=newaY;
 	}
 
 	public Image getImage() {
@@ -56,7 +72,26 @@ public class Voiture {
 		this.keyUse = newKey;
 	}
 
-	public void move() {
+	/*
+	 * public void move() { if (keyUse == "T") { if (aX > 0) { aX = -1; } else {
+	 * aX = +0; } aY = +1; } else if (keyUse == "Y") { aX = +0; aY = +1; } else
+	 * if (keyUse == "U") { aX = +1; aY = +1; } else if (keyUse == "G") { if (aX
+	 * > 0) { aX = -1; } else { aX = +0; } aY = +0; } else if (keyUse == "H") {
+	 * aX = +0; aY = +0; } else if (keyUse == "J") { aX = +1; aY = +0; } else if
+	 * (keyUse == "V") { if (aX > 0) { aX = -1; } else { aX = +0; } if (aY > 0)
+	 * { aY = -1; } else { aY = +0; } } else if (keyUse == "B") { aX = +0; if
+	 * (aY > 0) { aY = -1; } else { aY = +0; } } else if (keyUse == "N") { aX =
+	 * +1; if (aY > 0) { aY = -1; } else { aY = +0; } }
+	 * 
+	 * vX = vX + aX; vY = vY + aY;
+	 * 
+	 * pX = pX + vX; pY = pY + vY;
+	 * 
+	 * }
+	 */
+
+	public void move() { // provisoire en attendant de faire tourner les axes de
+							// direction pour la voiture, à voir
 		if (keyUse == "T") {
 			aX = -1;
 			aY = -1;
