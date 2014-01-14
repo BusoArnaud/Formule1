@@ -15,4 +15,3 @@ Le projet est composé de 3 packages pour classer les différentes classes et ains
 		Une classe voiture pour définir la voiture.
 		Une frame, comme précédemment.
 		Une board permetant le listing de chaque texture présente, et le paint dessinant le circuit.
-		Pour faciliter les système la classe collission est intégrée à la board

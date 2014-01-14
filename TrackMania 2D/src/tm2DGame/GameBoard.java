@@ -31,7 +31,7 @@ public class GameBoard extends JPanel implements KeyListener {
 	private static ArrayList<Bordure> Bordures;
 	private static ArrayList<Sable> Sables;
 	private static ArrayList<Mur> Murs;
-	private static ArrayList<Eau> Eaus;
+	private static ArrayList<Eau> Eaux;
 	private static ArrayList<Damier> Damiers;
 
 	Piste piste;
@@ -67,7 +67,7 @@ public class GameBoard extends JPanel implements KeyListener {
 			Bordures = new ArrayList<Bordure>();
 			Sables = new ArrayList<Sable>();
 			Murs = new ArrayList<Mur>();
-			Eaus = new ArrayList<Eau>();
+			Eaux = new ArrayList<Eau>();
 			Damiers = new ArrayList<Damier>();
 
 			while ((i = fr.read()) != -1) {
@@ -103,13 +103,13 @@ public class GameBoard extends JPanel implements KeyListener {
 					game[x][y] = "EAU";
 					Terrain terrain = new Terrain();
 					Terrain.Eau eau = terrain.new Eau(x * 10, y * 10);
-					Eaus.add(eau);
+					Eaux.add(eau);
 				} else if (txt == 'D') {
 					game[x][y] = "DAMIER";
 					Terrain terrain = new Terrain();
 					Terrain.Damier damier = terrain.new Damier(x * 10, y * 10);
 					Damiers.add(damier);
-				} else if (txt == ' ') {
+				} else if (txt == '*') {
 					game[x][y] = null;
 				} else if (txt == '\r' || txt == '\n') {
 					x--;
@@ -154,8 +154,8 @@ public class GameBoard extends JPanel implements KeyListener {
 			mur = (Mur) Murs.get(i);
 			g2d.drawImage(mur.getImage(), mur.getX(), mur.getY(), null);
 		}
-		for (int i = 0; i < Eaus.size(); i++) {
-			eau = (Eau) Eaus.get(i);
+		for (int i = 0; i < Eaux.size(); i++) {
+			eau = (Eau) Eaux.get(i);
 			g2d.drawImage(eau.getImage(), eau.getX(), eau.getY(), null);
 		}
 		for (int i = 0; i < Damiers.size(); i++) {
@@ -171,23 +171,26 @@ public class GameBoard extends JPanel implements KeyListener {
 
 		}
 
-		g2d.drawImage(voiture.getImage(), voiture.getX(), voiture.getY(), null);
+		g2d.drawImage(voiture.getImage(), voiture.getX() - 5,
+				voiture.getY() - 10, null);
 	}
 
 	public void nextTrack() {
 
 		Rectangle voitureRec;
 		voitureRec = voiture.getBounds();
-		
+
 		for (int i = 0; i < Damiers.size(); i++) {
 			damier = (Damier) Damiers.get(i);
 			Rectangle damierRec;
-		damierRec = damier.getBounds();
+			damierRec = damier.getBounds();
 			if (voitureRec.intersects(damierRec)) {
 				level++;
 				loadTrack();
-				
+
 				System.out.println("finish");
+			} else { // menu de fin
+
 			}
 		}
 	}
@@ -196,46 +199,56 @@ public class GameBoard extends JPanel implements KeyListener {
 
 		Rectangle voitureRec;
 		voitureRec = voiture.getBounds();
-		Rectangle herbeRec;
-		herbeRec = herbe.getBounds();
-		Rectangle sableRec;
-		sableRec = sable.getBounds();
-		Rectangle eauRec;
-		eauRec = eau.getBounds();
 
 		for (int i = 0; i < Herbes.size(); i++) {
 			herbe = (Herbe) Herbes.get(i);
+			Rectangle herbeRec;
+			herbeRec = herbe.getBounds();
 			if (voitureRec.intersects(herbeRec)) {
+
+				voiture.setvX(voiture.getvX() / 1.05);
+				voiture.setvY(voiture.getvY() / 1.05);
 
 			}
 
 		}
 		for (int i = 0; i < Sables.size(); i++) {
 			sable = (Sable) Sables.get(i);
+			Rectangle sableRec;
+			sableRec = sable.getBounds();
 			if (voitureRec.intersects(sableRec)) {
+
+				voiture.setvX(voiture.getvX() / 1.1);
+				voiture.setvY(voiture.getvY() / 1.1);
 
 			}
 
 		}
-		for (int i = 0; i < Murs.size(); i++) {
+		for (int i = 0; i < Murs.size(); i++) { // à modifier, en mettant 9
+												// conditions suivant les cas
 			mur = (Mur) Murs.get(i);
 			Rectangle murRec;
 			murRec = mur.getBounds();
 			if (voitureRec.intersects(murRec)) {
-				voiture.setaX(0);
-				voiture.setaY(0);
-				voiture.setvX(0);
-				voiture.setvY(0);
+				if (voiture.getvX() < 0 || voiture.getvX() > 0
+						&& voiture.getvY() == 0) {
+					voiture.setvX(-voiture.getvX());
+				} else if (voiture.getvX() == 0 && voiture.getvY() < 0
+						|| voiture.getvY() > 0) {
+					voiture.setvY(-voiture.getvY());
+				}
 				System.out.println("blabla");
 
 			}
 		}
-		for (int i = 0; i < Eaus.size(); i++) {
-			eau = (Eau) Eaus.get(i);
+		for (int i = 0; i < Eaux.size(); i++) { // si virage, augmenter rotation
+			eau = (Eau) Eaux.get(i);
+			Rectangle eauRec;
+			eauRec = eau.getBounds();
 			if (voitureRec.intersects(eauRec)) {
-
+				voiture.setaX(0 * voiture.getaX());
+				voiture.setaY(0 * voiture.getaY());
 			}
-
 		}
 	}
 
@@ -255,48 +268,57 @@ public class GameBoard extends JPanel implements KeyListener {
 			voiture.setKey("T");
 			voiture.move();
 			collision();
+			voiture.position();
 
 		} else if (key == KeyEvent.VK_Y) {
 			voiture.setKey("Y");
 			voiture.move();
 			collision();
+			voiture.position();
 
 		} else if (key == KeyEvent.VK_U) {
 			voiture.setKey("U");
 			voiture.move();
 			collision();
+			voiture.position();
 
 		} else if (key == KeyEvent.VK_G) {
 			voiture.setKey("G");
 			voiture.move();
 			collision();
+			voiture.position();
 
 		} else if (key == KeyEvent.VK_H) {
 			voiture.setKey("H");
 			voiture.move();
 			collision();
+			voiture.position();
 
 		} else if (key == KeyEvent.VK_J) {
 			voiture.setKey("J");
 			voiture.move();
 			collision();
+			voiture.position();
 
 		} else if (key == KeyEvent.VK_V) {
 			voiture.setKey("V");
 			voiture.move();
 			collision();
+			voiture.position();
 
 		} else if (key == KeyEvent.VK_B) {
 			voiture.setKey("B");
 			voiture.move();
 			collision();
+			voiture.position();
 
 		} else if (key == KeyEvent.VK_N) {
 			voiture.setKey("N");
 			voiture.move();
 			collision();
+			voiture.position();
 
-		} else if (key == KeyEvent.VK_R) {
+		} else if (key == KeyEvent.VK_R) { // ne fonctionne pas
 			loadTrack();
 		}
 		repaint();
