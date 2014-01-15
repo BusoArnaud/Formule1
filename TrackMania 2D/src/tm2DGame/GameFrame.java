@@ -9,11 +9,9 @@ public class GameFrame extends JFrame {
 		this.setTitle("TrackMania 2D");
 		this.setSize(806, 628);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.add(new GameBoard());
+		this.add(new GameBoard(this));
 		this.setVisible(true);
 		this.setResizable(false);
-		
-		// this.setLocationRelativeTo(null);
-		
+		this.setLocationRelativeTo(null);		
 	}
 }

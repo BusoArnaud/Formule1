@@ -1,5 +1,6 @@
 package tm2DEditor;
 
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -16,6 +17,8 @@ import java.io.FileWriter;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import tm2D.MenuMain;
 
 @SuppressWarnings("serial")
 public class EditorBoard extends JPanel implements MouseListener,
@@ -39,8 +42,10 @@ public class EditorBoard extends JPanel implements MouseListener,
 
 	FileWriter fw;
 	FileReader fr;
+	
+	Frame eFrame;
 
-	public EditorBoard() {
+	public EditorBoard(Frame eF) {
 
 		ImageIcon iPiste = new ImageIcon("ImagesCircuit/Piste10.jpg");
 		Piste = iPiste.getImage();
@@ -63,6 +68,7 @@ public class EditorBoard extends JPanel implements MouseListener,
 		ImageIcon iDamier = new ImageIcon("ImagesCircuit/Damier10.jpg");
 		Damier = iDamier.getImage();
 
+		eFrame =eF;
 		setFocusable(true);
 
 		addMouseListener(this);
@@ -202,6 +208,9 @@ public class EditorBoard extends JPanel implements MouseListener,
 				}
 			} catch (Exception ex) {
 			}
+		} else if(key == KeyEvent.VK_ESCAPE){
+			MenuMain f = new MenuMain();
+			eFrame.dispose();
 		}
 	}
 

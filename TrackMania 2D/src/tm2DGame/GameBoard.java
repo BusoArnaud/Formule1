@@ -1,5 +1,6 @@
 package tm2DGame;
 
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import tm2D.MenuMain;
 import tm2DGame.Terrain.Bordure;
 import tm2DGame.Terrain.Damier;
 import tm2DGame.Terrain.Eau;
@@ -41,14 +43,17 @@ public class GameBoard extends JPanel implements KeyListener {
 	Mur mur;
 	Eau eau;
 	Damier damier;
-	Voiture voiture = new Voiture(45, 545);
+	Voiture voiture = new Voiture(50, 550);
 
 	FileReader fr;
+	
+	Frame gFrame;
 
-	public GameBoard() {
+	public GameBoard(Frame gF) {
 
 		loadTrack();
 
+		gFrame = gF;
 		setFocusable(true);
 		addKeyListener(this);
 	}
@@ -187,8 +192,6 @@ public class GameBoard extends JPanel implements KeyListener {
 			if (voitureRec.intersects(damierRec)) {
 				level++;
 				loadTrack();
-
-				System.out.println("finish");
 			} else { // menu de fin
 
 			}
@@ -320,6 +323,10 @@ public class GameBoard extends JPanel implements KeyListener {
 
 		} else if (key == KeyEvent.VK_R) { // ne fonctionne pas
 			loadTrack();
+		}
+		else if (key == KeyEvent.VK_ESCAPE){
+			MenuMain f = new MenuMain();
+			gFrame.dispose();
 		}
 		repaint();
 		nextTrack();

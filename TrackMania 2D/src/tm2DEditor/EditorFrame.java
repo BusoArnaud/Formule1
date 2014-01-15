@@ -6,12 +6,13 @@ import javax.swing.JFrame;
 public class EditorFrame extends JFrame {
 
 	public EditorFrame() {
-		this.setTitle("Track Constructor");
+		this.setTitle("TrakcMania 2D");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(806, 628);
-		this.add(new EditorBoard());
+		this.add(new EditorBoard(this));
 		this.setVisible(true);
 		this.setResizable(false);
+		this.setLocationRelativeTo(null);
 	}
 
 }
