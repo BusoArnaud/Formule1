@@ -9,7 +9,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import tm2DEditor.EditorFrame;
-import tm2DGame.GameFrame;
 
 public class MenuEditor extends JFrame implements ActionListener {
 	
@@ -26,10 +25,10 @@ public class MenuEditor extends JFrame implements ActionListener {
 		this.setVisible(true);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
-		this.setContentPane(draw());		
+		this.setContentPane(esth());		
 	}
 	
-	private JPanel draw(){
+	private JPanel esth(){
 		JPanel panel = new JPanel();
 		panel.setLayout(new FlowLayout());
 		

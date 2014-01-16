@@ -227,8 +227,7 @@ public class GameBoard extends JPanel implements KeyListener {
 			}
 
 		}
-		for (int i = 0; i < Murs.size(); i++) { // à modifier, en mettant 9
-												// conditions suivant les cas
+		for (int i = 0; i < Murs.size(); i++) { // ne fonctionne pas si une des vitesse est non nul
 			mur = (Mur) Murs.get(i);
 			Rectangle murRec;
 			murRec = mur.getBounds();

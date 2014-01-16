@@ -9,16 +9,15 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class MenuMain extends JFrame implements ActionListener {
+@SuppressWarnings("serial")
+public class MenuEnd extends JFrame implements ActionListener {
 
-	JButton cmdGame = new JButton("Let's Play");
-	JButton cmdEditor = new JButton("Let's Edit");
-
-	public MenuMain() {
+	JButton cmdEnd = new JButton("Revenir au Menu Principal");
+	
+	public MenuEnd (){
 		super();
 		build();
 	}
-
 	private void build() {
 		this.setTitle("TrackMania 2D");
 		this.setSize(300, 300);
@@ -26,37 +25,32 @@ public class MenuMain extends JFrame implements ActionListener {
 		this.setVisible(true);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
-		this.setContentPane(esth());
+		this.setContentPane(esth());		
 	}
-
-	private JPanel esth() {
+	
+	private JPanel esth(){
 		JPanel panel = new JPanel();
 		panel.setLayout(new FlowLayout());
-
-		JLabel label = new JLabel("TrackMania 2D");
+		
+		JLabel label = new JLabel(/* féliciter le joueur */);
 		panel.add(label);
-
-		panel.add(cmdGame);
-		panel.add(cmdEditor);
-
-		cmdGame.addActionListener(this);
-		cmdEditor.addActionListener(this);
-
+		
+		panel.add(cmdEnd);
+		
+		cmdEnd.addActionListener(this);
+		
 		return panel;
+		
 	}
-
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		if (arg0.getSource() == cmdGame) {
-			MenuGame f = new MenuGame();
+		if(arg0.getSource() == cmdEnd){
+			MenuMain f =new MenuMain();
 			dispose();
+			
 		}
-		if (arg0.getSource() == cmdEditor) {
-			MenuEditor f = new MenuEditor();
-			dispose();
-
-		}
-
+		
 	}
+	
 
 }

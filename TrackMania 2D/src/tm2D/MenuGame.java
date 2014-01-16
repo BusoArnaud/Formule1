@@ -26,10 +26,10 @@ public class MenuGame extends JFrame implements ActionListener {
 		this.setVisible(true);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
-		this.setContentPane(draw());		
+		this.setContentPane(esth());		
 	}
 	
-	private JPanel draw(){
+	private JPanel esth(){
 		JPanel panel = new JPanel();
 		panel.setLayout(new FlowLayout());
 		
