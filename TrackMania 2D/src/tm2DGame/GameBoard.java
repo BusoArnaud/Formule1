@@ -240,8 +240,6 @@ public class GameBoard extends JPanel implements KeyListener {
 						|| voiture.getvY() > 0) {
 					voiture.setvY(-voiture.getvY());
 				}
-				System.out.println("blabla");
-
 			}
 		}
 		for (int i = 0; i < Eaux.size(); i++) { // si virage, augmenter rotation
