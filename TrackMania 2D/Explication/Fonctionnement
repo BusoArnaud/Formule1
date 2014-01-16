@@ -2,7 +2,8 @@ Le projet est composé de 3 packages pour classer les différentes classes et ains
 
 	Le package "tm2D"
 		Il contient le main, permettant de lancer l'application.
-		Il sera completé par une class Menu permettant à l'utilisateur de choisir entre éditer un circuit ou jouer au jeu.
+		Il sera completé par plusieurs class Menu permettant à l'utilisateur de choisir entre éditer un circuit ou jouer au
+		jeu et de se déplacer dans le jeu.
 		Peut-être une classe fin, pour finir le jeu.
 		
 	Le package "tm2DEditor"
