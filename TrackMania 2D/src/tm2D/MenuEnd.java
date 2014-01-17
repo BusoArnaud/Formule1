@@ -1,5 +1,6 @@
 package tm2D;
 
+
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,6 +9,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import tm2DGame.GameBoard;
 
 @SuppressWarnings("serial")
 public class MenuEnd extends JFrame implements ActionListener {
@@ -32,7 +35,7 @@ public class MenuEnd extends JFrame implements ActionListener {
 		JPanel panel = new JPanel();
 		panel.setLayout(new FlowLayout());
 		
-		JLabel label = new JLabel(/* féliciter le joueur */);
+		JLabel label = new JLabel("Final Score : " + GameBoard.nombreCoupT);
 		panel.add(label);
 		
 		panel.add(cmdEnd);

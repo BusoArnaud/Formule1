@@ -1,5 +1,7 @@
 package tm2DGame;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -28,6 +30,8 @@ public class GameBoard extends JPanel implements KeyListener {
 	String game[][] = new String[80][60];
 
 	int level = 1;
+	int nombreCoup = 0;
+	public static int nombreCoupT;
 
 	private static ArrayList<Piste> Pistes;
 	private static ArrayList<Herbe> Herbes;
@@ -47,7 +51,7 @@ public class GameBoard extends JPanel implements KeyListener {
 	Voiture voiture = new Voiture(50, 550);
 
 	FileReader fr;
-
+	Font levelFont = new Font("SansSerif", Font.BOLD, 15);
 	Frame gFrame;
 
 	public GameBoard(Frame gF) {
@@ -169,6 +173,11 @@ public class GameBoard extends JPanel implements KeyListener {
 			g2d.drawImage(damier.getImage(), damier.getX(), damier.getY(), null);
 		}
 
+		g.setColor(Color.BLACK);
+		g.setFont(levelFont);
+		g.drawString("Level : " + level, 15, 585);
+		g.drawString("|| Coups : " + nombreCoup, 80, 585);
+
 		if (Math.abs(voiture.getvX()) > 0 || Math.abs(voiture.getvY()) > 0) {
 			g2d.rotate(
 					(((Math.PI)) / 2)
@@ -192,6 +201,8 @@ public class GameBoard extends JPanel implements KeyListener {
 			damierRec = damier.getBounds();
 			if (voitureRec.intersects(damierRec)) {
 				level++;
+				nombreCoupT = +nombreCoup;
+				nombreCoup = 0;
 				loadTrack();
 
 				if (level == 2) {
@@ -215,8 +226,8 @@ public class GameBoard extends JPanel implements KeyListener {
 			herbeRec = herbe.getBounds();
 			if (voitureRec.intersects(herbeRec)) {
 
-				voiture.setvX(voiture.getvX() / 1.02);
-				voiture.setvY(voiture.getvY() / 1.02);
+				voiture.setvX(voiture.getvX() / 1.06);
+				voiture.setvY(voiture.getvY() / 1.06);
 
 			}
 
@@ -227,8 +238,8 @@ public class GameBoard extends JPanel implements KeyListener {
 			sableRec = sable.getBounds();
 			if (voitureRec.intersects(sableRec)) {
 
-				voiture.setvX(voiture.getvX() / 1.1);
-				voiture.setvY(voiture.getvY() / 1.1);
+				voiture.setvX(voiture.getvX() / 1.2);
+				voiture.setvY(voiture.getvY() / 1.2);
 
 			}
 
@@ -251,8 +262,10 @@ public class GameBoard extends JPanel implements KeyListener {
 			Rectangle eauRec;
 			eauRec = eau.getBounds();
 			if (voitureRec.intersects(eauRec)) {
-				voiture.setaX(0 * voiture.getaX());
-				voiture.setaY(0 * voiture.getaY());
+				if ((Math.abs(voiture.getvX()) > 3 || Math.abs(voiture.getvY()) > 3)) {
+					voiture.setaX(0);
+					voiture.setaY(0);
+				}
 			}
 		}
 	}
@@ -272,66 +285,87 @@ public class GameBoard extends JPanel implements KeyListener {
 			voiture.setKey("T");
 			voiture.move();
 			collision();
+			voiture.speed();
 			voiture.position();
+			nombreCoup++;
 
 		} else if (key == KeyEvent.VK_Y) {
 			voiture.setKey("Y");
 			voiture.move();
 			collision();
+			voiture.speed();
 			voiture.position();
+			nombreCoup++;
 
 		} else if (key == KeyEvent.VK_U) {
 			voiture.setKey("U");
 			voiture.move();
 			collision();
+			voiture.speed();
 			voiture.position();
+			nombreCoup++;
 
 		} else if (key == KeyEvent.VK_G) {
 			voiture.setKey("G");
 			voiture.move();
 			collision();
+			voiture.speed();
 			voiture.position();
+			nombreCoup++;
 
 		} else if (key == KeyEvent.VK_H) {
 			voiture.setKey("H");
 			voiture.move();
 			collision();
+			voiture.speed();
 			voiture.position();
+			nombreCoup++;
 
 		} else if (key == KeyEvent.VK_J) {
 			voiture.setKey("J");
 			voiture.move();
 			collision();
+			voiture.speed();
 			voiture.position();
+			nombreCoup++;
 
 		} else if (key == KeyEvent.VK_V) {
 			voiture.setKey("V");
 			voiture.move();
 			collision();
+			voiture.speed();
 			voiture.position();
+			nombreCoup++;
 
 		} else if (key == KeyEvent.VK_B) {
 			voiture.setKey("B");
 			voiture.move();
 			collision();
+			voiture.speed();
 			voiture.position();
+			nombreCoup++;
 
 		} else if (key == KeyEvent.VK_N) {
 			voiture.setKey("N");
 			voiture.move();
 			collision();
+			voiture.speed();
 			voiture.position();
+			nombreCoup++;
 
 		} else if (key == KeyEvent.VK_R) { // ne fonctionne pas
 			voiture.setpX(50);
 			voiture.setpY(550);
 			voiture.setvX(0);
 			voiture.setvY(0);
+			nombreCoup = +10;
+
 		} else if (key == KeyEvent.VK_ESCAPE) {
 			@SuppressWarnings("unused")
 			MenuMain f = new MenuMain();
 			gFrame.dispose();
 		}
+
 		repaint();
 		nextTrack();
 	}

@@ -39,12 +39,13 @@ public class Voiture {
 	public int getpY() {
 		return pY;
 	}
-	public void setpX( int newpX){
+
+	public void setpX(int newpX) {
 		pX = newpX;
 	}
-	
-	public void setpY(int newpY){
-		pY= newpY;
+
+	public void setpY(int newpY) {
+		pY = newpY;
 	}
 
 	public double getvX() {
@@ -118,9 +119,11 @@ public class Voiture {
 			aY = +1;
 		}
 
+	}
+
+	public void speed() {
 		vX = vX + aX;
 		vY = vY + aY;
-
 	}
 
 	public void position() {
