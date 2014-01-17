@@ -1,4 +1,5 @@
 package tm2D;
+
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,13 +13,14 @@ import tm2DEditor.EditorFrame;
 
 @SuppressWarnings("serial")
 public class MenuEditor extends JFrame implements ActionListener {
-	
+
 	JButton cmdDraw = new JButton("Draw");
 
-	public MenuEditor (){
+	public MenuEditor() {
 		super();
 		build();
 	}
+
 	private void build() {
 		this.setTitle("TrackMania 2D");
 		this.setSize(300, 300);
@@ -26,25 +28,26 @@ public class MenuEditor extends JFrame implements ActionListener {
 		this.setVisible(true);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
-		this.setContentPane(esth());		
+		this.setContentPane(esth());
 	}
-	
-	private JPanel esth(){
+
+	private JPanel esth() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new FlowLayout());
-		
+
 		JLabel label = new JLabel(/* ici mettre l'explication des commandes */);
 		panel.add(label);
-		
+
 		panel.add(cmdDraw);
-		
+
 		cmdDraw.addActionListener(this);
-		
+
 		return panel;
 	}
+
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		if(arg0.getSource() == cmdDraw){
+		if (arg0.getSource() == cmdDraw) {
 			@SuppressWarnings("unused")
 			EditorFrame f = new EditorFrame();
 			dispose();

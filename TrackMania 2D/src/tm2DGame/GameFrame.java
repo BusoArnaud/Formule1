@@ -12,6 +12,6 @@ public class GameFrame extends JFrame {
 		this.add(new GameBoard(this));
 		this.setVisible(true);
 		this.setResizable(false);
-		this.setLocationRelativeTo(null);		
+		this.setLocationRelativeTo(null);
 	}
 }

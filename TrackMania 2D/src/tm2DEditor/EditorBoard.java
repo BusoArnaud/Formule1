@@ -42,7 +42,7 @@ public class EditorBoard extends JPanel implements MouseListener,
 
 	FileWriter fw;
 	FileReader fr;
-	
+
 	Frame eFrame;
 
 	public EditorBoard(Frame eF) {
@@ -68,7 +68,7 @@ public class EditorBoard extends JPanel implements MouseListener,
 		ImageIcon iDamier = new ImageIcon("ImagesCircuit/Damier10.jpg");
 		Damier = iDamier.getImage();
 
-		eFrame =eF;
+		eFrame = eF;
 		setFocusable(true);
 
 		addMouseListener(this);
@@ -208,7 +208,7 @@ public class EditorBoard extends JPanel implements MouseListener,
 				}
 			} catch (Exception ex) {
 			}
-		} else if(key == KeyEvent.VK_ESCAPE){
+		} else if (key == KeyEvent.VK_ESCAPE) {
 			@SuppressWarnings("unused")
 			MenuMain f = new MenuMain();
 			eFrame.dispose();

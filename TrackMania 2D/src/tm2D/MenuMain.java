@@ -32,7 +32,7 @@ public class MenuMain extends JFrame implements ActionListener {
 
 	private JPanel esth() {
 		JPanel panel = new JPanel();
-		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5,100));
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 100));
 
 		JLabel label = new JLabel("TrackMania 2D");
 		panel.add(label);
