@@ -32,12 +32,19 @@ public class Voiture {
 		return Box;
 	}
 
-	public int getX() {
+	public int getpX() {
 		return pX;
 	}
 
-	public int getY() {
+	public int getpY() {
 		return pY;
+	}
+	public void setpX( int newpX){
+		pX = newpX;
+	}
+	
+	public void setpY(int newpY){
+		pY= newpY;
 	}
 
 	public double getvX() {

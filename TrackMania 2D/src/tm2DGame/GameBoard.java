@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import tm2D.MenuEnd;
 import tm2D.MenuMain;
 import tm2DGame.Terrain.Bordure;
 import tm2DGame.Terrain.Damier;
@@ -46,7 +47,7 @@ public class GameBoard extends JPanel implements KeyListener {
 	Voiture voiture = new Voiture(50, 550);
 
 	FileReader fr;
-	
+
 	Frame gFrame;
 
 	public GameBoard(Frame gF) {
@@ -172,12 +173,12 @@ public class GameBoard extends JPanel implements KeyListener {
 			g2d.rotate(
 					(((Math.PI)) / 2)
 							+ Math.atan2(voiture.getvY(), voiture.getvX()),
-					voiture.getX(), voiture.getY());
+					voiture.getpX(), voiture.getpY());
 
 		}
 
-		g2d.drawImage(voiture.getImage(), voiture.getX() - 5,
-				voiture.getY() - 10, null);
+		g2d.drawImage(voiture.getImage(), voiture.getpX() - 5,
+				voiture.getpY() - 10, null);
 	}
 
 	public void nextTrack() {
@@ -192,8 +193,13 @@ public class GameBoard extends JPanel implements KeyListener {
 			if (voitureRec.intersects(damierRec)) {
 				level++;
 				loadTrack();
-			} else { // menu de fin
 
+				if (level == 2) {
+
+					@SuppressWarnings("unused")
+					MenuEnd f = new MenuEnd();
+					gFrame.dispose();
+				}
 			}
 		}
 	}
@@ -209,8 +215,8 @@ public class GameBoard extends JPanel implements KeyListener {
 			herbeRec = herbe.getBounds();
 			if (voitureRec.intersects(herbeRec)) {
 
-				voiture.setvX(voiture.getvX() / 1.05);
-				voiture.setvY(voiture.getvY() / 1.05);
+				voiture.setvX(voiture.getvX() / 1.02);
+				voiture.setvY(voiture.getvY() / 1.02);
 
 			}
 
@@ -227,21 +233,20 @@ public class GameBoard extends JPanel implements KeyListener {
 			}
 
 		}
-		for (int i = 0; i < Murs.size(); i++) { // ne fonctionne pas si une des vitesse est non nul
+
+		for (int i = 0; i < Murs.size(); i++) {
 			mur = (Mur) Murs.get(i);
 			Rectangle murRec;
 			murRec = mur.getBounds();
 			if (voitureRec.intersects(murRec)) {
-				if (voiture.getvX() < 0 || voiture.getvX() > 0
-						&& voiture.getvY() == 0) {
-					voiture.setvX(-voiture.getvX());
-				} else if (voiture.getvX() == 0 && voiture.getvY() < 0
-						|| voiture.getvY() > 0) {
-					voiture.setvY(-voiture.getvY());
-				}
+				voiture.setpX(50);
+				voiture.setpY(550);
+				voiture.setvX(0);
+				voiture.setvY(0);
 			}
 		}
-		for (int i = 0; i < Eaux.size(); i++) { // si virage, augmenter rotation
+
+		for (int i = 0; i < Eaux.size(); i++) {
 			eau = (Eau) Eaux.get(i);
 			Rectangle eauRec;
 			eauRec = eau.getBounds();
@@ -259,8 +264,7 @@ public class GameBoard extends JPanel implements KeyListener {
 	}
 
 	@Override
-	public void keyReleased(KeyEvent arg0) { // faire rentre dans collision
-												// avant move pour changer v
+	public void keyReleased(KeyEvent arg0) {
 
 		int key = arg0.getKeyCode();
 
@@ -319,9 +323,12 @@ public class GameBoard extends JPanel implements KeyListener {
 			voiture.position();
 
 		} else if (key == KeyEvent.VK_R) { // ne fonctionne pas
-			loadTrack();
-		}
-		else if (key == KeyEvent.VK_ESCAPE){
+			voiture.setpX(50);
+			voiture.setpY(550);
+			voiture.setvX(0);
+			voiture.setvY(0);
+		} else if (key == KeyEvent.VK_ESCAPE) {
+			@SuppressWarnings("unused")
 			MenuMain f = new MenuMain();
 			gFrame.dispose();
 		}

@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 
 import tm2DGame.GameFrame;
 
+@SuppressWarnings("serial")
 public class MenuGame extends JFrame implements ActionListener {
 	
 	JButton cmdStart = new JButton("Start");
@@ -31,12 +32,14 @@ public class MenuGame extends JFrame implements ActionListener {
 	
 	private JPanel esth(){
 		JPanel panel = new JPanel();
-		panel.setLayout(new FlowLayout());
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 150, 50));
+		panel.add(cmdStart);
 		
-		JLabel label = new JLabel(/* ici mettre l'explication des commandes */);
+		
+		JLabel label = new JLabel( "Hello");
 		panel.add(label);
 		
-		panel.add(cmdStart);
+		
 		
 		cmdStart.addActionListener(this);
 		
@@ -45,6 +48,7 @@ public class MenuGame extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		if(arg0.getSource() == cmdStart){
+			@SuppressWarnings("unused")
 			GameFrame f = new GameFrame();
 			dispose();
 		}

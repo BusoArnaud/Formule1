@@ -45,6 +45,7 @@ public class MenuEnd extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		if(arg0.getSource() == cmdEnd){
+			@SuppressWarnings("unused")
 			MenuMain f =new MenuMain();
 			dispose();
 			

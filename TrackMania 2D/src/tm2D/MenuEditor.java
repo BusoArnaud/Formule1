@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 
 import tm2DEditor.EditorFrame;
 
+@SuppressWarnings("serial")
 public class MenuEditor extends JFrame implements ActionListener {
 	
 	JButton cmdDraw = new JButton("Draw");
@@ -44,6 +45,7 @@ public class MenuEditor extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		if(arg0.getSource() == cmdDraw){
+			@SuppressWarnings("unused")
 			EditorFrame f = new EditorFrame();
 			dispose();
 		}

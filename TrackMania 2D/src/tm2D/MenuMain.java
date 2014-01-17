@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+@SuppressWarnings("serial")
 public class MenuMain extends JFrame implements ActionListener {
 
 	JButton cmdGame = new JButton("Let's Play");
@@ -31,7 +32,7 @@ public class MenuMain extends JFrame implements ActionListener {
 
 	private JPanel esth() {
 		JPanel panel = new JPanel();
-		panel.setLayout(new FlowLayout());
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5,100));
 
 		JLabel label = new JLabel("TrackMania 2D");
 		panel.add(label);
@@ -48,10 +49,12 @@ public class MenuMain extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		if (arg0.getSource() == cmdGame) {
+			@SuppressWarnings("unused")
 			MenuGame f = new MenuGame();
 			dispose();
 		}
 		if (arg0.getSource() == cmdEditor) {
+			@SuppressWarnings("unused")
 			MenuEditor f = new MenuEditor();
 			dispose();
 

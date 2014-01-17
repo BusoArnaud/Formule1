@@ -209,6 +209,7 @@ public class EditorBoard extends JPanel implements MouseListener,
 			} catch (Exception ex) {
 			}
 		} else if(key == KeyEvent.VK_ESCAPE){
+			@SuppressWarnings("unused")
 			MenuMain f = new MenuMain();
 			eFrame.dispose();
 		}
