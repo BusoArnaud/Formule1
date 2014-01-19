@@ -35,7 +35,7 @@ public class MenuEditor extends JFrame implements ActionListener {
 	private JPanel esth() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 150, 10));
-		panel.add(cmdDraw);
+
 		JLabel infoLabel1[] = new JLabel[8];
 		String[] infoString = { "Instructions:",
 				"Use the wheel to chose the block",
@@ -48,7 +48,7 @@ public class MenuEditor extends JFrame implements ActionListener {
 		for (int i = 0; i < infoLabel1.length; i++) {
 			panel.add(infoLabel1[i] = new JLabel(infoString[i]));
 		}
-
+		panel.add(cmdDraw);
 		cmdDraw.addActionListener(this);
 		panel.setBackground(Color.cyan);
 

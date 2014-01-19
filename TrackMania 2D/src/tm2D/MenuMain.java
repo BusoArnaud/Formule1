@@ -34,6 +34,8 @@ public class MenuMain extends JFrame implements ActionListener {
 	private JPanel esth() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 150, 30));
+		panel.add(cmdGame);
+		panel.add(cmdEditor);
 		JLabel infoLabel1[] = new JLabel[1];
 		String[] infoString = { "TM 2D by Candice & Arnaud" };
 
@@ -42,8 +44,6 @@ public class MenuMain extends JFrame implements ActionListener {
 		}
 
 		panel.setBackground(Color.cyan);
-		panel.add(cmdGame);
-		panel.add(cmdEditor);
 
 		cmdGame.addActionListener(this);
 		cmdEditor.addActionListener(this);

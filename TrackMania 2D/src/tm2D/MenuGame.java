@@ -34,7 +34,6 @@ public class MenuGame extends JFrame implements ActionListener {
 	private JPanel esth() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 150, 10));
-		panel.add(cmdStart);
 		JLabel infoLabel1[] = new JLabel[6];
 		String[] infoString = { "Instructions:",
 				"Use T, Y, U, G, H, J, V, B, N", "Classical Moves: Y, G, J, B",
@@ -45,6 +44,7 @@ public class MenuGame extends JFrame implements ActionListener {
 			panel.add(infoLabel1[i] = new JLabel(infoString[i]));
 		}
 
+		panel.add(cmdStart);
 		cmdStart.addActionListener(this);
 		panel.setBackground(Color.cyan);
 
