@@ -28,7 +28,7 @@ public class Voiture {
 	}
 
 	public Rectangle getBounds() {
-		Rectangle Box = new Rectangle(pX, pY, 10, 20);
+		Rectangle Box = new Rectangle(pX, pY, 5, 10);
 		return Box;
 	}
 
@@ -88,8 +88,8 @@ public class Voiture {
 		this.keyUse = newKey;
 	}
 
-	public void move() { // provisoire en attendant de faire tourner les axes de
-							// direction pour la voiture, à voir
+	public void move() { 
+						
 		if (keyUse == "T") {
 			aX = -1;
 			aY = -1;
