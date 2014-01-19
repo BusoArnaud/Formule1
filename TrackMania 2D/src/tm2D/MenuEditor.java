@@ -1,5 +1,6 @@
 package tm2D;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,14 +34,23 @@ public class MenuEditor extends JFrame implements ActionListener {
 
 	private JPanel esth() {
 		JPanel panel = new JPanel();
-		panel.setLayout(new FlowLayout());
-
-		JLabel label = new JLabel(/* ici mettre l'explication des commandes */);
-		panel.add(label);
-
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 150, 10));
 		panel.add(cmdDraw);
+		JLabel infoLabel1[] = new JLabel[8];
+		String[] infoString = { "Instructions:",
+				"Use the wheel to chose the block",
+				"Press left click to put it", "Press right click to remove it",
+				"Press S to save (Track + level)",
+				"Press L to load your track",
+				"Move your new track in folder Tracks",
+				"Press Esc to back Menu" };
+
+		for (int i = 0; i < infoLabel1.length; i++) {
+			panel.add(infoLabel1[i] = new JLabel(infoString[i]));
+		}
 
 		cmdDraw.addActionListener(this);
+		panel.setBackground(Color.cyan);
 
 		return panel;
 	}

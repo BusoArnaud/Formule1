@@ -104,7 +104,7 @@ public class GameBoard extends JPanel implements KeyListener {
 					Terrain terrain = new Terrain();
 					Terrain.Sable sable = terrain.new Sable(x * 10, y * 10);
 					Sables.add(sable);
-				} else if (txt == '#') {
+				} else if (txt == 'x') {
 					game[x][y] = "MUR";
 					Terrain terrain = new Terrain();
 					Terrain.Mur mur = terrain.new Mur(x * 10, y * 10);

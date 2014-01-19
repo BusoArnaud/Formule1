@@ -1,5 +1,6 @@
 package tm2D;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,11 +33,15 @@ public class MenuMain extends JFrame implements ActionListener {
 
 	private JPanel esth() {
 		JPanel panel = new JPanel();
-		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 100));
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 150, 30));
+		JLabel infoLabel1[] = new JLabel[1];
+		String[] infoString = { "TM 2D by Candice & Arnaud" };
 
-		JLabel label = new JLabel("TrackMania 2D");
-		panel.add(label);
+		for (int i = 0; i < infoLabel1.length; i++) {
+			panel.add(infoLabel1[i] = new JLabel(infoString[i]));
+		}
 
+		panel.setBackground(Color.cyan);
 		panel.add(cmdGame);
 		panel.add(cmdEditor);
 

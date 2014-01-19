@@ -152,7 +152,7 @@ public class EditorBoard extends JPanel implements MouseListener,
 						} else if (editor[i][j] == "SABLE") {
 							fw.write("S");
 						} else if (editor[i][j] == "MUR") {
-							fw.write("#");
+							fw.write("x");
 						} else if (editor[i][j] == "EAU") {
 							fw.write("o");
 						} else if (editor[i][j] == "DAMIER") {
@@ -188,7 +188,7 @@ public class EditorBoard extends JPanel implements MouseListener,
 						editor[x][y] = "BORDURE";
 					} else if (txt == 'S') {
 						editor[x][y] = "SABLE";
-					} else if (txt == '#') {
+					} else if (txt == 'x') {
 						editor[x][y] = "MUR";
 					} else if (txt == 'o') {
 						editor[x][y] = "EAU";

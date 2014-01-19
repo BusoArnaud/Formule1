@@ -1,5 +1,6 @@
 package tm2D;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,7 +9,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 import tm2DGame.GameFrame;
 
 @SuppressWarnings("serial")
@@ -33,13 +33,20 @@ public class MenuGame extends JFrame implements ActionListener {
 
 	private JPanel esth() {
 		JPanel panel = new JPanel();
-		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 150, 50));
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 150, 10));
 		panel.add(cmdStart);
+		JLabel infoLabel1[] = new JLabel[6];
+		String[] infoString = { "Instructions:",
+				"Use T, Y, U, G, H, J, V, B, N", "Classical Moves: Y, G, J, B",
+				"Other Moves: T, U, H, V, N", "Press R to restart (+10)",
+				"Press Esc to back Menu" };
 
-		JLabel label = new JLabel("Hello");
-		panel.add(label);
+		for (int i = 0; i < infoLabel1.length; i++) {
+			panel.add(infoLabel1[i] = new JLabel(infoString[i]));
+		}
 
 		cmdStart.addActionListener(this);
+		panel.setBackground(Color.cyan);
 
 		return panel;
 	}
