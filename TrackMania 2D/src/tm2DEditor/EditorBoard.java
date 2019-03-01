@@ -50,7 +50,7 @@ public class EditorBoard extends JPanel implements MouseListener,
 	int action = MouseEvent.BUTTON1;
 
 	public EditorBoard(Frame eF) {
-		
+		initEditor();
 		ImageIcon iPiste = new ImageIcon(RELATIVE_PATH + "ImagesCircuit/Piste10.jpg");
 		Piste = iPiste.getImage();
 
@@ -79,6 +79,18 @@ public class EditorBoard extends JPanel implements MouseListener,
 		addMouseMotionListener(this);
 		addMouseWheelListener(this);
 		addKeyListener(this);
+	}
+
+	public void initEditor(){
+		for (int i = 0; i < 80; i++) {
+			for (int j = 0; j < 60; j++) {
+				if(i==0 || j == 0 ||  i== 79 || j == 59 ){
+					editor[i][j] = "MUR";
+				}else{
+					editor[i][j] = "HERBE";
+				}
+			}
+		}
 	}
 
 	public void paint(Graphics g) {
