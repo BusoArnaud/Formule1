@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import javax.swing.ImageIcon;
 
 public class Voiture {
+	public static final String RELATIVE_PATH = "TrackMania 2D/";
 
 	int aX = 0;
 	int aY = 0;
@@ -23,7 +24,7 @@ public class Voiture {
 		pX = startX;
 		pY = startY;
 
-		ImageIcon iVoiture = new ImageIcon("ImagesCircuit/Voiture10.png");
+		ImageIcon iVoiture = new ImageIcon(RELATIVE_PATH + "ImagesCircuit/Voiture10.png");
 		Voiture = iVoiture.getImage();
 	}
 

@@ -66,7 +66,7 @@ public class GameBoard extends JPanel implements KeyListener {
 	public void loadTrack() {
 
 		try {
-			fr = new FileReader("Tracks/Track" + level);
+			fr = new FileReader("TrackMania 2D/src/Tracks/Track" + level);
 
 			int x = 0;
 			int y = 0;
@@ -133,6 +133,7 @@ public class GameBoard extends JPanel implements KeyListener {
 			}
 
 		} catch (Exception ex) {
+			System.out.println(ex);
 		}
 
 		repaint();
@@ -175,8 +176,16 @@ public class GameBoard extends JPanel implements KeyListener {
 
 		g.setColor(Color.BLACK);
 		g.setFont(levelFont);
-		g.drawString("Level : " + level, 15, 585);
-		g.drawString("|| Coups : " + nombreCoup, 80, 585);
+		StringBuilder legends = new StringBuilder();
+		legends.append("Level : ");
+		legends.append(level);
+		legends.append("|| Coups : " );
+		legends.append(nombreCoup );
+		legends.append("|| vitesse X : " );
+		legends.append(Math.floor(voiture.getvX()));
+		legends.append("|| vitesse Y : " );
+		legends.append(Math.floor(voiture.getvY()));
+		g.drawString(legends.toString(), 15, 585);
 
 		if (Math.abs(voiture.getvX()) > 0 || Math.abs(voiture.getvY()) > 0) {
 			g2d.rotate(

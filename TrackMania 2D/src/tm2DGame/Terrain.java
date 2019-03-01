@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import javax.swing.ImageIcon;
 
 public class Terrain {
+	public static final String RELATIVE_PATH = "TrackMania 2D/";
 
 	public class Piste {
 
@@ -15,7 +16,7 @@ public class Terrain {
 		public Piste(int startX, int startY) {
 			x = startX;
 			y = startY;
-			ImageIcon iPiste = new ImageIcon("ImagesCircuit/Piste10.jpg");
+			ImageIcon iPiste = new ImageIcon(RELATIVE_PATH + "ImagesCircuit/Piste10.jpg");
 			Piste = iPiste.getImage();
 		}
 
@@ -45,7 +46,7 @@ public class Terrain {
 		public Bordure(int startX, int startY) {
 			x = startX;
 			y = startY;
-			ImageIcon iBordure = new ImageIcon("ImagesCircuit/Bordure10.jpg");
+			ImageIcon iBordure = new ImageIcon(RELATIVE_PATH + "ImagesCircuit/Bordure10.jpg");
 			Bordure = iBordure.getImage();
 		}
 
@@ -75,7 +76,7 @@ public class Terrain {
 		public Herbe(int startX, int startY) {
 			x = startX;
 			y = startY;
-			ImageIcon iHerbe = new ImageIcon("ImagesCircuit/Herbe10.jpg");
+			ImageIcon iHerbe = new ImageIcon(RELATIVE_PATH + "ImagesCircuit/Herbe10.jpg");
 			Herbe = iHerbe.getImage();
 		}
 
@@ -104,7 +105,7 @@ public class Terrain {
 		public Sable(int startX, int startY) {
 			x = startX;
 			y = startY;
-			ImageIcon iSable = new ImageIcon("ImagesCircuit/Sable10.jpg");
+			ImageIcon iSable = new ImageIcon(RELATIVE_PATH + "ImagesCircuit/Sable10.jpg");
 			Sable = iSable.getImage();
 		}
 
@@ -134,7 +135,7 @@ public class Terrain {
 		public Mur(int startX, int startY) {
 			x = startX;
 			y = startY;
-			ImageIcon iMur = new ImageIcon("ImagesCircuit/Mur10.jpg");
+			ImageIcon iMur = new ImageIcon(RELATIVE_PATH + "ImagesCircuit/Mur10.jpg");
 			Mur = iMur.getImage();
 		}
 
@@ -163,7 +164,7 @@ public class Terrain {
 		public Eau(int startX, int startY) {
 			x = startX;
 			y = startY;
-			ImageIcon iEau = new ImageIcon("ImagesCircuit/Eau10.jpg");
+			ImageIcon iEau = new ImageIcon(RELATIVE_PATH + "ImagesCircuit/Eau10.jpg");
 			Eau = iEau.getImage();
 		}
 
@@ -192,7 +193,7 @@ public class Terrain {
 		public Damier(int startX, int startY) {
 			x = startX;
 			y = startY;
-			ImageIcon iDamier = new ImageIcon("ImagesCircuit/Damier10.jpg");
+			ImageIcon iDamier = new ImageIcon(RELATIVE_PATH + "ImagesCircuit/Damier10.jpg");
 			Damier = iDamier.getImage();
 		}
 
