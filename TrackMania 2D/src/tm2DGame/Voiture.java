@@ -54,7 +54,7 @@ public class Voiture {
 	}
 
 	public Rectangle getBounds() {
-		Rectangle Box = new Rectangle(pX-5, pY-10, 10, 20);
+		Rectangle Box = new Rectangle(pX-5, pY-10, 8, 18);
 		return Box;
 	}
 
