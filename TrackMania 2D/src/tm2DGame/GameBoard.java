@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 
@@ -53,7 +54,7 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener {
 	public void loadTrack() {
 
 		try {
-			fr = new FileReader("TrackMania 2D/src/Tracks/Track" + level);
+			fr = new FileReader("TrackMania 2D" + File.separatorChar + "src" + File.separatorChar + "Tracks" + File.separatorChar + "Track" + level);
 
 			int x = 0;
 			int y = 0;

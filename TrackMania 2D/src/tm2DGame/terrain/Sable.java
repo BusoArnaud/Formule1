@@ -6,7 +6,7 @@ public class Sable extends Terrain{
 
 	public Sable(int startX, int startY) {
 		super(startX, startY);
-		ImageIcon iSable = new ImageIcon(RELATIVE_PATH + "ImagesCircuit/Sable10.jpg");
+		ImageIcon iSable = new ImageIcon(RELATIVE_PATH_IMAGE_CIRCUIT + "Sable10.jpg");
 		image = iSable.getImage();
 	}
 

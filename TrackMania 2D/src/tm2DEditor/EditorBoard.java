@@ -11,6 +11,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 
@@ -18,13 +19,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import tm2D.Constants;
 import tm2D.MenuMain;
 
 @SuppressWarnings("serial")
 public class EditorBoard extends JPanel implements MouseListener,
-		MouseMotionListener, MouseWheelListener, KeyListener {
-			
-	public static final String RELATIVE_PATH = "TrackMania 2D/";
+		MouseMotionListener, MouseWheelListener, KeyListener, Constants {
+
 	String editor[][] = new String[80][60];
 	String imageSelect[] = { null, "PISTE", "HERBE", "BORDURE", "SABLE", "MUR",
 			"EAU", "DAMIER" };
@@ -51,25 +52,25 @@ public class EditorBoard extends JPanel implements MouseListener,
 
 	public EditorBoard(Frame eF) {
 		initEditor();
-		ImageIcon iPiste = new ImageIcon(RELATIVE_PATH + "ImagesCircuit/Piste10.jpg");
+		ImageIcon iPiste = new ImageIcon(RELATIVE_PATH_IMAGE_CIRCUIT + "Piste10.jpg");
 		Piste = iPiste.getImage();
 
-		ImageIcon iHerbe = new ImageIcon(RELATIVE_PATH + "ImagesCircuit/Herbe10.jpg");
+		ImageIcon iHerbe = new ImageIcon(RELATIVE_PATH_IMAGE_CIRCUIT + "Herbe10.jpg");
 		Herbe = iHerbe.getImage();
 
-		ImageIcon iBordure = new ImageIcon(RELATIVE_PATH + "ImagesCircuit/Bordure10.jpg");
+		ImageIcon iBordure = new ImageIcon(RELATIVE_PATH_IMAGE_CIRCUIT + "Bordure10.jpg");
 		Bordure = iBordure.getImage();
 
-		ImageIcon iSable = new ImageIcon(RELATIVE_PATH + "ImagesCircuit/Sable10.jpg");
+		ImageIcon iSable = new ImageIcon(RELATIVE_PATH_IMAGE_CIRCUIT + "Sable10.jpg");
 		Sable = iSable.getImage();
 
-		ImageIcon iMur = new ImageIcon(RELATIVE_PATH + "ImagesCircuit/Mur10.jpg");
+		ImageIcon iMur = new ImageIcon(RELATIVE_PATH_IMAGE_CIRCUIT + "Mur10.jpg");
 		Mur = iMur.getImage();
 
-		ImageIcon iEau = new ImageIcon(RELATIVE_PATH + "ImagesCircuit/Eau10.jpg");
+		ImageIcon iEau = new ImageIcon(RELATIVE_PATH_IMAGE_CIRCUIT + "Eau10.jpg");
 		Eau = iEau.getImage();
 
-		ImageIcon iDamier = new ImageIcon(RELATIVE_PATH + "ImagesCircuit/Damier10.jpg");
+		ImageIcon iDamier = new ImageIcon(RELATIVE_PATH_IMAGE_CIRCUIT + "Damier10.jpg");
 		Damier = iDamier.getImage();
 
 		eFrame = eF;
