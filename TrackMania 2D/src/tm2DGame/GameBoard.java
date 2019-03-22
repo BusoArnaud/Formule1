@@ -17,12 +17,13 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import tm2D.Constants;
 import tm2D.MenuEnd;
 import tm2D.MenuMain;
 import tm2DGame.terrain.*;
 
 @SuppressWarnings("serial")
-public class GameBoard extends JPanel implements KeyListener, ActionListener {
+public class GameBoard extends JPanel implements KeyListener, ActionListener, Constants {
 
 	Timer timer = new Timer(100, this);
 	double currentTime=0;
@@ -54,7 +55,7 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener {
 	public void loadTrack() {
 
 		try {
-			fr = new FileReader("TrackMania 2D" + File.separatorChar + "src" + File.separatorChar + "Tracks" + File.separatorChar + "Track" + level);
+			fr = new FileReader(RELATIVE_PATH + "src" + File.separatorChar + "Tracks" + File.separatorChar + "Track" + level);
 
 			int x = 0;
 			int y = 0;
