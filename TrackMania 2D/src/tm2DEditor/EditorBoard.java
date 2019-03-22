@@ -23,7 +23,8 @@ import tm2D.MenuMain;
 @SuppressWarnings("serial")
 public class EditorBoard extends JPanel implements MouseListener,
 		MouseMotionListener, MouseWheelListener, KeyListener {
-
+			
+	public static final String RELATIVE_PATH = "TrackMania 2D/";
 	String editor[][] = new String[80][60];
 	String imageSelect[] = { null, "PISTE", "HERBE", "BORDURE", "SABLE", "MUR",
 			"EAU", "DAMIER" };
@@ -45,27 +46,30 @@ public class EditorBoard extends JPanel implements MouseListener,
 
 	Frame eFrame;
 
-	public EditorBoard(Frame eF) {
+	boolean clicked = false;
+	int action = MouseEvent.BUTTON1;
 
-		ImageIcon iPiste = new ImageIcon("ImagesCircuit/Piste10.jpg");
+	public EditorBoard(Frame eF) {
+		initEditor();
+		ImageIcon iPiste = new ImageIcon(RELATIVE_PATH + "ImagesCircuit/Piste10.jpg");
 		Piste = iPiste.getImage();
 
-		ImageIcon iHerbe = new ImageIcon("ImagesCircuit/Herbe10.jpg");
+		ImageIcon iHerbe = new ImageIcon(RELATIVE_PATH + "ImagesCircuit/Herbe10.jpg");
 		Herbe = iHerbe.getImage();
 
-		ImageIcon iBordure = new ImageIcon("ImagesCircuit/Bordure10.jpg");
+		ImageIcon iBordure = new ImageIcon(RELATIVE_PATH + "ImagesCircuit/Bordure10.jpg");
 		Bordure = iBordure.getImage();
 
-		ImageIcon iSable = new ImageIcon("ImagesCircuit/Sable10.jpg");
+		ImageIcon iSable = new ImageIcon(RELATIVE_PATH + "ImagesCircuit/Sable10.jpg");
 		Sable = iSable.getImage();
 
-		ImageIcon iMur = new ImageIcon("ImagesCircuit/Mur10.jpg");
+		ImageIcon iMur = new ImageIcon(RELATIVE_PATH + "ImagesCircuit/Mur10.jpg");
 		Mur = iMur.getImage();
 
-		ImageIcon iEau = new ImageIcon("ImagesCircuit/Eau10.jpg");
+		ImageIcon iEau = new ImageIcon(RELATIVE_PATH + "ImagesCircuit/Eau10.jpg");
 		Eau = iEau.getImage();
 
-		ImageIcon iDamier = new ImageIcon("ImagesCircuit/Damier10.jpg");
+		ImageIcon iDamier = new ImageIcon(RELATIVE_PATH + "ImagesCircuit/Damier10.jpg");
 		Damier = iDamier.getImage();
 
 		eFrame = eF;
@@ -75,6 +79,18 @@ public class EditorBoard extends JPanel implements MouseListener,
 		addMouseMotionListener(this);
 		addMouseWheelListener(this);
 		addKeyListener(this);
+	}
+
+	public void initEditor(){
+		for (int i = 0; i < 80; i++) {
+			for (int j = 0; j < 60; j++) {
+				if(i==0 || j == 0 ||  i== 79 || j == 59 ){
+					editor[i][j] = "MUR";
+				}else{
+					editor[i][j] = "HERBE";
+				}
+			}
+		}
 	}
 
 	public void paint(Graphics g) {
@@ -133,7 +149,6 @@ public class EditorBoard extends JPanel implements MouseListener,
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
-
 		int key = arg0.getKeyCode();
 
 		if (key == KeyEvent.VK_S) {
@@ -242,15 +257,23 @@ public class EditorBoard extends JPanel implements MouseListener,
 
 	@Override
 	public void mouseDragged(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+		if (clicked) {
+			int x = arg0.getX() / 10;
+			int y = arg0.getY() / 10;
+			click(x, y, action);
+		}
 
 	}
-
 	@Override
 	public void mouseMoved(MouseEvent arg0) {
 		sX = arg0.getX() - 5;
 		sY = arg0.getY() - 5;
 
+		if (clicked) {
+			int x = arg0.getX() / 10;
+			int y = arg0.getY() / 10;
+			click(x, y, action);
+		}
 		repaint();
 	}
 
@@ -274,20 +297,25 @@ public class EditorBoard extends JPanel implements MouseListener,
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent arg0) {
-
+		clicked = true;
+		action = arg0.getButton();
 		int x = arg0.getX() / 10;
 		int y = arg0.getY() / 10;
+		click(x, y, action);
+	}
+	
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		clicked = false;
+	}
 
-		if (arg0.getButton() == MouseEvent.BUTTON1) {
+	public void click(int x, int y, int action){
+
+		if (action == MouseEvent.BUTTON1) {
 			editor[x][y] = imageCourante;
-		} else if (arg0.getButton() == MouseEvent.BUTTON3) {
+		} else if (action == MouseEvent.BUTTON3) {
 			editor[x][y] = null;
 		}
+		repaint();
 	}
 }
