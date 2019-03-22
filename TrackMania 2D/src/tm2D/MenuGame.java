@@ -34,11 +34,12 @@ public class MenuGame extends JFrame implements ActionListener {
 	private JPanel esth() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 150, 10));
-		JLabel infoLabel1[] = new JLabel[6];
 		String[] infoString = { "Instructions:",
-				"Use T, Y, U, G, H, J, V, B, N", "Classical Moves: Y, G, J, B",
-				"Other Moves: T, U, H, V, N", "Press R to restart (+10)",
+				"Press arrow up, left,",
+				"down or right to move",
+				"Press R to restart (+10)",
 				"Press Esc to back Menu" };
+		JLabel infoLabel1[] = new JLabel[infoString.length];
 
 		for (int i = 0; i < infoLabel1.length; i++) {
 			panel.add(infoLabel1[i] = new JLabel(infoString[i]));

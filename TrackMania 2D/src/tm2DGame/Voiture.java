@@ -6,8 +6,9 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
 
-public class Voiture {
-	public static final String RELATIVE_PATH = "TrackMania 2D/";
+import tm2D.Constants;
+
+public class Voiture implements Constants{
 	public static final Double ROTATION = Math.PI/16;
 
 	int aX = 0;
@@ -34,7 +35,7 @@ public class Voiture {
 		pY = startY;
 		this.maxSpeed = maxSpeed;
 
-		ImageIcon iVoiture = new ImageIcon(RELATIVE_PATH + "ImagesCircuit/Voiture10.png");
+		ImageIcon iVoiture = new ImageIcon(RELATIVE_PATH_IMAGE_CIRCUIT + "Voiture10.png");
 		voiture = iVoiture.getImage();
 	}
 

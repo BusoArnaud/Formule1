@@ -3,8 +3,9 @@ package tm2DGame.terrain;
 import java.awt.Image;
 import java.awt.Rectangle;
 
-public abstract class Terrain {
-	public static final String RELATIVE_PATH = "TrackMania 2D/";
+import tm2D.Constants;
+
+public abstract class Terrain implements Constants {
 
 	int x, y;
 	Image image;
