@@ -12,7 +12,7 @@ public class Sable extends Terrain{
 	
 	@Override
 	public double getSpeedDecreaseCoef() {
-	  return SABLE_SPEED_COEF; 
+	  return SAND_SPEED_COEF; 
 	}
 
 }

@@ -16,7 +16,7 @@ public abstract class Terrain implements Constants {
 	
 	protected static final double NORMAL_SPEED_COEF = 1d;
 	
-	protected static final double SABLE_SPEED_COEF = 0.9;
+	protected static final double SAND_SPEED_COEF = 0.9;
 	
 	protected static final double WATER_SPEED_COEF = 0.92;
 	
