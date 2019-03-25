@@ -24,10 +24,9 @@ import tm2DGame.terrain.Terrain;
 
 @SuppressWarnings("serial")
 public class GameBoard extends JPanel implements KeyListener, ActionListener, Constants {
-
+	
 	Timer timer = new Timer(100, this);
 	double currentTime=0;
-//	String game[][] = new String[80][60];
 
 	int level = 1;
 	int nombreCoup = 0;
@@ -36,6 +35,9 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 
 	private Circuit circuit;
 	
+	private static final String RELATIVE_PATH_TRACKS = RELATIVE_PATH + "src" + File.separatorChar + "Tracks"
+			+ File.separatorChar;
+
 	Voiture voiture = new Voiture(50, 550, 15);
 	
 	Font levelFont = new Font("SansSerif", Font.BOLD, 15);
@@ -54,8 +56,7 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 	public void loadTrack() {
 
 		try {
-			FileReader fr = new FileReader(
-					RELATIVE_PATH + "src" + File.separatorChar + "Tracks" + File.separatorChar + "Track" + level);
+			FileReader fr = new FileReader(RELATIVE_PATH_TRACKS + "Track" + level);
 
 			circuit = new Circuit(fr);
 		  

@@ -27,14 +27,12 @@ public class Circuit {
 				TerrainBuilder terrainBuilder = new TerrainBuilder(txt, x, y);
 				if (terrainBuilder.isTerrain()) {
 					circuitMatrix[x][y] = terrainBuilder.getTerrain();
-					if (terrainBuilder.getType().equals("DAMIER")) {
+					if (terrainBuilder.isEnd()) {
 						endTerrains.add(circuitMatrix[x][y]);
 					}
 				}
 
-				if (txt == '*') {
-					circuitMatrix[x][y] = null;
-				} else if (txt == '\r' || txt == '\n') {
+				if (txt == '\r' || txt == '\n') {
 					x--;
 				}
 				if (x == 79) {

@@ -7,14 +7,20 @@ import tm2D.Constants;
 
 public abstract class Terrain implements Constants {
 
-  int x, y;
+	int x, y;
 	Image image;
 	
 	//un terrain ne bouge pas. on n'a pas besoin de redéfinir un nouveau rectangle à chaque 
 	//fois
 	final Rectangle rectangle;
 	
-	protected static double speedDecreaseCoef = 1d;
+	protected static final double NORMAL_SPEED_COEF = 1d;
+	
+	protected static final double SABLE_SPEED_COEF = 0.9;
+	
+	protected static final double WATER_SPEED_COEF = 0.92;
+	
+	protected static final double GRASS_SPEED_COEF = 0.95;
 
 	public Terrain(int startX, int startY) {
 			x = startX;
@@ -41,7 +47,7 @@ public abstract class Terrain implements Constants {
 	}
 	
 	public double getSpeedDecreaseCoef() {
-	  return speedDecreaseCoef;
+	  return NORMAL_SPEED_COEF;
 	}
 	
 	 @Override
