@@ -10,16 +10,20 @@ public abstract class Terrain implements Constants {
   int x, y;
 	Image image;
 	
+	//un terrain ne bouge pas. on n'a pas besoin de redéfinir un nouveau rectangle à chaque 
+	//fois
+	final Rectangle rectangle;
+	
 	protected static double speedDecreaseCoef = 1d;
 
 	public Terrain(int startX, int startY) {
 			x = startX;
 			y = startY;
+			rectangle = new Rectangle(x, y, 10, 10);
 		}
 
 	public Rectangle getBounds() {
-		Rectangle Box = new Rectangle(x, y, 10, 10);
-		return Box;
+		return rectangle;
 	}
 
 	public int getX() {
@@ -29,6 +33,8 @@ public abstract class Terrain implements Constants {
 	public int getY() {
 		return y;
 	}
+
+
 
 	public Image getImage() {
 		return image;
