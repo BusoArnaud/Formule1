@@ -9,5 +9,10 @@ public class Sable extends Terrain{
 		ImageIcon iSable = new ImageIcon(RELATIVE_PATH_IMAGE_CIRCUIT + "Sable10.jpg");
 		image = iSable.getImage();
 	}
+	
+	@Override
+	public double getSpeedDecreaseCoef() {
+	  return SAND_SPEED_COEF; 
+	}
 
 }

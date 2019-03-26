@@ -12,7 +12,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.FileReader;
-import java.util.ArrayList;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -20,25 +19,24 @@ import javax.swing.Timer;
 import tm2D.Constants;
 import tm2D.MenuEnd;
 import tm2D.MenuMain;
-import tm2DGame.terrain.*;
+import tm2DGame.terrain.Mur;
+import tm2DGame.terrain.Terrain;
 
 @SuppressWarnings("serial")
 public class GameBoard extends JPanel implements KeyListener, ActionListener, Constants {
-
+	
 	Timer timer = new Timer(100, this);
 	double currentTime=0;
-	String game[][] = new String[80][60];
 
 	int level = 1;
 	int nombreCoup = 0;
+	
 	public static int nombreCoupT;
 
-	private static ArrayList<Terrain> terrains;
-
+	private Circuit circuit;
+	
 	Voiture voiture = new Voiture(50, 550, 15);
 	
-
-	FileReader fr;
 	Font levelFont = new Font("SansSerif", Font.BOLD, 15);
 	Frame gFrame;
 
@@ -55,35 +53,10 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 	public void loadTrack() {
 
 		try {
-			fr = new FileReader(RELATIVE_PATH + "src" + File.separatorChar + "Tracks" + File.separatorChar + "Track" + level);
+			FileReader fr = new FileReader(RELATIVE_PATH_TRACKS + "Track" + level);
 
-			int x = 0;
-			int y = 0;
-			int i = 0;
-
-			terrains = new ArrayList<Terrain>();
-
-			while ((i = fr.read()) != -1) {
-				char txt = (char) i;
-				TerrainBuilder terrainBuilder = new TerrainBuilder(txt, x, y);
-				if (terrainBuilder.isTerrain()) {
-					game[x][y] = terrainBuilder.getType();
-					terrains.add(terrainBuilder.getTerrain());
-				} 
-				
-				if (txt == '*') {
-					game[x][y] = null;
-				} else if (txt == '\r' || txt == '\n') {
-					x--;
-				}
-				if (x == 79) {
-					y++;
-					x = 0;
-				} else {
-					x++;
-				}
-			}
-
+			circuit = new Circuit(fr);
+		  
 		} catch (Exception ex) {
 			System.out.println(ex);
 		}
@@ -91,15 +64,13 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 		repaint();
 	}
 
+	@Override
 	public void paint(Graphics g) {
 
 		super.paint(g);
 		Graphics2D g2d = (Graphics2D) g;
 
-		for (int i = 0; i < terrains.size(); i++) {
-			Terrain terrain = (Terrain) terrains.get(i);
-			g2d.drawImage(terrain.getImage(), terrain.getX(), terrain.getY(), null);
-		}
+		circuit.paint(g2d);
 
 		g.setColor(Color.BLACK);
 		g.setFont(levelFont);
@@ -125,51 +96,35 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 		Rectangle voitureRec;
 		voitureRec = voiture.getBounds();
 
-		for (int i = 0; i < terrains.size(); i++) {
-			Terrain terrain = (Terrain) terrains.get(i);
-			if(terrain instanceof Damier){
-				Damier damier = (Damier) terrain;
-				Rectangle damierRec;
-				damierRec = damier.getBounds();
-				if (voitureRec.intersects(damierRec)) {
-					level++;
-					nombreCoupT = +nombreCoup;
-					nombreCoup = 0;
-					loadTrack();
+		for (Terrain terrain : circuit.getEndTerrains()) {
+			if (voitureRec.intersects(terrain.getBounds())) {
+				level++;
+				nombreCoupT = +nombreCoup;
+				nombreCoup = 0;
+				loadTrack();
 
-					if (level == 2) {
+				if (level == 2) {
 
-						@SuppressWarnings("unused")
-						MenuEnd f = new MenuEnd();
-						gFrame.dispose();
-					}
+					@SuppressWarnings("unused")
+					MenuEnd f = new MenuEnd();
+					gFrame.dispose();
 				}
+				break;
 			}
 		}
 	}
 
 	public void collision() {
-		Rectangle voitureRec = voiture.getBounds();
-		for (int i = 0; i < terrains.size(); i++) {
-			Terrain terrain = (Terrain) terrains.get(i);
-			Rectangle rec = terrain.getBounds();
-			if (voitureRec.intersects(rec)) {
-				if (terrain instanceof Herbe) {
-					voiture.speedDecrease(0.95);
-				}
-				if (terrain instanceof Sable) {
-					voiture.speedDecrease(0.9);
-				}
-				if (terrain instanceof Eau) {
-					voiture.speedDecrease(0.92);
-				}
-				if (terrain instanceof Mur) {
-					voiture.reset(50, 550);
-				}
+		for (Terrain terrain : circuit.getCollisionTerrains(voiture.getBounds())) {
+			if (terrain instanceof Mur) {
+				voiture.reset(50, 550);
+			} else if (terrain.getSpeedDecreaseCoef() < 1d) {
+				voiture.speedDecrease(terrain.getSpeedDecreaseCoef());
 			}
 		}
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent ev) {
 		currentTime += 0.1;
 		if (!voiture.isAccelerate() && voiture.speed != 0) {

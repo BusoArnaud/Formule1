@@ -43,4 +43,8 @@ public class TerrainBuilder {
   public String getType() {
     return this.type;
   }
+  
+  public boolean isEnd(){
+	  return "DAMIER".equals(this.type);
+  }
 }
