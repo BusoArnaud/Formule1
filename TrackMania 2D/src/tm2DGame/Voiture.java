@@ -191,13 +191,12 @@ public class Voiture implements Constants{
 		if(this.getSpeed() > maxSpeed*speedDecreaseCoef){
 			currentDirection = -1;
 		}
-		double speedMultiplier = (1.0 + 1.0 - speedDecreaseCoef);
-		double newSpeed = this.getSpeed() + currentDirection * getSpeedFrame(frame) * speedMultiplier;
+		double newSpeed = this.getSpeed() + currentDirection * getSpeedFrame(frame) * (1.0 + 1.0 - speedDecreaseCoef);
 		
 		if (!this.isAccelerate() && Math.abs(newSpeed) < 1) {
 			newSpeed = 0;
 		} else if (!this.isAccelerate() && Math.abs(newSpeed) > 1) {
-			newSpeed = newSpeed * 0.95;
+			newSpeed = this.getSpeed() * 0.95 * (0.5 + speedDecreaseCoef / 2.0) ;
 		} 
 		this.setSpeed(newSpeed);
 	}
