@@ -2,60 +2,60 @@ package tm2DGame;
 
 import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
 
 import tm2D.Constants;
 
 public class Voiture implements Constants{
-	public static final Double ROTATION = Math.PI/16;
-
-	int aX = 0;
-	int aY = 0;
-	int angle = 0;
-	double speed = 0;
+	
+	double rotation;
 	int maxSpeed; 
+	double accelerationRate;
+
+	double vX = 0;
+	double vY = 0;
 	double currentAngle = 0;
 	int direction = 0;
 	int rotateDirection = 0;
 	boolean accelerate = false;
 	boolean rotate = false;
-	double vX = 0;
-	double vY = 0;
-
-	int pX;
-	int pY;
+	int angle = 0;
+	double speed = 0;
+	double speedDecreaseCoef = 1d;
+	double pX;
+	double pY;
 
 	Image voiture;
+
+	ImageIcon iVoiture;
 	String keyUse = null;
 
-	public Voiture(int startX, int startY, int maxSpeed) {
-		pX = startX;
-		pY = startY;
+	public Voiture(int maxSpeed,double rotation,double accelerationRate, String image) {
 		this.maxSpeed = maxSpeed;
-
-		ImageIcon iVoiture = new ImageIcon(RELATIVE_PATH_IMAGE_CIRCUIT + "Voiture10.png");
+		this.rotation = rotation;
+		this.accelerationRate = accelerationRate;
+		iVoiture = new ImageIcon(image);
 		voiture = iVoiture.getImage();
 	}
 
-	public void reset(int x, int y ){
-		this.setpX(x);
-		this.setpY(y);
-		this.setvX(0);
-		this.setvY(0);
-		this.setSpeed(0);
-		this.setAngle(0);
-		this.setCurrentAngle(0d);
-	}
 
-	public void applyActionAndRotate() {
-		this.action();
-		this.rotate();
+	public void initPosition(int startX, int startY) {
+		pX = startX;
+		pY = startY;
+		currentAngle = 0;
+		direction = 0;
+		rotateDirection = 0;
+		accelerate = false;
+		rotate = false;
+		angle = 0;
+		speed = 0;
+		keyUse = null;
+		speedDecreaseCoef = 1d;
 	}
 
 	public Rectangle getBounds() {
-		Rectangle Box = new Rectangle(pX-5, pY-10, 8, 18);
+		Rectangle Box = new Rectangle(this.getImageX(), this.getImageY(), iVoiture.getIconWidth(), iVoiture.getIconHeight());
 		return Box;
 	}
 
@@ -67,13 +67,10 @@ public class Voiture implements Constants{
 		this.direction = direction;
 	}
 
-	public void speedDecrease(double ratio ){
-		this.setSpeed(speed * ratio);
-		double min = accelerate ? 1*direction : 0;
-		if(Math.abs(this.getSpeed()) < 1){
-			this.setSpeed(min);
-		}
+	public void setSpeedDecreaseCoef(double coef){
+		this.speedDecreaseCoef = coef;
 	}
+
 
 	public int getRotateDirection() {
 		return this.rotateDirection;
@@ -105,7 +102,7 @@ public class Voiture implements Constants{
 
 	public void setSpeed(double speed) {
 		if(speed > maxSpeed){
-			speed = maxSpeed;
+			speed = maxSpeed ;
 		}
 		if(speed < -maxSpeed/4){
 			speed = -maxSpeed / 4;
@@ -129,19 +126,19 @@ public class Voiture implements Constants{
 		return currentAngle;
 	}
 
-	public int getpX() {
+	public double getpX() {
 		return pX;
 	}
 
-	public int getpY() {
+	public double getpY() {
 		return pY;
 	}
 
-	public void setpX(int newpX) {
+	public void setpX(double newpX) {
 		pX = newpX;
 	}
 
-	public void setpY(int newpY) {
+	public void setpY(double newpY) {
 		pY = newpY;
 	}
 
@@ -161,59 +158,58 @@ public class Voiture implements Constants{
 		vY = newvY;
 	}
 
-	public int getaX() {
-		return aX;
-	}
-
-	public int getaY() {
-		return aY;
-	}
-
-	public void setaX(int newaX) {
-		aX = newaX;
-	}
-
-	public void setaY(int newaY) {
-		aY = newaY;
-	}
-
 	public Image getImage() {
 		return voiture;
+	}
+
+	public ImageIcon getImageIcon() {
+		return iVoiture;
+	}
+
+	public int getImageX() {
+		return (int) (this.pX - this.iVoiture.getIconWidth() / 2.0);
+	}
+
+	public int getImageY() {
+		return (int) (this.pY - this.iVoiture.getIconHeight() / 2.0);
 	}
 
 	public void setKey(String newKey) {
 		this.keyUse = newKey;
 	}
 
-	public void action() { 
-
-		if (String.valueOf(KeyEvent.VK_UP).equals(keyUse)) {
-			accelerate();
-		} else if (String.valueOf(KeyEvent.VK_RIGHT).equals(keyUse)) {
-			turn();
-		} else if (String.valueOf(KeyEvent.VK_DOWN).equals(keyUse)) {
-			accelerate();
-		} else if (String.valueOf(KeyEvent.VK_LEFT).equals(keyUse)) {
-			turn();
-		}
+	public double getSpeedFrame(int frame){
+		return maxSpeed * frame / 1000.0; 
 	}
 
-	public void accelerate() {
-		angle += 0;
-		this.setSpeed(this.getSpeed() + this.getDirection());
+	public void accelerate(int frame) {
+		double currentDirection = this.getDirection();
+
+		if(this.isAccelerate()){
+			currentDirection =  currentDirection * accelerationRate * 1.0;
+		}
+		if(this.getSpeed() > maxSpeed*speedDecreaseCoef){
+			currentDirection = -1;
+		}
+		double speedMultiplier = (1.0 + 1.0 - speedDecreaseCoef);
+		double newSpeed = this.getSpeed() + currentDirection * getSpeedFrame(frame) * speedMultiplier;
+		
+		if (!this.isAccelerate() && Math.abs(newSpeed) < 1) {
+			newSpeed = 0;
+		} else if (!this.isAccelerate() && Math.abs(newSpeed) > 1) {
+			newSpeed = newSpeed * 0.95;
+		} 
+		this.setSpeed(newSpeed);
 	}
 
 	public void turn() {
-		angle += rotateDirection;
+		if(Math.abs(this.getSpeed()) > 0.5){
+			angle += rotateDirection;
+		}
 	}
 
-	public void speed() {
-		vX = vX + aX;
-		vY = vY + aY;
-	}
-
-	public void rotate() {
-		currentAngle = angle * ROTATION;
+	public void rotate(int frame) {
+		currentAngle = angle * rotation * frame / 100.0;
 	}
 
 	public void move() {
@@ -224,7 +220,7 @@ public class Voiture implements Constants{
 	}
 
 	public void position() {
-		pX = pX + (int) Math.round(vX);
-		pY = pY + (int) Math.round(vY);
+		pX = pX + vX;
+		pY = pY + vY;
 	}
 }

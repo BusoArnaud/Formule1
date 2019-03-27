@@ -10,17 +10,17 @@ public abstract class Terrain implements Constants {
 	int x, y;
 	Image image;
 	
-	//un terrain ne bouge pas. on n'a pas besoin de redéfinir un nouveau rectangle à chaque 
+	//un terrain ne bouge pas. on n'a pas besoin de redï¿½finir un nouveau rectangle ï¿½ chaque 
 	//fois
 	final Rectangle rectangle;
 	
 	protected static final double NORMAL_SPEED_COEF = 1d;
 	
-	protected static final double SAND_SPEED_COEF = 0.9;
+	protected static final double SAND_SPEED_COEF = 0.3;
 	
-	protected static final double WATER_SPEED_COEF = 0.92;
+	protected static final double WATER_SPEED_COEF = 0.8;
 	
-	protected static final double GRASS_SPEED_COEF = 0.95;
+	protected static final double GRASS_SPEED_COEF = 0.6;
 
 	public Terrain(int startX, int startY) {
 			x = startX;

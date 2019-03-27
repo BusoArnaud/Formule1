@@ -10,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.File;
 import java.io.FileReader;
 
 import javax.swing.JPanel;
@@ -24,8 +23,8 @@ import tm2DGame.terrain.Terrain;
 
 @SuppressWarnings("serial")
 public class GameBoard extends JPanel implements KeyListener, ActionListener, Constants {
-	
-	Timer timer = new Timer(100, this);
+	int frame = 40;
+	Timer timer = new Timer(frame, this);
 	double currentTime=0;
 
 	int level = 1;
@@ -35,12 +34,14 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 
 	private Circuit circuit;
 	
-	Voiture voiture = new Voiture(50, 550, 15);
+	Voiture voiture ;
 	
 	Font levelFont = new Font("SansSerif", Font.BOLD, 15);
 	Frame gFrame;
 
-	public GameBoard(Frame gF) {
+	public GameBoard(Frame gF, Voiture car) {
+		voiture = car;
+		voiture.initPosition(50, 550);
 
 		loadTrack();
 
@@ -79,16 +80,18 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 		legends.append(level);
 		legends.append("|| time : " );
 		legends.append(Math.floor(currentTime));
-		legends.append("|| vitesse : " );
+		legends.append("|| vitesse : ");
 		legends.append(Math.floor(voiture.getSpeed()));
+		legends.append("|| angle : ");
+		legends.append(Math.floor(voiture.getCurrentAngle()*100.0));
 		
 		g.drawString(legends.toString(), 15, 585);
 		g2d.setColor(Color.black);	
 		g2d.rotate(voiture.getCurrentAngle(),
 				voiture.getpX(), voiture.getpY());
-		g2d.drawRect(voiture.getpX()-5, voiture.getpY()-10, 10, 20);
-		g2d.drawImage(voiture.getImage(), voiture.getpX() - 5,
-				voiture.getpY() - 10, null);
+
+		g2d.drawImage(voiture.getImage(), voiture.getImageX(),
+				voiture.getImageY(), null);
 	}
 
 	public void nextTrack() {
@@ -117,27 +120,23 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 	public void collision() {
 		for (Terrain terrain : circuit.getCollisionTerrains(voiture.getBounds())) {
 			if (terrain instanceof Mur) {
-				voiture.reset(50, 550);
-			} else if (terrain.getSpeedDecreaseCoef() < 1d) {
-				voiture.speedDecrease(terrain.getSpeedDecreaseCoef());
+				voiture.initPosition(50, 550);
+			} else {
+				voiture.setSpeedDecreaseCoef(terrain.getSpeedDecreaseCoef());
 			}
 		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent ev) {
-		currentTime += 0.1;
-		if (!voiture.isAccelerate() && voiture.speed != 0) {
-			voiture.setDirection(0);
-			voiture.speedDecrease(0.9);
-		}
-		voiture.accelerate();
+		currentTime += frame/1000;
+		voiture.accelerate(frame);
 
 		if (voiture.isRotate()) {
 			voiture.turn();
 		}
 		collision();
-		voiture.rotate();
+		voiture.rotate(frame);
 		voiture.move();
 		voiture.position();
 		repaint();
@@ -154,11 +153,11 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 			voiture.setDirection(-1);
 			voiture.setAccelerate(true);
 		}
-		if (key == KeyEvent.VK_RIGHT && voiture.getSpeed() != 0) {
+		if (key == KeyEvent.VK_RIGHT) {
 			voiture.setRotateDirection(1);
 			voiture.setRotate(true);
 		}
-		if (key == KeyEvent.VK_LEFT && voiture.getSpeed() != 0) {
+		if (key == KeyEvent.VK_LEFT) {
 			voiture.setRotateDirection(-1);
 			voiture.setRotate(true);
 		}
@@ -171,12 +170,13 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 		
 		
 		if (key == KeyEvent.VK_R) { 
-			voiture.reset(50,550);
+			voiture.initPosition(50,550);
 			nombreCoup += 10;
 
 		} else if (key == KeyEvent.VK_ESCAPE) {
 			@SuppressWarnings("unused")
 			MenuMain f = new MenuMain();
+			timer.stop();
 			gFrame.dispose();
 		}
 		if (key == KeyEvent.VK_UP || key == KeyEvent.VK_DOWN){
