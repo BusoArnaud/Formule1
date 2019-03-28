@@ -11,24 +11,22 @@ public abstract class Terrain implements Constants {
 	protected boolean end;
 	protected boolean block;
 	Image image;
-	
-	//un terrain ne bouge pas. on n'a pas besoin de redéfinir un nouveau rectangle à chaque 
-	//fois
+
 	final Rectangle rectangle;
-	
+
 	protected static final double NORMAL_SPEED_COEF = 1d;
-	
-	protected static final double SAND_SPEED_COEF = 0.9;
-	
-	protected static final double WATER_SPEED_COEF = 0.92;
-	
-	protected static final double GRASS_SPEED_COEF = 0.95;
+
+	protected static final double SAND_SPEED_COEF = 0.3;
+
+	protected static final double WATER_SPEED_COEF = 0.8;
+
+	protected static final double GRASS_SPEED_COEF = 0.6;
 
 	public Terrain(int startX, int startY) {
-			x = startX;
-			y = startY;
-			rectangle = new Rectangle(x, y, 10, 10);
-		}
+		x = startX;
+		y = startY;
+		rectangle = new Rectangle(x, y, 10, 10);
+	}
 
 	public Rectangle getBounds() {
 		return rectangle;
@@ -45,11 +43,10 @@ public abstract class Terrain implements Constants {
 	public Image getImage() {
 		return image;
 	}
-	
+
 	public double getSpeedDecreaseCoef() {
 		return NORMAL_SPEED_COEF;
 	}
-	
 	public boolean isBlock() {
 		return this.block;
 	}

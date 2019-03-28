@@ -10,9 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
-import java.awt.geom.Point2D;
 import java.io.FileReader;
 import java.util.List;
 
@@ -27,9 +24,9 @@ import tm2DGame.terrain.Mur;
 import tm2DGame.terrain.Terrain;
 
 @SuppressWarnings("serial")
-public class GameBoard extends JPanel implements KeyListener, ActionListener, MouseMotionListener, Constants {
-	
-	Timer timer = new Timer(100, this);
+public class GameBoard extends JPanel implements KeyListener, ActionListener, Constants {
+	int frame = 40;
+	Timer timer = new Timer(frame, this);
 	double currentTime=0;
 
 	int level = 1;
@@ -39,14 +36,16 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Mo
 
 	private Circuit circuit;
 	
-	Voiture voiture = new Voiture(50, 550, 15);
+	Voiture voiture ;
 	
 	Font levelFont = new Font("SansSerif", Font.BOLD, 15);
 	Frame gFrame;
 	
 	List<Terrain> path;
 
-	public GameBoard(Frame gF) {
+	public GameBoard(Frame gF, Voiture car) {
+		voiture = car;
+		voiture.initPosition(50, 550);
 
 		loadTrack();
 
@@ -88,10 +87,10 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Mo
 		legends.append(level);
 		legends.append("|| time : " );
 		legends.append(Math.floor(currentTime));
-		legends.append("|| vitesse : " );
+		legends.append("|| vitesse : ");
 		legends.append(Math.floor(voiture.getSpeed()));
-		legends.append("Mouse X: " + mouseX);
-		legends.append("Mouse Y: " + mouseY);
+		legends.append("|| angle : ");
+		legends.append(Math.floor(voiture.getCurrentAngle()*100.0));
 		
 		g.drawString(legends.toString(), 15, 585);
 		g.setColor(Color.cyan);
@@ -99,9 +98,9 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Mo
 		g2d.setColor(Color.black);	
 		g2d.rotate(voiture.getCurrentAngle(),
 				voiture.getpX(), voiture.getpY());
-		g2d.drawRect(voiture.getpX()-5, voiture.getpY()-10, 10, 20);
-		g2d.drawImage(voiture.getImage(), voiture.getpX() - 5,
-				voiture.getpY() - 10, null);
+
+		g2d.drawImage(voiture.getImage(), voiture.getImageX(),
+				voiture.getImageY(), null);
 	}
 
 	public void nextTrack() {
@@ -130,27 +129,23 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Mo
 	public void collision() {
 		for (Terrain terrain : circuit.getCollisionTerrains(voiture.getBounds())) {
 			if (terrain instanceof Mur) {
-				voiture.reset(50, 550);
-			} else if (terrain.getSpeedDecreaseCoef() < 1d) {
-				voiture.speedDecrease(terrain.getSpeedDecreaseCoef());
+				voiture.initPosition(50, 550);
+			} else {
+				voiture.setSpeedDecreaseCoef(terrain.getSpeedDecreaseCoef());
 			}
 		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent ev) {
-		currentTime += 0.1;
-		if (!voiture.isAccelerate() && voiture.speed != 0) {
-			voiture.setDirection(0);
-			voiture.speedDecrease(0.9);
-		}
-		voiture.accelerate();
+		currentTime += frame/1000;
+		voiture.accelerate(frame);
 
 		if (voiture.isRotate()) {
 			voiture.turn();
 		}
 		collision();
-		voiture.rotate();
+		voiture.rotate(frame);
 		voiture.move();
 		voiture.position();
 		repaint();
@@ -167,11 +162,11 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Mo
 			voiture.setDirection(-1);
 			voiture.setAccelerate(true);
 		}
-		if (key == KeyEvent.VK_RIGHT && voiture.getSpeed() != 0) {
+		if (key == KeyEvent.VK_RIGHT) {
 			voiture.setRotateDirection(1);
 			voiture.setRotate(true);
 		}
-		if (key == KeyEvent.VK_LEFT && voiture.getSpeed() != 0) {
+		if (key == KeyEvent.VK_LEFT) {
 			voiture.setRotateDirection(-1);
 			voiture.setRotate(true);
 		}
@@ -184,12 +179,13 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Mo
 		
 		
 		if (key == KeyEvent.VK_R) { 
-			voiture.reset(50,550);
+			voiture.initPosition(50,550);
 			nombreCoup += 10;
 
 		} else if (key == KeyEvent.VK_ESCAPE) {
 			@SuppressWarnings("unused")
 			MenuMain f = new MenuMain();
+			timer.stop();
 			gFrame.dispose();
 		}
 		if (key == KeyEvent.VK_UP || key == KeyEvent.VK_DOWN){
@@ -207,17 +203,5 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Mo
 	@Override
 	public void keyTyped(KeyEvent arg0) {
 	}
-
-  @Override
-  public void mouseDragged(MouseEvent e) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void mouseMoved(MouseEvent e) {
-    mouseX = e.getX();
-    mouseY = e.getY();
-  }
 
 }

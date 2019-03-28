@@ -10,9 +10,9 @@ public class Herbe extends Terrain{
 		image = iHerbe.getImage();
 	}
 	
-	 @Override
-	  public double getSpeedDecreaseCoef() {
-	    return GRASS_SPEED_COEF; 
-	  }
+	@Override
+	public double getSpeedDecreaseCoef() {
+		return GRASS_SPEED_COEF; 
+	}
 
 }
