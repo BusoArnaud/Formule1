@@ -1,6 +1,4 @@
-package tm2DGame;
-
-import tm2DGame.terrain.*;
+package tm2DGame.terrain;
 
 public class TerrainBuilder {
    
@@ -23,12 +21,14 @@ public class TerrainBuilder {
     } else if (txt == 'x') {
       this.type = "MUR";
       this.terrain = new Mur(x * 10, y * 10);
+      this.terrain.block = true;
     } else if (txt == 'o') {
       this.type = "EAU";
       this.terrain = new Eau(x * 10, y * 10);
     } else if (txt == 'D') {
       this.type = "DAMIER";
       this.terrain = new Damier(x * 10, y * 10);
+      this.terrain.end = true;
     }
   }
   

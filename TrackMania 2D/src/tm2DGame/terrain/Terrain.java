@@ -8,6 +8,8 @@ import tm2D.Constants;
 public abstract class Terrain implements Constants {
 
 	int x, y;
+	protected boolean end;
+	protected boolean block;
 	Image image;
 	
 	//un terrain ne bouge pas. on n'a pas besoin de redéfinir un nouveau rectangle à chaque 
@@ -40,14 +42,27 @@ public abstract class Terrain implements Constants {
 		return y;
 	}
 
-
-
 	public Image getImage() {
 		return image;
 	}
 	
 	public double getSpeedDecreaseCoef() {
-	  return NORMAL_SPEED_COEF;
+		return NORMAL_SPEED_COEF;
+	}
+	
+	public boolean isBlock() {
+		return this.block;
+	}
+	
+	public boolean isEnd() {
+		return this.end;
+	}
+	
+	public double getDistance(Terrain endPoint) {
+		return Math.abs(this.getBounds().getCenterX()
+				- endPoint.getBounds().getCenterX())
+				+ Math.abs(this.getBounds().getCenterY()
+				- endPoint.getBounds().getCenterY());
 	}
 	
 	 @Override
@@ -70,6 +85,10 @@ public abstract class Terrain implements Constants {
 	    Terrain other = (Terrain) obj;
 	    return x == other.x && y == other.y;
 	  }
-	
+	  
+	  @Override
+    public String toString() {
+	    return "X:" + x + " Y:" + y;
+    }
 	
 }

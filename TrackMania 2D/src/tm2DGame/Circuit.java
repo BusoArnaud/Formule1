@@ -7,11 +7,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import pathfinding.Node;
 import tm2DGame.terrain.Terrain;
+import tm2DGame.terrain.TerrainBuilder;
 
 public class Circuit {
-
-	Terrain[][] circuitMatrix = new Terrain[80][60];
+	
+	private int width = 80;
+	
+	private int height = 60;
+	
+	Terrain[][] circuitMatrix = new Terrain[width][height];
 
 	private final List<Terrain> endTerrains = new ArrayList<>();
 
@@ -62,9 +68,9 @@ public class Circuit {
 	}
 
 	public Terrain getStart() {
-		return this.startPoint;
+		return circuitMatrix[5][55];
 	}
-
+	
 	public List<Terrain> getCollisionTerrains(Rectangle car) {
 		final List<Terrain> collisionTerrains = new ArrayList<>();
 		for (int i = (int) car.getMinX() / 10; i < car.getMaxX() / 10; i++) {
@@ -75,6 +81,45 @@ public class Circuit {
 			}
 		}
 		return collisionTerrains;
+	}
+	
+	public List<Terrain> getAdjacentTiles(Terrain terrain) {
+		List<Terrain> adjacents = new ArrayList<>();
+		//up row
+		int matrixX = terrain.getX()/10;
+		
+		int matrixY = terrain.getY()/10;
+		
+		int newY = matrixY - 1;
+		if(newY >= 0) {
+//			if(matrixX - 1 >= 0) {
+//				adjacents.add(circuitMatrix[(matrixX - 1)/1][newY]);
+//			}
+//			if(matrixX + 1 < height) {
+//				adjacents.add(circuitMatrix[matrixX + 1][newY]);
+//			}
+			adjacents.add(circuitMatrix[matrixX][newY]);
+		}
+		
+		newY = matrixY + 1;
+		if(newY < height) {
+//			if(matrixX - 1 >= 0) {
+//				adjacents.add(circuitMatrix[matrixX - 1][newY]);
+//			}
+//			if(matrixX + 1 < width) {
+//				adjacents.add(circuitMatrix[matrixX + 1][newY]);
+//			}
+			adjacents.add(circuitMatrix[matrixX][newY]);
+		}
+		
+		if(matrixX - 1 >= 0) {
+			adjacents.add(circuitMatrix[matrixX - 1][matrixY]);
+		}
+		if(matrixX + 1 < width) {
+			adjacents.add(circuitMatrix[matrixX + 1][matrixY]);
+		}
+
+		return adjacents;
 	}
 
 }
