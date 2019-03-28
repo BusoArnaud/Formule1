@@ -8,6 +8,8 @@ import tm2D.Constants;
 public abstract class Terrain implements Constants {
 
 	int x, y;
+	protected boolean end;
+	protected boolean block;
 	Image image;
 
 	final Rectangle rectangle;
@@ -45,26 +47,45 @@ public abstract class Terrain implements Constants {
 	public double getSpeedDecreaseCoef() {
 		return NORMAL_SPEED_COEF;
 	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + x;
-		result = prime * result + y;
-		return result;
+	public boolean isBlock() {
+		return this.block;
 	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Terrain other = (Terrain) obj;
-		return x == other.x && y == other.y;
+	
+	public boolean isEnd() {
+		return this.end;
 	}
+	
+	public double getDistance(Terrain endPoint) {
+		return Math.abs(this.getBounds().getCenterX()
+				- endPoint.getBounds().getCenterX())
+				+ Math.abs(this.getBounds().getCenterY()
+				- endPoint.getBounds().getCenterY());
+	}
+	
+	 @Override
+	  public int hashCode() {
+	    final int prime = 31;
+	    int result = 1;
+	    result = prime * result + x;
+	    result = prime * result + y;
+	    return result;
+	  }
 
+	  @Override
+	  public boolean equals(Object obj) {
+	    if (this == obj)
+	      return true;
+	    if (obj == null)
+	      return false;
+	    if (getClass() != obj.getClass())
+	      return false;
+	    Terrain other = (Terrain) obj;
+	    return x == other.x && y == other.y;
+	  }
+	  
+	  @Override
+    public String toString() {
+	    return "X:" + x + " Y:" + y;
+    }
+	
 }

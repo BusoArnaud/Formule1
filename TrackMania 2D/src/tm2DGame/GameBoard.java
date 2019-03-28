@@ -11,10 +11,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.FileReader;
+import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import pathfinding.Astar;
 import tm2D.Constants;
 import tm2D.MenuEnd;
 import tm2D.MenuMain;
@@ -38,6 +40,8 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 	
 	Font levelFont = new Font("SansSerif", Font.BOLD, 15);
 	Frame gFrame;
+	
+	List<Terrain> path;
 
 	public GameBoard(Frame gF, Voiture car) {
 		voiture = car;
@@ -48,23 +52,27 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 		gFrame = gF;
 		setFocusable(true);
 		addKeyListener(this);
+		addMouseMotionListener(this);
 		timer.start();
 	}
 
 	public void loadTrack() {
 
-		try {
-			FileReader fr = new FileReader(RELATIVE_PATH_TRACKS + "Track" + level);
+		try {			FileReader fr = new FileReader(RELATIVE_PATH_TRACKS + "Track" + level);
 
 			circuit = new Circuit(fr);
+			
+			path = new Astar(circuit).runAstar();
 		  
 		} catch (Exception ex) {
-			System.out.println(ex);
+			ex.printStackTrace();
 		}
 
 		repaint();
 	}
-
+	
+	int mouseX = 0;
+	int mouseY = 0;
 	@Override
 	public void paint(Graphics g) {
 
@@ -72,7 +80,6 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 		Graphics2D g2d = (Graphics2D) g;
 
 		circuit.paint(g2d);
-
 		g.setColor(Color.BLACK);
 		g.setFont(levelFont);
 		StringBuilder legends = new StringBuilder();
@@ -86,6 +93,8 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 		legends.append(Math.floor(voiture.getCurrentAngle()*100.0));
 		
 		g.drawString(legends.toString(), 15, 585);
+		g.setColor(Color.cyan);
+		path.stream().forEach(terr->g.drawRect(terr.getX(), terr.getY(), 10, 10));
 		g2d.setColor(Color.black);	
 		g2d.rotate(voiture.getCurrentAngle(),
 				voiture.getpX(), voiture.getpY());
