@@ -13,7 +13,8 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class MenuMain extends JFrame implements ActionListener {
 
-	JButton cmdGame = new JButton("Let's Play");
+	JButton cmdGame = new JButton("Let's train solo");
+	JButton cmdGame2 = new JButton("Let's play 1v1");
 	JButton cmdEditor = new JButton("Let's Edit");
 
 	public MenuMain() {
@@ -35,9 +36,10 @@ public class MenuMain extends JFrame implements ActionListener {
 		JPanel panel = new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 150, 30));
 		panel.add(cmdGame);
+		panel.add(cmdGame2);
 		panel.add(cmdEditor);
 		JLabel infoLabel1[] = new JLabel[1];
-		String[] infoString = { "TM 2D by Candice & Arnaud" };
+		String[] infoString = { "TM 2D by Arnaud, Mathieu & Erol" };
 
 		for (int i = 0; i < infoLabel1.length; i++) {
 			panel.add(infoLabel1[i] = new JLabel(infoString[i]));
@@ -46,6 +48,7 @@ public class MenuMain extends JFrame implements ActionListener {
 		panel.setBackground(Color.cyan);
 
 		cmdGame.addActionListener(this);
+		cmdGame2.addActionListener(this);
 		cmdEditor.addActionListener(this);
 
 		return panel;
@@ -55,7 +58,12 @@ public class MenuMain extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent arg0) {
 		if (arg0.getSource() == cmdGame) {
 			@SuppressWarnings("unused")
-			MenuGame f = new MenuGame();
+			MenuGame f = new MenuGame(1);
+			dispose();
+		}
+		if (arg0.getSource() == cmdGame2) {
+			@SuppressWarnings("unused")
+			MenuGame f = new MenuGame(2);
 			dispose();
 		}
 		if (arg0.getSource() == cmdEditor) {

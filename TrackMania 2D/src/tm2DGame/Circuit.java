@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import pathfinding.Node;
 import tm2DGame.terrain.Terrain;
 import tm2DGame.terrain.TerrainBuilder;
 

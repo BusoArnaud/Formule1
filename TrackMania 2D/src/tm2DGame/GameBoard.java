@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JPanel;
@@ -36,23 +37,35 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 
 	private Circuit circuit;
 	
-	Voiture voiture ;
+	CarComponent voiture1;
+	CarComponent voiture2;
+	List<CarComponent> cars;
 	
 	Font levelFont = new Font("SansSerif", Font.BOLD, 15);
 	Frame gFrame;
 	
 	List<Terrain> path;
 
-	public GameBoard(Frame gF, Voiture car) {
-		voiture = car;
-		voiture.initPosition(50, 550);
+	public GameBoard(Frame gF, List<CarComponent> playercars) {
+		
+		this.cars = new ArrayList<>();
+		this.voiture1 = playercars.get(0);
+		this.voiture1.initPosition(55, 550);
+		this.voiture1.setKeys(KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT);
+		this.cars.add(this.voiture1);
+
+		if(playercars.size() ==2){
+			this.voiture2 = playercars.get(1);
+			this.voiture2.initPosition(40, 540);
+			this.voiture2.setKeys(KeyEvent.VK_Z, KeyEvent.VK_S, KeyEvent.VK_Q, KeyEvent.VK_D);
+			this.cars.add(voiture2);
+		}
 
 		loadTrack();
 
 		gFrame = gF;
 		setFocusable(true);
 		addKeyListener(this);
-		addMouseMotionListener(this);
 		timer.start();
 	}
 
@@ -77,9 +90,10 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 	public void paint(Graphics g) {
 
 		super.paint(g);
-		Graphics2D g2d = (Graphics2D) g;
+		Graphics2D circuit2D = (Graphics2D) g.create();
 
-		circuit.paint(g2d);
+		circuit.paint(circuit2D);
+		circuit2D.dispose();
 		g.setColor(Color.BLACK);
 		g.setFont(levelFont);
 		StringBuilder legends = new StringBuilder();
@@ -87,89 +101,98 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 		legends.append(level);
 		legends.append("|| time : " );
 		legends.append(Math.floor(currentTime));
-		legends.append("|| vitesse : ");
-		legends.append(Math.floor(voiture.getSpeed()));
-		legends.append("|| angle : ");
-		legends.append(Math.floor(voiture.getCurrentAngle()*100.0));
 		
 		g.drawString(legends.toString(), 15, 585);
 		g.setColor(Color.cyan);
 		path.stream().forEach(terr->g.drawRect(terr.getX(), terr.getY(), 10, 10));
-		g2d.setColor(Color.black);	
-		g2d.rotate(voiture.getCurrentAngle(),
-				voiture.getpX(), voiture.getpY());
-
-		g2d.drawImage(voiture.getImage(), voiture.getImageX(),
-				voiture.getImageY(), null);
+		for(CarComponent car :cars){
+			Graphics2D g2d = (Graphics2D) g.create();
+			g2d.setColor(Color.black);	
+			g2d.rotate(car.getCurrentAngle(), car.getpX(), car.getpY());
+			g2d.drawImage(car.getImage(), car.getImageX(), car.getImageY(), null);
+			g2d.dispose();
+		}
 	}
 
 	public void nextTrack() {
 
-		Rectangle voitureRec;
-		voitureRec = voiture.getBounds();
+		for(CarComponent car :cars){
+			Rectangle voitureRec;
+			voitureRec = car.getBounds();
 
-		for (Terrain terrain : circuit.getEndTerrains()) {
-			if (voitureRec.intersects(terrain.getBounds())) {
-				level++;
-				nombreCoupT = +nombreCoup;
-				nombreCoup = 0;
-				loadTrack();
+			for (Terrain terrain : circuit.getEndTerrains()) {
+				if (voitureRec.intersects(terrain.getBounds())) {
+					level++;
+					nombreCoupT = +nombreCoup;
+					nombreCoup = 0;
+					loadTrack();
 
-				if (level == 2) {
+					if (level == 2) {
 
-					@SuppressWarnings("unused")
-					MenuEnd f = new MenuEnd();
-					gFrame.dispose();
+						@SuppressWarnings("unused")
+						MenuEnd f = new MenuEnd();
+						gFrame.dispose();
+					}
+					break;
 				}
-				break;
 			}
 		}
 	}
 
 	public void collision() {
-		for (Terrain terrain : circuit.getCollisionTerrains(voiture.getBounds())) {
-			if (terrain instanceof Mur) {
-				voiture.initPosition(50, 550);
-			} else {
-				voiture.setSpeedDecreaseCoef(terrain.getSpeedDecreaseCoef());
+		cars.forEach(car -> {
+			for (Terrain terrain : circuit.getCollisionTerrains(car.getBounds())) {
+				if (terrain instanceof Mur) {
+					car.initPosition();
+				} else {
+					car.setSpeedDecreaseCoef(terrain.getSpeedDecreaseCoef());
+				}
 			}
-		}
+
+		});
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent ev) {
 		currentTime += frame/1000;
-		voiture.accelerate(frame);
+		cars.forEach(car -> {
+			car.accelerate(frame);
 
-		if (voiture.isRotate()) {
-			voiture.turn();
-		}
+			if (car.isRotate()) {
+				car.turn();
+			}
+		});
 		collision();
-		voiture.rotate(frame);
-		voiture.move();
-		voiture.position();
+		cars.forEach(car -> {
+			car.rotate(frame);
+			car.move();
+			car.position();
+		});
 		repaint();
 	}
 	
 	@Override
 	public void keyPressed(KeyEvent arg0) {
 		int key = arg0.getKeyCode();
-		if (key == KeyEvent.VK_UP) {
-			voiture.setDirection(1);
-			voiture.setAccelerate(true);
-		}
-		if (key == KeyEvent.VK_DOWN) {
-			voiture.setDirection(-1);
-			voiture.setAccelerate(true);
-		}
-		if (key == KeyEvent.VK_RIGHT) {
-			voiture.setRotateDirection(1);
-			voiture.setRotate(true);
-		}
-		if (key == KeyEvent.VK_LEFT) {
-			voiture.setRotateDirection(-1);
-			voiture.setRotate(true);
-		}
+		cars.forEach(car -> {
+			if (key == car.getKeyUp()) {
+				car.setDirection(1);
+				car.setAccelerate(true);
+			}
+			if (key == car.getKeyDown()) {
+				car.setDirection(-1);
+				car.setAccelerate(true);
+			}
+			if (key == car.getKeyRight()) {
+				car.setRotateDirection(1);
+				car.setRotate(true);
+			}
+			if (key == car.getKeyLeft()) {
+				car.setRotateDirection(-1);
+				car.setRotate(true);
+			}
+
+		});
 	}
 
 	@Override
@@ -179,7 +202,7 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 		
 		
 		if (key == KeyEvent.VK_R) { 
-			voiture.initPosition(50,550);
+			cars.forEach(CarComponent::initPosition);
 			nombreCoup += 10;
 
 		} else if (key == KeyEvent.VK_ESCAPE) {
@@ -188,12 +211,14 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 			timer.stop();
 			gFrame.dispose();
 		}
-		if (key == KeyEvent.VK_UP || key == KeyEvent.VK_DOWN){
-			voiture.setAccelerate(false);
-		} 
-		if (key == KeyEvent.VK_RIGHT  || key == KeyEvent.VK_LEFT) {
-			voiture.setRotate(false);
-		}
+		cars.forEach(car -> {
+			if (key == car.getKeyUp() || key == car.getKeyDown()) {
+				car.setAccelerate(false);
+			}
+			if (key == car.getKeyRight() || key == car.getKeyLeft()) {
+				car.setRotate(false);
+			}
+		});
 		
 
 		repaint();
