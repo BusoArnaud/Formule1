@@ -2,6 +2,9 @@ package tm2DGame;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
+import java.awt.geom.GeneralPath;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -70,11 +73,17 @@ public class Circuit {
 		return circuitMatrix[5][55];
 	}
 	
-	public List<Terrain> getCollisionTerrains(Rectangle car) {
+	public List<Terrain> getCollisionTerrains(CarComponent car) {
 		final List<Terrain> collisionTerrains = new ArrayList<>();
-		for (int i = (int) car.getMinX() / 10; i < car.getMaxX() / 10; i++) {
-			for (int j = (int) car.getMinY() / 10; j < car.getMaxY() / 10; j++) {
-				if (car.intersects(circuitMatrix[i][j].getBounds())) {
+		for (int i = (int) car.getBounds().getMinX() / 10; i < car.getBounds().getMaxX() / 10; i++) {
+			for (int j = (int) car.getBounds().getMinY() / 10; j < car.getBounds().getMaxY() / 10; j++) {
+				Rectangle rec = circuitMatrix[i][j].getBounds();
+				AffineTransform at = new AffineTransform();
+				GeneralPath path1 = new GeneralPath();
+				path1.append(rec.getBounds().getPathIterator(at), true);
+				Area a1 =new Area(path1);
+				a1.intersect(car.getArea());
+				if (!a1.isEmpty()) {
 					collisionTerrains.add(circuitMatrix[i][j]);
 				}
 			}

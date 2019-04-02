@@ -3,6 +3,9 @@ package tm2DGame;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
+import java.awt.geom.GeneralPath;
 
 import javax.swing.ImageIcon;
 
@@ -102,12 +105,20 @@ public class CarComponent implements Constants{
 	}
 
 	public Rectangle getBounds() {
-		Rectangle Box = new Rectangle(
+		return this.getArea().getBounds();
+	}
+
+	public Area getArea(){
+		Rectangle box = new Rectangle(
 			this.getImageX(),
 			this.getImageY(),
 			voiture.getiVoiture().getIconWidth(),
 			voiture.getiVoiture().getIconHeight());
-		return Box;
+		AffineTransform at = new AffineTransform();
+		at.rotate(currentAngle, pX, pY);
+		GeneralPath path1 = new GeneralPath();
+		path1.append(box.getPathIterator(at), true);
+		return new Area(path1);
 	}
 
 	public int getDirection() {
