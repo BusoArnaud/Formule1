@@ -78,12 +78,7 @@ public class Circuit {
 		for (int i = (int) car.getBounds().getMinX() / 10; i < car.getBounds().getMaxX() / 10; i++) {
 			for (int j = (int) car.getBounds().getMinY() / 10; j < car.getBounds().getMaxY() / 10; j++) {
 				Rectangle rec = circuitMatrix[i][j].getBounds();
-				AffineTransform at = new AffineTransform();
-				GeneralPath path1 = new GeneralPath();
-				path1.append(rec.getBounds().getPathIterator(at), true);
-				Area a1 =new Area(path1);
-				a1.intersect(car.getArea());
-				if (!a1.isEmpty()) {
+				if (car.getArea().intersects(rec.getBounds2D())) {
 					collisionTerrains.add(circuitMatrix[i][j]);
 				}
 			}
