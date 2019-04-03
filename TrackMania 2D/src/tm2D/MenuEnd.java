@@ -16,26 +16,26 @@ public class MenuEnd extends JFrame implements ActionListener {
 
 	JButton cmdEnd = new JButton("Revenir au Menu Principal");
 
-	public MenuEnd() {
+	public MenuEnd(double time) {
 		super();
-		build();
+		build(time);
 	}
 
-	private void build() {
+	private void build( double time) {
 		this.setTitle("TrackMania 2D");
 		this.setSize(300, 300);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
-		this.setContentPane(esth());
+		this.setContentPane(esth(time));
 	}
 
-	private JPanel esth() {
+	private JPanel esth(double time) {
 		JPanel panel = new JPanel();
 		panel.setLayout(new FlowLayout());
 
-		JLabel label = new JLabel("Final Score : " + GameBoard.nombreCoupT);
+		JLabel label = new JLabel("Final Score : " + time/1000 + "s");
 		panel.add(label);
 
 		panel.add(cmdEnd);
