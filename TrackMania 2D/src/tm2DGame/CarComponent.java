@@ -1,6 +1,5 @@
 package tm2DGame;
 
-import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
@@ -40,6 +39,22 @@ public class CarComponent implements Constants{
 	public CarComponent(Voiture voiture) {
 		this.voiture = voiture;
 	}
+	
+  public CarComponent(CarComponent voiture) {
+    this.pX = voiture.pX;
+    this.pY = voiture.pY;
+    this.speed = voiture.speed;
+    this.speedDecreaseCoef = voiture.speedDecreaseCoef;
+    this.accelerate = voiture.accelerate;
+    this.angle = voiture.angle;
+    this.currentAngle = voiture.currentAngle;
+    this.direction = voiture.direction;
+    this.keyUse = voiture.keyUse;
+    this.rotate = voiture.rotate;
+    this.rotateDirection = voiture.rotateDirection;
+    this.vX = voiture.vX;
+    this.vY = voiture.vY;
+  }
 
 	public void initPosition(int startX, int startY) {
 		this.startX = startX;

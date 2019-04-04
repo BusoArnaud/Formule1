@@ -10,13 +10,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
-import java.awt.geom.GeneralPath;
 import java.io.FileReader;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JPanel;
@@ -81,7 +78,7 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 
 			circuit = new Circuit(fr);
 			
-			path = new Astar(circuit).runAstar();
+			new Thread(()->path = new Astar(circuit).call()).start();
 		  
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -252,5 +249,17 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 	@Override
 	public void keyTyped(KeyEvent arg0) {
 	}
+	
+  public List<Terrain> getAstarPath() {
+    return Collections.unmodifiableList(this.path);
+  }
+
+  public CarComponent getVoiture() {
+    return this.voiture1;
+  }
+
+  public Circuit getCircuit() {
+    return this.circuit;
+  }
 
 }
