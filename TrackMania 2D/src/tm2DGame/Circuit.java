@@ -71,10 +71,16 @@ public class Circuit {
 		return circuitMatrix[5][55];
 	}
 	
+	public Terrain getTerrain(double x, double y) {
+	  return circuitMatrix[(int)x/10][(int)y/10];
+	}
+	
 	public List<Terrain> getCollisionTerrains(Rectangle car) {
 		final List<Terrain> collisionTerrains = new ArrayList<>();
-		for (int i = (int) car.getMinX() / 10; i < car.getMaxX() / 10; i++) {
-			for (int j = (int) car.getMinY() / 10; j < car.getMaxY() / 10; j++) {
+		int minX = car.getMinX() < 0 ? 0 : (int)car.getMinX();
+		int minY = car.getMinY() < 0 ? 0 : (int)car.getMinY();
+		for (int i = minX / 10; i < car.getMaxX() / 10; i++) {
+			for (int j = minY / 10; j < car.getMaxY() / 10; j++) {
 				if (car.intersects(circuitMatrix[i][j].getBounds())) {
 					collisionTerrains.add(circuitMatrix[i][j]);
 				}
