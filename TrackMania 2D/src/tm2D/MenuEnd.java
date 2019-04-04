@@ -9,8 +9,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import tm2DGame.BoardPanel;
-
 @SuppressWarnings("serial")
 public class MenuEnd extends JFrame implements ActionListener {
 
@@ -21,7 +19,7 @@ public class MenuEnd extends JFrame implements ActionListener {
 		build(time);
 	}
 
-	private void build( double time) {
+	private void build(double time) {
 		this.setTitle("TrackMania 2D");
 		this.setSize(300, 300);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -35,7 +33,7 @@ public class MenuEnd extends JFrame implements ActionListener {
 		JPanel panel = new JPanel();
 		panel.setLayout(new FlowLayout());
 
-		JLabel label = new JLabel("Final Score : " + time/1000 + "s");
+		JLabel label = new JLabel("Final Score : " + time / 1000 + "s");
 		panel.add(label);
 
 		panel.add(cmdEnd);
