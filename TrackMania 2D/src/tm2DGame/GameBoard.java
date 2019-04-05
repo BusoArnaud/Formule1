@@ -53,7 +53,7 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Mo
 	List<Terrain> path;
 	boolean showAstar = false;
 
-	public GameBoard(Frame gF, List<CarComponent> playercars) {
+	public GameBoard(Frame gF, List<IPlayer> playercars) {
 		addMouseListener(this);
 		this.cars = new ArrayList<>();
 		this.voiture1 = (PlayerCarComponent) playercars.get(0);
