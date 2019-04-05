@@ -10,15 +10,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.geom.Area;
+import java.awt.geom.Path2D;
 import java.io.FileReader;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import ia.ga.impl.car.CircuitSolution;
+import ia.ga.impl.car.KeyEventGame;
 import pathfinding.Astar;
 import tm2D.Constants;
 import tm2D.MenuEnd;
@@ -46,7 +51,14 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 	Font levelFont = new Font("SansSerif", Font.BOLD, 15);
 	Frame gFrame;
 	
-	List<Terrain> path;
+	private List<Terrain> path;
+	
+//	private Astar astar;
+	
+//	Queue<KeyEventGame> actions;
+//
+//	CircuitSolution gaAlgorithm;
+
 	boolean showAstar = false;
 
 	public GameBoard(Frame gF, List<CarComponent> playercars) {
@@ -78,8 +90,10 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 
 			circuit = new Circuit(fr);
 			
-			new Thread(()->path = new Astar(circuit).call()).start();
-		  
+			new Thread(() -> {
+				path = new Astar(circuit).call();
+//				gaAlgorithm = new CircuitSolution(this);
+			}).start();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -117,13 +131,13 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 			g2d.drawImage(car.getImage(), car.getImageX(), car.getImageY(), null);
 
 			g2d.dispose();
-			//debugCollision(g, car);
+//			debugCollision(g, car);
 		}
 	}
 
 	private void debugCollision(Graphics g, CarComponent car) {
 		Graphics2D g2d2 = (Graphics2D) g.create();
-		Area a1 = car.getArea();
+		Path2D a1 = car.getArea();
 		g2d2.setColor(Color.RED);
 		g2d2.fill(a1);
 
@@ -169,10 +183,32 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 			}
 		});
 	}
-
+//for testing the ia. To REMOVE ONCE IA IMPLEMENTED
+//	int count = 0;
+	
 	@Override
 	public void actionPerformed(ActionEvent ev) {
-		collision();
+
+//		if (count == 0) {
+//			if (actions == null || actions.isEmpty()) {
+//
+//				try {
+//					long start = System.currentTimeMillis();
+//					actions = new LinkedList<>(gaAlgorithm.call().subList(0, 3));
+//					System.out.println(System.currentTimeMillis() - start);
+//				} catch (InstantiationException | IllegalAccessException | InvocationTargetException
+//						| NoSuchMethodException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//			}
+//			actions.poll().getCarBehavior().accept(voiture1);
+////      astar.setCarTerrain(circuit.getTerrain(voiture1.getpX(), voiture1.getpY()));
+//			// new Thread(()-> path = astar.call()).start();
+//		}
+//
+//		count = (count + 1) % 10;
+
 		currentTime += frame + .0;
 		cars.forEach(car -> {
 			car.accelerate(frame);
@@ -185,7 +221,9 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 			car.rotate(frame);
 			car.move();
 			car.position();
+			car.calculateArea();
 		});
+		
 		collision();
 		nextTrack();
 		repaint();

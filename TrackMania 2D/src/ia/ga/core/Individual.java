@@ -6,65 +6,75 @@ import java.util.List;
 
 public abstract class Individual<T> {
 
-  private final List<T> genes;
+	private final List<T> genes;
 
-  private final int genomeLength;
-  
-  private Integer fitness;
-  
-  protected Individual() {
-    this.genomeLength = lengthSupplier();
-    this.genes = new ArrayList<>(genomeLength);
-  }
+	private final int genomeLength;
 
-  // Create a random individual
-  public final void randomizeIndividual() {
-    for (int i = 0; i < genomeLength; i++) {
-      genes.add(geneSupplier());
-    }
-  }
+	private Integer fitness;
 
-  public final void mutate(double mutationRate) {
-    for (int i = 0; i < size(); i++) {
-      if (Math.random() <= mutationRate) {
-        genes.set(i, geneSupplier());
-      }
-    }
-  }
+	protected Individual() {
+		this.genomeLength = lengthSupplier();
+		this.genes = new ArrayList<>(genomeLength);
+	}
 
-  public T getGene(int index) {
-    return genes.get(index);
-  }
-  
-  public void add(T value) {
-    genes.add(value);
-  }
+	// Create a random individual
+	public final void randomizeIndividual() {
+		for (int i = 0; i < genomeLength; i++) {
+			genes.add(geneSupplier());
+		}
+	}
 
-  public int size() {
-    return this.genes.size();
-  }
+	public final void mutate(double mutationRate) {
+		for (int i = 0; i < size(); i++) {
+			if (Math.random() <= mutationRate) {
+				genes.set(i, geneSupplier());
+			}
+		}
+	}
 
-  protected int getFitness(FitnessCalc<T> fitnessCalc) {
-    if (fitness == null)
-      fitness = fitnessCalc.getFitness(this);
+	public T getGene(int index) {
+		return genes.get(index);
+	}
 
-    return fitness;
-  }
-  
-  public int getFitness() {
-    return fitness;
-  }
+	public void add(T value) {
+		genes.add(value);
+	}
 
-  public List<T> getChromosome() {
-    return Collections.unmodifiableList(this.genes);
-  }
-  
-  protected abstract T geneSupplier();
-  
-  protected abstract int lengthSupplier();
-  
-  @Override
-  public String toString() {
-    return genes.toString();
-  }
+	public int size() {
+		return this.genes.size();
+	}
+
+	protected int getFitness(FitnessCalc<T> fitnessCalc) {
+		if (fitness == null)
+			fitness = fitnessCalc.getFitness(this);
+
+		return fitness;
+	}
+
+	public int getFitness() {
+		return fitness;
+	}
+
+	public List<T> getChromosome() {
+		return Collections.unmodifiableList(this.genes);
+	}
+
+	/**
+	 * Gene supplier that supply a random gene.
+	 *
+	 * @return the t
+	 */
+	protected abstract T geneSupplier();
+
+	/**
+	 * Length supplier that defines the length of the Chromosome
+	 *
+	 * @return the int
+	 */
+	protected abstract int lengthSupplier();
+
+	@Override
+	public String toString() {
+		return genes.toString();
+	}
 }

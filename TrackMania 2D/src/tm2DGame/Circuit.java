@@ -2,12 +2,10 @@ package tm2DGame;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Area;
-import java.awt.geom.GeneralPath;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import tm2DGame.terrain.Terrain;
@@ -75,15 +73,31 @@ public class Circuit {
 	
 	public List<Terrain> getCollisionTerrains(CarComponent car) {
 		final List<Terrain> collisionTerrains = new ArrayList<>();
-		for (int i = (int) car.getBounds().getMinX() / 10; i < car.getBounds().getMaxX() / 10; i++) {
-			for (int j = (int) car.getBounds().getMinY() / 10; j < car.getBounds().getMaxY() / 10; j++) {
+		for (int i = Math.max((int) car.getBounds().getMinX() / 10, 0); i < Math.min(car.getBounds().getMaxX() / 10,
+				circuitMatrix.length); i++) {
+			for (int j = Math.max((int) car.getBounds().getMinY() / 10, 0); j < Math.min(car.getBounds().getMaxY() / 10,
+					circuitMatrix[i].length); j++) {
 				Rectangle rec = circuitMatrix[i][j].getBounds();
-				if (car.getArea().intersects(rec.getBounds2D())) {
+				if (car.getArea().intersects(rec)) {
 					collisionTerrains.add(circuitMatrix[i][j]);
 				}
 			}
 		}
 		return collisionTerrains;
+	}
+	
+	public List<Terrain> getAdjacentTiles(Terrain terrain, int rayon) {
+		int matrixX = terrain.getX() / 10;
+
+		int matrixY = terrain.getY() / 10;
+
+		List<Terrain> adjacents = new LinkedList<>();
+		for (int i = Math.max(matrixX - rayon, 0); i < Math.min(matrixX + rayon, circuitMatrix.length); i++) {
+			for (int j = Math.max(matrixY - rayon, 0); j < Math.min(matrixY + rayon, circuitMatrix[i].length); j++) {
+				adjacents.add(circuitMatrix[i][j]);
+			}
+		}
+		return adjacents;
 	}
 	
 	public List<Terrain> getAdjacentTiles(Terrain terrain) {
@@ -95,23 +109,11 @@ public class Circuit {
 		
 		int newY = matrixY - 1;
 		if(newY >= 0) {
-//			if(matrixX - 1 >= 0) {
-//				adjacents.add(circuitMatrix[(matrixX - 1)/1][newY]);
-//			}
-//			if(matrixX + 1 < height) {
-//				adjacents.add(circuitMatrix[matrixX + 1][newY]);
-//			}
 			adjacents.add(circuitMatrix[matrixX][newY]);
 		}
 		
 		newY = matrixY + 1;
 		if(newY < height) {
-//			if(matrixX - 1 >= 0) {
-//				adjacents.add(circuitMatrix[matrixX - 1][newY]);
-//			}
-//			if(matrixX + 1 < width) {
-//				adjacents.add(circuitMatrix[matrixX + 1][newY]);
-//			}
 			adjacents.add(circuitMatrix[matrixX][newY]);
 		}
 		
@@ -123,6 +125,10 @@ public class Circuit {
 		}
 
 		return adjacents;
+	}
+
+	public Terrain getTerrain(double x, double y) {
+		return circuitMatrix[(int) x / 10][(int) y / 10];
 	}
 
 }

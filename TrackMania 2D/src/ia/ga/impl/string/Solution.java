@@ -9,22 +9,23 @@ import ia.ga.impl.SimpleEvolutionAlgorithm;
 
 public class Solution {
 
-  public static void main(String[] args) throws InstantiationException, IllegalAccessException,InvocationTargetException, NoSuchMethodException {
+	public static void main(String[] args)
+			throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 
-    double crossoverRate = 0.3;
-    double mutationRate = 0.1;
-    int selectionSize = 10;
-    StringCalculator fitnessCalc = new StringCalculator();
+		double crossoverRate = 0.3;
+		double mutationRate = 0.1;
+		int selectionSize = 10;
+		StringCalculator fitnessCalc = new StringCalculator();
 
-    EvolutionAlgorithm<Character, StringIndividual> evolutionAlgo = new SimpleEvolutionAlgorithm<>(crossoverRate,
-        mutationRate, selectionSize, fitnessCalc, StringIndividual.class);
+		EvolutionAlgorithm<Character, StringIndividual> evolutionAlgo = new SimpleEvolutionAlgorithm<>(crossoverRate,
+				mutationRate, selectionSize, fitnessCalc, StringIndividual.class);
 
-    GeneticAlgorithmTemplate<Character, StringIndividual> algorithm = new GeneticAlgorithmTemplate<>(fitnessCalc,
-        evolutionAlgo, StringIndividual.class, 50, 100);
+		GeneticAlgorithmTemplate<Character, StringIndividual> algorithm = new GeneticAlgorithmTemplate<>(fitnessCalc,
+				evolutionAlgo, StringIndividual.class, 50, 100);
 
-    List<Character> solution = algorithm.getSolution();
-    System.out.println(solution);
+		List<Character> solution = algorithm.getSolution();
+		System.out.println(solution);
 
-  }
+	}
 
 }
