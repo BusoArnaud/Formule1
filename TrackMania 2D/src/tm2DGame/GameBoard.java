@@ -10,7 +10,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.geom.Area;
 import java.awt.geom.Path2D;
+import java.io.Console;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,14 +31,14 @@ import tm2DGame.terrain.Mur;
 import tm2DGame.terrain.Terrain;
 
 @SuppressWarnings("serial")
-public class GameBoard extends JPanel implements KeyListener, ActionListener, Constants {
+public class GameBoard extends JPanel implements KeyListener, ActionListener, MouseListener, Constants {
 	int frame = 40;
 	Timer timer = new Timer(frame, this);
-	double currentTime=0;
+	double currentTime = 0;
 
 	int level = 1;
 	int nombreCoup = 0;
-	
+
 	public static int nombreCoupT;
 
 	private Circuit circuit;
@@ -45,18 +49,12 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 	
 	Font levelFont = new Font("SansSerif", Font.BOLD, 15);
 	Frame gFrame;
-	
-	private List<Terrain> path;
-	
-//	private Astar astar;
-	
-//	Queue<KeyEventGame> actions;
-//
-//	CircuitSolution gaAlgorithm;
 
+	List<Terrain> path;
 	boolean showAstar = false;
 
 	public GameBoard(Frame gF, List<CarComponent> playercars) {
+		addMouseListener(this);
 		this.cars = new ArrayList<>();
 		this.voiture1 = (PlayerCarComponent) playercars.get(0);
 		this.voiture1.initPosition(55, 550);
@@ -70,7 +68,6 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 			this.cars.add(voiture2);
 		}
 
-
 		loadTrack();
 
 		gFrame = gF;
@@ -81,23 +78,22 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 
 	public void loadTrack() {
 		this.cars.forEach(CarComponent::initPosition);
-		try {			FileReader fr = new FileReader(RELATIVE_PATH_TRACKS + "Track" + level);
+		try {
+			FileReader fr = new FileReader(RELATIVE_PATH_TRACKS + "Track" + level);
 
 			circuit = new Circuit(fr);
+			path = new Astar(circuit).call();
 			
-			new Thread(() -> {
-				path = new Astar(circuit).call();
-//				gaAlgorithm = new CircuitSolution(this);
-			}).start();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 
 		repaint();
 	}
-	
+
 	int mouseX = 0;
 	int mouseY = 0;
+
 	@Override
 	public void paint(Graphics g) {
 
@@ -111,17 +107,17 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 		StringBuilder legends = new StringBuilder();
 		legends.append("Level : ");
 		legends.append(level);
-		legends.append("|| time : " );
-		legends.append(Math.floor(currentTime/1000));
-		
+		legends.append("|| time : ");
+		legends.append(Math.floor(currentTime / 1000));
+
 		g.drawString(legends.toString(), 15, 585);
 		g.setColor(Color.cyan);
-		if(showAstar){
-			path.stream().forEach(terr->g.drawRect(terr.getX(), terr.getY(), 10, 10));
+		if (showAstar) {
+			path.stream().forEach(terr -> g.drawRect(terr.getX(), terr.getY(), 10, 10));
 		}
-		for(CarComponent car :cars){
+		for (CarComponent car : cars) {
 			Graphics2D g2d = (Graphics2D) g.create();
-			g2d.setColor(Color.black);	
+			g2d.setColor(Color.black);
 			g2d.rotate(car.getCurrentAngle(), car.getpX(), car.getpY());
 			g2d.drawImage(car.getImage(), car.getImageX(), car.getImageY(), null);
 
@@ -141,7 +137,7 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 
 	public void nextTrack() {
 
-		for(CarComponent car :cars){
+		for (CarComponent car : cars) {
 			Rectangle voitureRec;
 			voitureRec = car.getBounds();
 
@@ -152,7 +148,7 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 						@SuppressWarnings("unused")
 						MenuEnd f = new MenuEnd(currentTime);
 						gFrame.dispose();
-					}else{
+					} else {
 						loadTrack();
 					}
 					break;
@@ -172,9 +168,9 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 					speedCoefs.add(terrain.getSpeedDecreaseCoef());
 				}
 			}
-			if(collisions.size() != 0 ){
+			if (collisions.size() != 0) {
 				double speedCoef = speedCoefs.stream().mapToDouble(d -> d.doubleValue()).sum() / speedCoefs.size();
-				System.out.println(speedCoef);
+				//System.out.println(speedCoef);
 				car.setSpeedDecreaseCoef(speedCoef);
 			}
 		});
@@ -224,7 +220,7 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 		nextTrack();
 		repaint();
 	}
-	
+
 	@Override
 	public void keyPressed(KeyEvent arg0) {
 		int key = arg0.getKeyCode();
@@ -237,9 +233,8 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 	public void keyReleased(KeyEvent arg0) {
 
 		int key = arg0.getKeyCode();
-		
-		
-		if (key == KeyEvent.VK_R) { 
+
+		if (key == KeyEvent.VK_R) {
 			cars.forEach(CarComponent::initPosition);
 			nombreCoup += 10;
 
@@ -249,12 +244,11 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 			timer.stop();
 			gFrame.dispose();
 		} else if (key == KeyEvent.VK_I) {
-			showAstar = ! showAstar;
+			showAstar = !showAstar;
 		}
 		cars.forEach(car -> {
 			car.keyReleased(key);
 		});
-		
 
 		repaint();
 	}
@@ -274,5 +268,36 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
   public Circuit getCircuit() {
     return this.circuit;
   }
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		CarComponent car = cars.get(0);
+		double targetX = (e.getX() - car.getpX());
+		double targetY = (e.getY() - car.getpY());
+		float angle = (float) Math.toDegrees(Math.atan2(targetY - 0, targetX - 1));
+		float carAngle = (float) Math.toDegrees(car.currentAngle);
+		double newradian = Math.toRadians(( angle - carAngle)%360) +Math.PI/2;
+		System.out.println("newradian = " + newradian);
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+
+	}
 
 }
