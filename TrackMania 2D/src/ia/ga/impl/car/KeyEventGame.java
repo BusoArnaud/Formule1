@@ -5,8 +5,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Consumer;
 
-import tm2DGame.CarComponent;
-import tm2DGame.Voiture;
+import tm2DGame.IPlayer;
 
 public enum KeyEventGame {
 
@@ -53,20 +52,42 @@ public enum KeyEventGame {
 
 	private static List<KeyEventGame> allActions = Arrays.asList(KeyEventGame.values());
 
-	Consumer<CarComponent> carBehavior;
+	Consumer<IPlayer> carBehavior;
 
 	private static Random rand = new Random();
 
-	private KeyEventGame(Consumer<CarComponent> carBehavior) {
+	private KeyEventGame(Consumer<IPlayer> carBehavior) {
 		this.carBehavior = carBehavior;
 	}
 
-	public Consumer<CarComponent> getCarBehavior() {
+	public Consumer<IPlayer> getCarBehavior() {
 		return this.carBehavior;
 	}
 
 	public static KeyEventGame getRandom() {
 		return allActions.get(rand.nextInt(allActions.size()));
+	}
+
+	public static KeyEventGame find(boolean accelerate, boolean rotate, int direction, int rotationDirection) {
+		if (accelerate && !rotate && direction == 1) {
+			return UP;
+		} else if (accelerate && !rotate && direction == -1) {
+			return DOWN;
+		} else if (!accelerate && rotate && rotationDirection == -1) {
+			return LEFT;
+		} else if (!accelerate && rotate && rotationDirection == 1) {
+			return RIGHT;
+		} else if (accelerate && rotate && direction == 1 && rotationDirection == 1) {
+			return ACCRIGHT;
+		} else if (accelerate && rotate && direction == 1 && rotationDirection == -1) {
+			return ACCLEFT;
+		} else if (accelerate && rotate && direction == -1 && rotationDirection == 1) {
+			return DOWNRIGHT;
+		} else if (accelerate && rotate && direction == -1 && rotationDirection == -1) {
+			return DOWNLEFT;
+		} else {
+			return NOTHING;
+		}
 	}
 
 }

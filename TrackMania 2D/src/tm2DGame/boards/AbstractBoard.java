@@ -6,6 +6,7 @@ import java.util.List;
 import tm2D.Constants;
 import tm2DGame.CarComponent;
 import tm2DGame.Circuit;
+import tm2DGame.IPlayer;
 import tm2DGame.terrain.Mur;
 import tm2DGame.terrain.Terrain;
 
@@ -13,7 +14,7 @@ public abstract class AbstractBoard implements Constants {
 
 	protected static final int frame = 40;
 
-	protected CarComponent voiture;
+	protected IPlayer voiture;
 
 	protected Circuit circuit;
 
@@ -53,7 +54,7 @@ public abstract class AbstractBoard implements Constants {
 		return false;
 	}
 
-	public CarComponent getVoiture() {
+	public IPlayer getVoiture() {
 		return voiture;
 	}
 

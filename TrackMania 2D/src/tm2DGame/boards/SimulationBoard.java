@@ -2,6 +2,7 @@ package tm2DGame.boards;
 
 import tm2DGame.CarComponent;
 import tm2DGame.GameBoard;
+import tm2DGame.IPlayer;
 
 public class SimulationBoard extends AbstractBoard {
 
@@ -13,7 +14,7 @@ public class SimulationBoard extends AbstractBoard {
 		this.astarPath = board.getAstarPath();
 	}
 
-	public void setVoiture(CarComponent voiture) {
+	public void setVoiture(IPlayer voiture) {
 		this.voiture = voiture;
 	}
 
