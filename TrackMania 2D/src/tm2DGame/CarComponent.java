@@ -1,11 +1,9 @@
 package tm2DGame;
 
-import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Area;
-import java.awt.geom.GeneralPath;
+import java.awt.geom.Path2D;
 
 import javax.swing.ImageIcon;
 
@@ -34,12 +32,33 @@ public class CarComponent implements Constants{
 	int keyDown;
 	int keyLeft;
 	int keyRight;
+	
+	Path2D area;
 
 	String keyUse = null;
 
 	public CarComponent(Voiture voiture) {
 		this.voiture = voiture;
 	}
+	
+  public CarComponent(CarComponent voiture) {
+    this.pX = voiture.pX;
+    this.pY = voiture.pY;
+    this.speed = voiture.speed;
+    this.speedDecreaseCoef = voiture.speedDecreaseCoef;
+    this.accelerate = voiture.accelerate;
+    this.angle = voiture.angle;
+    this.currentAngle = voiture.currentAngle;
+    this.direction = voiture.direction;
+    this.keyUse = voiture.keyUse;
+    this.rotate = voiture.rotate;
+    this.rotateDirection = voiture.rotateDirection;
+    this.voiture = voiture.voiture;
+    this.vX = voiture.vX;
+    this.vY = voiture.vY;
+    this.startX = voiture.startX;
+    this.startY = voiture.startY;
+  }
 
 	public void initPosition(int startX, int startY) {
 		this.startX = startX;
@@ -108,17 +127,17 @@ public class CarComponent implements Constants{
 		return this.getArea().getBounds();
 	}
 
-	public Area getArea(){
-		Rectangle box = new Rectangle(
-			this.getImageX(),
-			this.getImageY(),
-			voiture.getiVoiture().getIconWidth(),
-			voiture.getiVoiture().getIconHeight());
+	public void calculateArea() {
 		AffineTransform at = new AffineTransform();
 		at.rotate(currentAngle, pX, pY);
-		GeneralPath path1 = new GeneralPath();
-		path1.append(box.getPathIterator(at), true);
-		return new Area(path1);
+		Path2D path2D = new Path2D.Double();
+		path2D.append(new Rectangle(this.getImageX(), this.getImageY(), voiture.getiVoiture().getIconWidth(),
+				voiture.getiVoiture().getIconHeight()).getBounds2D().getPathIterator(at), true);
+		area = path2D;
+	}
+	
+	public Path2D getArea(){
+		return this.area;
 	}
 
 	public int getDirection() {

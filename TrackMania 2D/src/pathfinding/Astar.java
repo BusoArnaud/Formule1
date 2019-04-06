@@ -6,20 +6,23 @@ import java.util.List;
 import java.util.Optional;
 import java.util.PriorityQueue;
 import java.util.Set;
+import java.util.concurrent.Callable;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
 
 import tm2DGame.Circuit;
 import tm2DGame.terrain.Terrain;
 
-public class Astar {
+public class Astar implements Callable<List<Terrain>>{
 
   private Circuit circuit;
+  
+  private Terrain carTerrain;
 
   private ToDoubleFunction<Terrain> gSupplier;
 
   private ToDoubleFunction<Terrain> hSupplier;
-
+  
   public Astar(Circuit circuit) {
     this.circuit = circuit;
   }
@@ -29,8 +32,8 @@ public class Astar {
    *
    * @return the list
    */
-  public List<Terrain> runAstar() {
-
+  public synchronized List<Terrain> call() {
+    
     // the closed set that contains Node that already has been processed
     Set<Terrain> closed = new HashSet<>();
 
@@ -39,11 +42,11 @@ public class Astar {
 
     // function to calculate G(cost) for a node. it depends of the deceleration of
     // the terrain
-    gSupplier = terrain -> 1 / Math.pow(terrain.getSpeedDecreaseCoef(), 30);
+    gSupplier = terrain -> 1 / terrain.getSpeedDecreaseCoef();
 
     // function to calculate H(heuristic) of a node. In this case, it is the
     // distance.
-    hSupplier = terrain -> terrain.getDistance(endTerrain);
+    hSupplier = terrain -> terrain.getDistance(endTerrain)/10;
 
     // open List that contains Node that will be processed. We processed the one
     // with the lowest F(G + H) value first
@@ -51,7 +54,10 @@ public class Astar {
 
     // add adjacents nodes and calculate their F value. if we find an end node, we
     // return the path to this node.
-    openList.add(new Node(circuit.getStart(), null, gSupplier, hSupplier));
+    if(carTerrain == null) {
+      carTerrain = circuit.getStart();
+    }
+    openList.add(new Node(carTerrain, null, gSupplier, hSupplier));
     while (!isEmpty(openList)) {
       Node currentNode = openList.poll();
       closed.add(currentNode.getTerrain());
@@ -93,4 +99,9 @@ public class Astar {
   private boolean isEmpty(PriorityQueue<Node> openList) {
     return openList == null || openList.isEmpty();
   }
+  
+  public void setCarTerrain(Terrain carTerrain) {
+    this.carTerrain = carTerrain;
+  }
+
 }
