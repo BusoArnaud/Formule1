@@ -1,4 +1,4 @@
-package tm2DGame.ia;
+package ia.subject;
 
 
 public interface  Gene {

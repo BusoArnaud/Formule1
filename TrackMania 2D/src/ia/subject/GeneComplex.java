@@ -1,4 +1,4 @@
-package tm2DGame.ia;
+package ia.subject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +18,26 @@ public class GeneComplex implements Constants, Gene {
     this.chromosomes = new HashMap<>();
   }
 
+  /**
+   * @return the chromosomes
+   */
+  public Map<Double, Chromosome> getChromosomes() {
+    return chromosomes;
+  }
+  /**
+   * @return the distanceEval
+   */
+  public int getDistanceEval() {
+    return distanceEval;
+  }
+
+  /**
+   * @param distanceEval the distanceEval to set
+   */
+  public void setDistanceEval(int distanceEval) {
+    this.distanceEval = distanceEval;
+  }
+  
   public void init() {
     this.distanceEval = random.nextInt(DISTANCE_MAX);
     int geneCount = random.nextInt(5) + 1;
@@ -63,7 +83,7 @@ public class GeneComplex implements Constants, Gene {
     return new GeneComplex(this, probability);
   }
 
-  public Map<String, Integer> eval(double evalRadian) {
+  public Chromosome eval(double evalRadian) {
     Double targetkey= null;
     Double lastKey= null;
     for( Double key: chromosomes.keySet()){
@@ -77,10 +97,7 @@ public class GeneComplex implements Constants, Gene {
         lastKey = key;
       }
     }
-    Map<String, Integer> result= new HashMap<>();
-    result.put("ROTATION", chromosomes.get(targetkey).targetRotation);
-    result.put("SPEED", chromosomes.get(targetkey).targetSpeed);
     
-    return result;
+    return chromosomes.get(targetkey);
   }
 }

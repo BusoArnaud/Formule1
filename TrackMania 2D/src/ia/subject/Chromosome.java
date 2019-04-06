@@ -1,4 +1,4 @@
-package tm2DGame.ia;
+package ia.subject;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -11,6 +11,20 @@ public class Chromosome implements Constants, Gene {
   double knownAngle;
   int targetRotation;
   int targetSpeed;
+
+  /**
+   * @return the targetRotation
+   */
+  public int getTargetRotation() {
+    return targetRotation;
+  }
+
+  /**
+   * @return the targetSpeed
+   */
+  public int getTargetSpeed() {
+    return targetSpeed;
+  }
 
   public Chromosome(){
     knownAngle = Math.toRadians(random.nextInt(ANGLE) * 22.5);
