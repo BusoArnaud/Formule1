@@ -83,7 +83,6 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Mo
 
 			circuit = new Circuit(fr);
 			path = new Astar(circuit).call();
-			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
