@@ -9,7 +9,7 @@ import ia.ga.core.EvolutionAlgorithm;
 import ia.ga.core.FitnessCalc;
 import ia.ga.core.Individual;
 import ia.ga.core.Population;
-import ia.subject.Subject;
+import ia.subject.GeneComplex;
 
 /**
  * This class is a simple implementation of the evolution Algorithm that uses a
@@ -18,7 +18,7 @@ import ia.subject.Subject;
  * @param <T> the generic type
  * @param <K> the key type
  */
-public class SubjectEvolutionAlgorithm<Subject, BehaviorSubject extends Individual<Subject>> extends EvolutionAlgorithm<Subject, BehaviorSubject> {
+public class SubjectEvolutionAlgorithm<T, K extends Individual<GeneComplex>> extends EvolutionAlgorithm<GeneComplex, BehaviorSubject> {
 
 	Logger log = Logger.getLogger(SubjectEvolutionAlgorithm.class.getName());
 
@@ -29,16 +29,16 @@ public class SubjectEvolutionAlgorithm<Subject, BehaviorSubject extends Individu
 	private final int selectionSize;
 
 	public SubjectEvolutionAlgorithm(double crossoverRate, double mutationRate, int selectionSize,
-			FitnessCalc<Subject> fitnessCalc, Class<BehaviorSubject> type) {
+			FitnessCalc<GeneComplex> fitnessCalc, Class<BehaviorSubject> type) {
 		super(crossoverRate, mutationRate, fitnessCalc);
 		this.type = type;
 		this.selectionSize = selectionSize;
 	}
 
 	@Override
-	public Population<Subject, BehaviorSubject> evolvePopulation(Population<Subject, BehaviorSubject> pop) {
+	public Population<GeneComplex, BehaviorSubject> evolvePopulation(Population<GeneComplex, BehaviorSubject> pop) {
 
-		Population<Subject, BehaviorSubject> newPopulation = new Population<>(pop.size(), fitnessCalc);
+		Population<GeneComplex, BehaviorSubject> newPopulation = new Population<>(pop.size(), fitnessCalc);
 
 		newPopulation.add(pop.getFittest());
 		// Crossover population
@@ -77,9 +77,9 @@ public class SubjectEvolutionAlgorithm<Subject, BehaviorSubject extends Individu
 	}
 
 	@Override
-	protected BehaviorSubject selection(Population<Subject, BehaviorSubject> pop) {
+	protected BehaviorSubject selection(Population<GeneComplex, BehaviorSubject> pop) {
 
-		Population<Subject, BehaviorSubject> tournament = new Population<>(pop.size(), fitnessCalc);
+		Population<GeneComplex, BehaviorSubject> tournament = new Population<>(pop.size(), fitnessCalc);
 
 		// For each place in the tournament get a random individual
 		for (int i = 0; i < selectionSize; i++) {

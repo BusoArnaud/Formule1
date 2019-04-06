@@ -28,10 +28,12 @@ public class MenuGame extends JFrame implements ActionListener {
 	List<PlayerPanel> players = new ArrayList<>();
 
 	int playercount;
+	private boolean simulate;
 
-	public MenuGame(int playercount) {
+	public MenuGame(int playercount, boolean simulate) {
 		super();
 		this.playercount = playercount;
+		this.simulate = simulate;
 		build();
 	}
 

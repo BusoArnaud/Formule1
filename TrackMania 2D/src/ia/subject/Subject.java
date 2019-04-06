@@ -7,17 +7,16 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
+import ia.ga.core.Individual;
 import tm2D.Constants;
 
-public class Subject<T extends Subject<T>> implements Constants, Gene {
+public class Subject implements Constants, Gene {
 
   static ThreadLocalRandom random = ThreadLocalRandom.current();
   GeneComplex geneComplex;
 
-  Class<T> clazz;
 
-  public Subject(Class<T> clazz) {
-    this.clazz = clazz;
+  public Subject() {
   }
 
   public void init() {
@@ -32,10 +31,8 @@ public class Subject<T extends Subject<T>> implements Constants, Gene {
     return geneComplex;
   }
 
-  public T mutation(Subject<T> parent1, Subject<T> parent2, double parent1Proportion)
-      throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
-      NoSuchMethodException, SecurityException {
-    T son = clazz.getDeclaredConstructor().newInstance();
+  public static Subject mutation(Subject parent1, Subject parent2, double parent1Proportion){
+    Subject son = new Subject();
     if (random.nextDouble() >= parent1Proportion) {
       son.getGeneComplex().setDistanceEval(parent1.getGeneComplex().getDistanceEval());
     } else {
@@ -71,27 +68,27 @@ public class Subject<T extends Subject<T>> implements Constants, Gene {
   }
   
   @Override
-  public Subject<T> mutation(double probability) {
+  public Subject mutation(double probability) {
     this.geneComplex = this.geneComplex.mutation(probability);
     return this;
   }
 
-  public  List<Subject<T>> crossover(List<Subject<T>> subjects, int crossoverCount, double probability)
+  public  List<Subject> crossover(List<Subject> subjects, int crossoverCount, double probability)
       throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
       NoSuchMethodException, SecurityException {
-    List<Subject<T>> generation = new ArrayList<>();
-    List<Subject<T>> sorted = subjects.stream().sorted(Comparator.comparing(Subject::getFitness))
+    List<Subject> generation = new ArrayList<>();
+    List<Subject> sorted = subjects.stream().sorted(Comparator.comparing(Subject::getFitness))
         .collect(Collectors.toList());
-    Subject<T> a = sorted.get(0);
-    Subject<T> b = sorted.get(1);
+    Subject a = sorted.get(0);
+    Subject b = sorted.get(1);
     for (int i = 0; i < crossoverCount; i++) {
-      Subject<T> newSubject = clazz.getDeclaredConstructor().newInstance(a, b, (1.0 * i / crossoverCount));
+      Subject newSubject = Subject.mutation(a, b, (1.0 * i / crossoverCount));
       generation.add(newSubject);
     }
     for (int i = 0; i < crossoverCount; i++) {
       a = sorted.get(random.nextInt(sorted.size()));
       b = sorted.get(random.nextInt(sorted.size()));
-      Subject<T> newSubject = clazz.getDeclaredConstructor().newInstance(a, b, random.nextDouble());
+      Subject newSubject = Subject.mutation(a, b, random.nextDouble());
       generation.add(newSubject);
     }
     return generation.stream().map(subject -> subject.mutation(probability)).collect(Collectors.toList());

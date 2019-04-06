@@ -6,7 +6,7 @@ import java.util.List;
 
 public abstract class Individual<T> {
 
-	private final List<T> genes;
+	protected final List<T> genes;
 
 	private final int genomeLength;
 
@@ -24,7 +24,7 @@ public abstract class Individual<T> {
 		}
 	}
 
-	public final void mutate(double mutationRate) {
+	public void mutate(double mutationRate) {
 		for (int i = 0; i < size(); i++) {
 			if (Math.random() <= mutationRate) {
 				genes.set(i, geneSupplier());

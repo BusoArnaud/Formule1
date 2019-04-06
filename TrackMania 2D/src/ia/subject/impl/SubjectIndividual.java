@@ -1,13 +1,13 @@
-package ia.ga.impl.CarSubject;
+package ia.subject.impl;
 
 import ia.ga.core.Individual;
 import ia.subject.GeneComplex;
 import tm2D.Constants;
- 
-public class BehaviorSubject extends Individual<GeneComplex> implements Constants {
+
+public class SubjectIndividual extends Individual<GeneComplex> implements Constants {
 
 
-  public BehaviorSubject() {
+  public SubjectIndividual() {
   }
 
   @Override
