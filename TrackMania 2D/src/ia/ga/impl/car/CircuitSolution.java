@@ -8,11 +8,16 @@ import ia.ga.core.GeneticAlgorithmTemplate;
 import ia.ga.impl.SimpleEvolutionAlgorithm;
 import tm2DGame.CarComponent;
 import tm2DGame.GameBoard;
-import tm2DGame.boards.SimulationBoard;
 
 public class CircuitSolution {
 
-	public final GameBoard gameBoard;
+	private static final int ACTION_SIZE = 3;
+
+  private static final int POPULATION_SIZE = 100;
+
+  private static final int MAX_GENERATION = 30;
+
+  public final GameBoard gameBoard;
 
 	private CarComponent car;
 
@@ -21,24 +26,23 @@ public class CircuitSolution {
 	private static final double MUTATION_RATE = 0.1;
 
 	private static final int SELECTION_SIZE = 10;
+	
+	private final GeneticAlgorithmTemplate<KeyEventGame, BehaviorIndividual> algorithm;
 
 	public CircuitSolution(GameBoard gameBoard, CarComponent car) {
 		this.car = new CarComponent(car);
 		this.gameBoard = gameBoard;
+		CarFitnessCalculator fitnessCalc = new CarFitnessCalculator(gameBoard, car);
+		EvolutionAlgorithm<KeyEventGame, BehaviorIndividual> evolutionAlgo = new SimpleEvolutionAlgorithm<>(CROSSOVER_RATE,
+        MUTATION_RATE, SELECTION_SIZE, fitnessCalc, BehaviorIndividual.class);
+		algorithm = new GeneticAlgorithmTemplate<>(fitnessCalc, evolutionAlgo , BehaviorIndividual.class, MAX_GENERATION,
+				POPULATION_SIZE);
 	}
 
 	public List<KeyEventGame> call()
 			throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 
-		CarFitnessCalculator fitnessCalc = new CarFitnessCalculator(gameBoard, car);
-
-		EvolutionAlgorithm<KeyEventGame, BehaviorIndividual> evolutionAlgo = new SimpleEvolutionAlgorithm<>(
-				CROSSOVER_RATE, MUTATION_RATE, SELECTION_SIZE, fitnessCalc, BehaviorIndividual.class);
-
-		GeneticAlgorithmTemplate<KeyEventGame, BehaviorIndividual> algorithm = new GeneticAlgorithmTemplate<>(
-				fitnessCalc, evolutionAlgo, BehaviorIndividual.class, 50, 30);
-
-		return algorithm.getSolution();
+	  return algorithm.getSolution().subList(0, ACTION_SIZE);
 	}
 
 }

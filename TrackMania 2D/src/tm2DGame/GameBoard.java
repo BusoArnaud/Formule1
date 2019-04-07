@@ -48,13 +48,7 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 	Frame gFrame;
 
 	private List<Terrain> path;
-
-	// private Astar astar;
-
-	// Queue<KeyEventGame> actions;
-	//
-	// CircuitSolution gaAlgorithm;
-
+	
 	boolean showAstar = false;
 
 	public GameBoard(Frame gF, List<IPlayer> playercars) {
@@ -86,11 +80,9 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 			FileReader fr = new FileReader(RELATIVE_PATH_TRACKS + "Track" + level);
 
 			circuit = new Circuit(fr);
-
-			new Thread(() -> {
-				path = new Astar(circuit).call();
-				// gaAlgorithm = new CircuitSolution(this);
-			}).start();
+			
+			path = new Astar(circuit).call();
+			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -182,33 +174,9 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 			}
 		});
 	}
-	// for testing the ia. To REMOVE ONCE IA IMPLEMENTED
-	// int count = 0;
 
 	@Override
 	public void actionPerformed(ActionEvent ev) {
-
-		// if (count == 0) {
-		// if (actions == null || actions.isEmpty()) {
-		//
-		// try {
-		// long start = System.currentTimeMillis();
-		// actions = new LinkedList<>(gaAlgorithm.call().subList(0, 3));
-		// System.out.println(System.currentTimeMillis() - start);
-		// } catch (InstantiationException | IllegalAccessException |
-		// InvocationTargetException
-		// | NoSuchMethodException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		// }
-		// actions.poll().getCarBehavior().accept(voiture1);
-		//// astar.setCarTerrain(circuit.getTerrain(voiture1.getpX(),
-		// voiture1.getpY()));
-		// // new Thread(()-> path = astar.call()).start();
-		// }
-		//
-		// count = (count + 1) % 10;
 
 		currentTime += frame + .0;
 		cars.stream().forEach(player -> {
@@ -269,7 +237,7 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 	}
 	
   public List<Terrain> getAstarPath() {
-    return Collections.unmodifiableList(this.path);
+    return this.path;
   }
 
   public IPlayer getVoiture() {

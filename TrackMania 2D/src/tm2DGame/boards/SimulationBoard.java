@@ -1,17 +1,23 @@
 package tm2DGame.boards;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import tm2DGame.CarComponent;
 import tm2DGame.GameBoard;
-import tm2DGame.IPlayer;
+import tm2DGame.terrain.Terrain;
 
 public class SimulationBoard extends AbstractBoard {
 
 	public final int numberOfTicksInAThirdSecond = 10;
 
+	public final Set<Terrain> astarSet;
+	
 	public SimulationBoard(GameBoard board) {
 		this.circuit = board.getCircuit();
 		this.voiture = board.getVoiture().getCar();
 		this.astarPath = board.getAstarPath();
+		this.astarSet = new HashSet<>(this.astarPath);
 	}
 
 	public void setVoiture(CarComponent voiture) {
@@ -25,6 +31,10 @@ public class SimulationBoard extends AbstractBoard {
 				return true;
 		}
 		return false;
+	}
+	
+	public Set<Terrain> getAstarSet(){
+		return this.astarSet;
 	}
 
 }

@@ -27,7 +27,7 @@ public abstract class EvolutionAlgorithm<T, K extends Individual<T>> {
 
 		Population<T, K> newPopulation = new Population<>(pop.size(), fitnessCalc);
 
-		newPopulation.add(pop.getSortedList().get(0));
+		newPopulation.add(pop.getFittest());
 		// Crossover population
 		for (int i = 1; i < pop.size(); i++) {
 			// ooo a baby how cute!!!!

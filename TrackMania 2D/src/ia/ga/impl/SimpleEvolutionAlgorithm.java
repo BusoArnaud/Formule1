@@ -63,11 +63,11 @@ public class SimpleEvolutionAlgorithm<T, K extends Individual<T>> extends Evolut
 
 		// For each place in the tournament get a random individual
 		for (int i = 0; i < selectionSize; i++) {
-			tournament.add(pop.getSortedList().get(rand.nextInt(pop.getSortedList().size())));
+			tournament.add(pop.getElement(rand.nextInt(pop.size())));
 		}
 
 		// Get the fittest
-		return tournament.getSortedList().get(0);
+		return tournament.getFittest();
 	}
 
 }

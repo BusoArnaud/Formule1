@@ -1,10 +1,7 @@
 package ia.ga.core;
 
-import static java.util.stream.Collectors.toList;
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -22,6 +19,8 @@ public class Population<T, K extends Individual<T>> {
 	private final FitnessCalc<T> fitnessCalc;
 
 	private boolean fitnessCalculated = false;
+	
+	private K fittest;
 
 	/*
 	 * Constructors
@@ -51,15 +50,14 @@ public class Population<T, K extends Individual<T>> {
 		return individuals.size();
 	}
 
-	public List<K> getSortedList() {
+	public K getFittest() {
 		if (!fitnessCalculated) {
-			individuals = Collections.unmodifiableList(individuals.stream()
-					.sorted((crnt, next) -> next.getFitness(fitnessCalc) - crnt.getFitness(fitnessCalc))
-					.collect(toList()));
+			fittest = individuals.stream()
+					.min((crnt, next) -> next.getFitness(fitnessCalc) - crnt.getFitness(fitnessCalc)).get();
 			fitnessCalculated = true;
 		}
 
-		return individuals;
+		return fittest;
 	}
 
 	public K getElement(int index) {

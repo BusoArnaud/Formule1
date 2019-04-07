@@ -72,10 +72,11 @@ public class Circuit {
 	}
 	
 	public List<Terrain> getCollisionTerrains(CarComponent car) {
-		final List<Terrain> collisionTerrains = new ArrayList<>();
-		for (int i = Math.max((int) car.getBounds().getMinX() / 10, 0); i < Math.min(car.getBounds().getMaxX() / 10,
+		final List<Terrain> collisionTerrains = new LinkedList<>();
+		Rectangle bounds = car.getBounds();
+		for (int i = Math.max((int) bounds.getMinX() / 10, 0); i < Math.min(bounds.getMaxX() / 10,
 				circuitMatrix.length); i++) {
-			for (int j = Math.max((int) car.getBounds().getMinY() / 10, 0); j < Math.min(car.getBounds().getMaxY() / 10,
+			for (int j = Math.max((int) bounds.getMinY() / 10, 0); j < Math.min(bounds.getMaxY() / 10,
 					circuitMatrix[i].length); j++) {
 				Rectangle rec = circuitMatrix[i][j].getBounds();
 				if (car.getArea().intersects(rec)) {
