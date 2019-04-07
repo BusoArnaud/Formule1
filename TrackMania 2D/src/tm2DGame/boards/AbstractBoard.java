@@ -1,6 +1,8 @@
 package tm2DGame.boards;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import tm2D.Constants;
 import tm2DGame.CarComponent;
@@ -11,9 +13,7 @@ import tm2DGame.terrain.Terrain;
 
 public abstract class AbstractBoard implements Constants {
 
-	protected static final int frame = 40;
-
-	protected CarComponent voiture;
+	protected List<IPlayer> players;
 
 	protected Circuit circuit;
 
@@ -21,44 +21,57 @@ public abstract class AbstractBoard implements Constants {
 
 	int level = 1;
 
-	public boolean advance() {
-		voiture.accelerate(frame);
-		if (voiture.isRotate()) {
-			voiture.turn();
+	public boolean advance(int frame) {
+
+		for (IPlayer player : players) {
+			CarComponent car = player.getCar();
+			player.getAction().getCarBehavior().accept(car);
+			car.accelerate(frame);
+
+			if (car.isRotate()) {
+				car.turn();
+			}
+			car.rotate(frame);
+			car.move();
+			car.position();
+			car.calculateArea();
 		}
-		voiture.rotate(frame);
-		voiture.move();
-		voiture.position();
-		voiture.calculateArea();
 		return collision();
 	}
 
 	public boolean collision() {
-		final List<Terrain> collisions = circuit.getCollisionTerrains(voiture);
-		double[] speedCoefs = new double[collisions.size()];
-		int i = 0;
-		for (Terrain terrain : collisions) {
-			if (terrain instanceof Mur) {
-				voiture.initPosition();
-			} else if (terrain.isEnd()) {
-				return true;
-			} else {
-				speedCoefs[i] = terrain.getSpeedDecreaseCoef();
-				i++;
+		for (IPlayer player : players) {
+			CarComponent car = player.getCar();
+			final List<Terrain> collisions = circuit.getCollisionTerrains(car);
+			double[] speedCoefs = new double[collisions.size()];
+			int i = 0;
+			for (Terrain terrain : collisions) {
+				if (terrain instanceof Mur) {
+					car.initPosition();
+				} else if (terrain.isEnd()) {
+					return true;
+				} else {
+					speedCoefs[i] = terrain.getSpeedDecreaseCoef();
+					i++;
+				}
 			}
-		}
-		if (!collisions.isEmpty()) {
-			double sum = 0;
-			for (int j = 0; j < speedCoefs.length; j++) {
-				sum += speedCoefs[j];
+			if (!collisions.isEmpty()) {
+				double sum = 0;
+				for (int j = 0; j < speedCoefs.length; j++) {
+					sum += speedCoefs[j];
+				}
+				car.setSpeedDecreaseCoef(sum / speedCoefs.length);
 			}
-			voiture.setSpeedDecreaseCoef(sum / speedCoefs.length);
 		}
 		return false;
 	}
 
-	public CarComponent getVoiture() {
-		return voiture;
+	public List<CarComponent> getCars() {
+		return Collections.unmodifiableList(players.stream().map(IPlayer::getCar).collect(Collectors.toList()));
+	}
+
+	public List<IPlayer> getPlayers() {
+		return players;
 	}
 
 	public Circuit getCircuit() {

@@ -6,43 +6,40 @@ import java.util.List;
 import ia.ga.core.EvolutionAlgorithm;
 import ia.ga.core.GeneticAlgorithmTemplate;
 import ia.ga.impl.SimpleEvolutionAlgorithm;
-import tm2DGame.CarComponent;
-import tm2DGame.GameBoard;
+import tm2DGame.boards.AbstractBoard;
+import tm2DGame.boards.RealGameBoard;
 
 public class CircuitSolution {
 
+	public final AbstractBoard gameBoard;
+
 	private static final int ACTION_SIZE = 3;
 
-  private static final int POPULATION_SIZE = 100;
+	private static final int POPULATION_SIZE = 50;
 
-  private static final int MAX_GENERATION = 30;
-
-  public final GameBoard gameBoard;
-
-	private CarComponent car;
+	private static final int MAX_GENERATION = 30;
 
 	private static final double CROSSOVER_RATE = 0.3;
 
-	private static final double MUTATION_RATE = 0.1;
+	private static final double MUTATION_RATE = 0.4;
 
 	private static final int SELECTION_SIZE = 10;
-	
+
 	private final GeneticAlgorithmTemplate<KeyEventGame, BehaviorIndividual> algorithm;
 
-	public CircuitSolution(GameBoard gameBoard, CarComponent car) {
-		this.car = new CarComponent(car);
+	public CircuitSolution(RealGameBoard gameBoard, int carIndex, int frame) {
 		this.gameBoard = gameBoard;
-		CarFitnessCalculator fitnessCalc = new CarFitnessCalculator(gameBoard, car);
-		EvolutionAlgorithm<KeyEventGame, BehaviorIndividual> evolutionAlgo = new SimpleEvolutionAlgorithm<>(CROSSOVER_RATE,
-        MUTATION_RATE, SELECTION_SIZE, fitnessCalc, BehaviorIndividual.class);
-		algorithm = new GeneticAlgorithmTemplate<>(fitnessCalc, evolutionAlgo , BehaviorIndividual.class, MAX_GENERATION,
+		CarFitnessCalculator fitnessCalc = new CarFitnessCalculator(gameBoard, carIndex, frame);
+
+		EvolutionAlgorithm<KeyEventGame, BehaviorIndividual> evolutionAlgo = new SimpleEvolutionAlgorithm<>(
+				CROSSOVER_RATE, MUTATION_RATE, SELECTION_SIZE, fitnessCalc, BehaviorIndividual.class);
+		algorithm = new GeneticAlgorithmTemplate<>(fitnessCalc, evolutionAlgo, BehaviorIndividual.class, MAX_GENERATION,
 				POPULATION_SIZE);
 	}
 
 	public List<KeyEventGame> call()
 			throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-
-	  return algorithm.getSolution().subList(0, ACTION_SIZE);
+		return algorithm.getSolution().subList(0, ACTION_SIZE);
 	}
 
 }

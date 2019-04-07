@@ -1,9 +1,13 @@
 package tm2DGame;
 
-import ia.ga.impl.car.KeyEventGame;
 import tm2D.Constants;
 
 public class PlayerCarComponent extends CarComponent implements Constants {
+
+	int keyUp;
+	int keyDown;
+	int keyLeft;
+	int keyRight;
 
 	public PlayerCarComponent(Voiture voiture) {
 		super(voiture);
@@ -13,37 +17,39 @@ public class PlayerCarComponent extends CarComponent implements Constants {
 		super((CarComponent) voiture);
 	}
 
-	@Override
-	public void initPosition(int startX, int startY) {
-		super.initPosition(startX, startY);
-	}
-
 	public void keyPressed(int key) {
-		if (key == this.getKeyUp()) {
+		if (key == this.keyUp) {
 			this.setDirection(1);
 			this.setAccelerate(true);
 		}
-		if (key == this.getKeyDown()) {
+		if (key == this.keyDown) {
 			this.setDirection(-1);
 			this.setAccelerate(true);
 		}
-		if (key == this.getKeyRight()) {
+		if (key == this.keyRight) {
 			this.setRotateDirection(1);
 			this.setRotate(true);
 		}
-		if (key == this.getKeyLeft()) {
+		if (key == this.keyLeft) {
 			this.setRotateDirection(-1);
 			this.setRotate(true);
 		}
 	}
 
 	public void keyReleased(int key) {
-
-		if (key == this.getKeyUp() || key == this.getKeyDown()) {
+		if (key == this.keyUp || key == this.keyDown) {
 			this.setAccelerate(false);
 		}
-		if (key == this.getKeyRight() || key == this.getKeyLeft()) {
+		if (key == this.keyRight || key == this.keyLeft) {
 			this.setRotate(false);
 		}
+	}
+
+	public void setKeys(int up, int down, int left, int right) {
+		this.keyUp = up;
+		this.keyDown = down;
+		this.keyLeft = left;
+		this.keyRight = right;
+
 	}
 }

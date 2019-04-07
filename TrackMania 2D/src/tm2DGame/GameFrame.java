@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
+import tm2DGame.boards.RealGameBoard;
+
 @SuppressWarnings("serial")
 public class GameFrame extends JFrame {
 
@@ -11,7 +13,7 @@ public class GameFrame extends JFrame {
 		this.setTitle("TrackMania 2D");
 		this.setSize(800, 635);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.add(new GameBoard(this, cars));
+		this.add(new BoardPanel(this, new RealGameBoard(cars)));
 		this.setVisible(true);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);

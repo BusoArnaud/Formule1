@@ -1,27 +1,32 @@
 package ia.ga.impl.car;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import ia.ga.core.FitnessCalc;
 import ia.ga.core.Individual;
 import tm2DGame.CarComponent;
-import tm2DGame.GameBoard;
+import tm2DGame.SimulationPlayer;
+import tm2DGame.boards.AbstractBoard;
 import tm2DGame.boards.SimulationBoard;
 import tm2DGame.terrain.Terrain;
 
 public class CarFitnessCalculator implements FitnessCalc<KeyEventGame> {
 
-	private final GameBoard realBoard;
+	private final AbstractBoard realBoard;
 
 	private final SimulationBoard simulationBoard;
 
-	private CarComponent voiture;
-	
+	private final int frame;
+
+	private int carIndex;
+
 	final List<Terrain> astarPath;
 
-	public CarFitnessCalculator(GameBoard gameBoard, CarComponent car) {
-		this.voiture = car;
+	public CarFitnessCalculator(AbstractBoard gameBoard, int carIndex, int frame) {
+		this.frame = frame;
+		this.carIndex = carIndex;
 		this.simulationBoard = new SimulationBoard(gameBoard);
 		this.realBoard = gameBoard;
 		this.astarPath = gameBoard.getAstarPath();
@@ -32,16 +37,17 @@ public class CarFitnessCalculator implements FitnessCalc<KeyEventGame> {
 	@Override
 	public Integer getFitness(Individual<KeyEventGame> individual) {
 		// copy the original car
-		voiture = new CarComponent(realBoard.getVoiture().getCar());
-		simulationBoard.setVoiture(voiture);
+		CarComponent car = new CarComponent(realBoard.getCars().get(carIndex));
+		final SimulationPlayer player = new SimulationPlayer(car);
+		simulationBoard.setVoiture(Collections.singletonList(player));
 
 		for (KeyEventGame play : individual.getChromosome()) {
-			play.carBehavior.accept(voiture);
-			if (simulationBoard.advance()) {
+			player.setAction(play);
+			if (simulationBoard.advance(frame)) {
 				return simulationBoard.getAstarPath().size() + 1;
 			}
 		}
-		Terrain carTerrain = simulationBoard.getCircuit().getTerrain(voiture.getpX(), voiture.getpY());
+		Terrain carTerrain = simulationBoard.getCircuit().getTerrain(car.getpX(), car.getpY());
 
 		Optional<Terrain> minTerrain = simulationBoard.getCircuit().getAdjacentTiles(carTerrain, 3).stream()
 				.filter(tile -> simulationBoard.getAstarSet().contains(tile))

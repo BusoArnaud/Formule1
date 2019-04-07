@@ -1,58 +1,52 @@
 package tm2DGame;
 
-import java.awt.Image;
-import java.awt.Rectangle;
-import java.awt.geom.Path2D;
 import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
-import java.util.List;
+import java.util.Queue;
 
 import ia.ga.impl.car.CircuitSolution;
 import ia.ga.impl.car.KeyEventGame;
+import tm2DGame.boards.RealGameBoard;
 
-public class IaCarPlayer implements IPlayer{
+public class IaCarPlayer implements IPlayer {
 
 	CarComponent car;
-	private int count;
-	private LinkedList<KeyEventGame> actions;
+	final int carIndex;
+	private long count;
+	private Queue<KeyEventGame> actions = new LinkedList<>();
 	CircuitSolution gaAlgorithm;
+	private KeyEventGame currentAction;
+	private final int frequency = 10;
 
-	public IaCarPlayer(CarComponent car, GameBoard gameBoard) {
+	public IaCarPlayer(CarComponent car, int carIndex) {
+		this.carIndex = carIndex;
 		this.car = car;
-		count = 0;
-		gaAlgorithm = new CircuitSolution(gameBoard, car);
 	}
 
-	public void  updateAlgorithm(GameBoard gameBoard){
-		gaAlgorithm = new CircuitSolution(gameBoard, car);
+	public void init(RealGameBoard gameBoard, int frame) {
+		gaAlgorithm = new CircuitSolution(gameBoard, carIndex, frame);
+		count = 0;
 	}
 
 	@Override
 	public KeyEventGame getAction() {
-		KeyEventGame action = KeyEventGame.UP;
-		if (count == 0) {
-			if (actions == null || actions.isEmpty()) {
-			
+		if (count % frequency == 0) {
+			if (actions.isEmpty()) {
 				try {
 					long start = System.currentTimeMillis();
-					actions = new LinkedList<>(gaAlgorithm.call());
+					actions.addAll(gaAlgorithm.call());
 					System.out.println(System.currentTimeMillis() - start);
-				} catch (InstantiationException | IllegalAccessException |
-					InvocationTargetException
-					| NoSuchMethodException e) {
+				} catch (InstantiationException | IllegalAccessException | InvocationTargetException
+						| NoSuchMethodException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
-			//actions.poll().getCarBehavior().accept(car);
-			// astar.setCarTerrain(circuit.getTerrain(voiture1.getpX(),
-			// voiture1.getpY()));
-			// new Thread(()-> path = astar.call()).start();
-			action = actions.poll();
+			currentAction = actions.poll();
 		}
-		
-		count = (count + 1) % 5;
-		return action;
+
+		count++;
+		return currentAction;
 	}
 
 	@Override

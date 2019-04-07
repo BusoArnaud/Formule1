@@ -1,6 +1,5 @@
 package tm2DGame;
 
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ public class Circuit {
 	
 	private int height = 60;
 	
-	Terrain[][] circuitMatrix = new Terrain[width][height];
+	private Terrain[][] circuitMatrix = new Terrain[width][height];
 
 	private final List<Terrain> endTerrains = new ArrayList<>();
 
@@ -51,15 +50,6 @@ public class Circuit {
 
 		} catch (Exception ex) {
 			System.out.println(ex);
-		}
-	}
-
-	public void paint(Graphics2D g2d) {
-		for (int i = 0; i < circuitMatrix.length; i++) {
-			for (int j = 0; j < circuitMatrix[i].length; j++) {
-				g2d.drawImage(circuitMatrix[i][j].getImage(), circuitMatrix[i][j].getX(), circuitMatrix[i][j].getY(),
-						null);
-			}
 		}
 	}
 
@@ -130,6 +120,10 @@ public class Circuit {
 
 	public Terrain getTerrain(double x, double y) {
 		return circuitMatrix[(int) x / 10][(int) y / 10];
+	}
+	
+	public Terrain[][] getMatrix(){
+		return this.circuitMatrix;
 	}
 
 }

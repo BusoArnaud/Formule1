@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import tm2DGame.GameBoard;
+import tm2DGame.BoardPanel;
 
 @SuppressWarnings("serial")
 public class MenuEnd extends JFrame implements ActionListener {

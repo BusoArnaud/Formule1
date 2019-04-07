@@ -28,11 +28,6 @@ public class CarComponent implements Constants{
 	double pY;
 	double startX;
 	double startY;
-
-	int keyUp;
-	int keyDown;
-	int keyLeft;
-	int keyRight;
 	
 	Path2D area;
 
@@ -89,39 +84,6 @@ public class CarComponent implements Constants{
 		speed = 0;
 		keyUse = null;
 		speedDecreaseCoef = 1d;
-	}
-
-	public void setKeys(int up, int down, int left, int right){
-		this.keyUp = up;
-		this.keyDown = down;
-		this.keyLeft = left;
-		this.keyRight = right;
-
-	}
-
-	/**
-	 * @return the keyDown
-	 */
-	public int getKeyDown() {
-		return keyDown;
-	}
-	/**
-	 * @return the keyLeft
-	 */
-	public int getKeyLeft() {
-		return keyLeft;
-	}
-	/**
-	 * @return the keyRight
-	 */
-	public int getKeyRight() {
-		return keyRight;
-	}
-	/**
-	 * @return the keyUp
-	 */
-	public int getKeyUp() {
-		return keyUp;
 	}
 
 	public Rectangle getBounds() {
@@ -254,10 +216,6 @@ public class CarComponent implements Constants{
 
 	public int getImageY() {
 		return (int) (this.pY - this.voiture.getiVoiture().getIconHeight() / 2.0);
-	}
-
-	public void setKey(String newKey) {
-		this.keyUse = newKey;
 	}
 
 	public double getSpeedFrame(int frame){
