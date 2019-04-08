@@ -39,8 +39,8 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 
 	private Circuit circuit;
 	
-	IPlayer voiture1;
-	IPlayer voiture2;
+	IPlayer player1;
+	IPlayer player2;
 	List<IPlayer> cars;
 	
 	Font levelFont = new Font("SansSerif", Font.BOLD, 15);
@@ -58,16 +58,16 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 
 	public GameBoard(Frame gF, List<IPlayer> playercars) {
 		this.cars = new ArrayList<>();
-		this.voiture1 = playercars.get(0);
-		this.voiture1.initPosition(55, 550);
-		this.voiture1.setKeys(KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT);
-		this.cars.add(this.voiture1);
+		this.player1 = playercars.get(0);
+		this.player1.getCar().initPosition(55, 550);
+		this.player1.getCar().setKeys(KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT);
+		this.cars.add(this.player1);
 
 		if (playercars.size() == 2) {
-			this.voiture2 = playercars.get(1);
-			this.voiture2.initPosition(40, 540);
-			this.voiture2.setKeys(KeyEvent.VK_Z, KeyEvent.VK_S, KeyEvent.VK_Q, KeyEvent.VK_D);
-			this.cars.add(voiture2);
+			this.player2 = playercars.get(1);
+			this.player2.getCar().initPosition(40, 540);
+			this.player2.getCar().setKeys(KeyEvent.VK_Z, KeyEvent.VK_S, KeyEvent.VK_Q, KeyEvent.VK_D);
+			this.cars.add(player2);
 		}
 
 
@@ -80,7 +80,7 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 	}
 
 	public void loadTrack() {
-		this.cars.forEach(IPlayer::initPosition);
+		this.cars.stream().map(IPlayer::getCar).forEach(CarComponent::initPosition);
 		try {			FileReader fr = new FileReader(RELATIVE_PATH_TRACKS + "Track" + level);
 
 			circuit = new Circuit(fr);
@@ -119,7 +119,7 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 		if(showAstar){
 			path.stream().forEach(terr->g.drawRect(terr.getX(), terr.getY(), 10, 10));
 		}
-		for(IPlayer car :cars){
+		cars.stream().map(IPlayer::getCar).forEach(car -> {
 			Graphics2D g2d = (Graphics2D) g.create();
 			g2d.setColor(Color.black);	
 			g2d.rotate(car.getCurrentAngle(), car.getpX(), car.getpY());
@@ -127,12 +127,12 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 
 			g2d.dispose();
 //			debugCollision(g, car);
-		}
+		});
 	}
 
-	private void debugCollision(Graphics g, IPlayer car) {
+	private void debugCollision(Graphics g, IPlayer player) {
 		Graphics2D g2d2 = (Graphics2D) g.create();
-		Path2D a1 = car.getArea();
+		Path2D a1 = player.getCar().getArea();
 		g2d2.setColor(Color.RED);
 		g2d2.fill(a1);
 
@@ -140,8 +140,8 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 	}
 
 	public void nextTrack() {
-
-		for(IPlayer car :cars){
+		
+		cars.stream().map(IPlayer::getCar).forEach(car -> {
 			Rectangle voitureRec;
 			voitureRec = car.getBounds();
 
@@ -158,11 +158,11 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 					break;
 				}
 			}
-		}
+		});
 	}
 
 	public void collision() {
-		cars.forEach(car -> {
+		cars.stream().map(IPlayer::getCar).forEach(car -> {
 			List<Double> speedCoefs = new ArrayList<>();
 			List<Terrain> collisions = circuit.getCollisionTerrains(car);
 			for (Terrain terrain : collisions) {
@@ -205,14 +205,12 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 //		count = (count + 1) % 10;
 
 		currentTime += frame + .0;
-		cars.forEach(car -> {
+		cars.stream().map(IPlayer::getCar).forEach(car -> {
 			car.accelerate(frame);
 
 			if (car.isRotate()) {
 				car.turn();
 			}
-		});
-		cars.forEach(car -> {
 			car.rotate(frame);
 			car.move();
 			car.position();
@@ -227,8 +225,8 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 	@Override
 	public void keyPressed(KeyEvent arg0) {
 		int key = arg0.getKeyCode();
-		cars.forEach(car -> {
-			car.keyPressed(key);
+		cars.stream().map(IPlayer::getCar).forEach(car -> {
+			((PlayerCarComponent)car).keyPressed(key);
 
 		});
 	}
@@ -239,7 +237,7 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 		int key = arg0.getKeyCode();
 
 		if (key == KeyEvent.VK_R) {
-			cars.forEach(IPlayer::initPosition);
+			cars.stream().map(IPlayer::getCar).forEach(CarComponent::initPosition);
 			nombreCoup += 10;
 
 		} else if (key == KeyEvent.VK_ESCAPE) {
@@ -250,8 +248,8 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 		} else if (key == KeyEvent.VK_I) {
 			showAstar = !showAstar;
 		}
-		cars.stream().forEach(car -> {
-			car.keyReleased(key);
+		cars.stream().map(IPlayer::getCar).forEach(car -> {
+			((PlayerCarComponent) car).keyReleased(key);
 		});
 
 		repaint();
@@ -266,7 +264,7 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
   }
 
   public IPlayer getVoiture() {
-    return this.voiture1;
+    return this.player1;
   }
 
   public Circuit getCircuit() {

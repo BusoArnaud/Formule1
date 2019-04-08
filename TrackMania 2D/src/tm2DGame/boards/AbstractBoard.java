@@ -14,7 +14,7 @@ public abstract class AbstractBoard implements Constants {
 
 	protected static final int frame = 40;
 
-	protected IPlayer voiture;
+	protected CarComponent voiture;
 
 	protected Circuit circuit;
 
@@ -54,7 +54,7 @@ public abstract class AbstractBoard implements Constants {
 		return false;
 	}
 
-	public IPlayer getVoiture() {
+	public CarComponent getVoiture() {
 		return voiture;
 	}
 

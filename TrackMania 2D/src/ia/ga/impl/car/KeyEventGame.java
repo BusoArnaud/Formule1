@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Consumer;
 
+import tm2DGame.CarComponent;
 import tm2DGame.IPlayer;
 
 public enum KeyEventGame {
@@ -52,15 +53,15 @@ public enum KeyEventGame {
 
 	private static List<KeyEventGame> allActions = Arrays.asList(KeyEventGame.values());
 
-	Consumer<IPlayer> carBehavior;
+	Consumer<CarComponent> carBehavior;
 
 	private static Random rand = new Random();
 
-	private KeyEventGame(Consumer<IPlayer> carBehavior) {
+	private KeyEventGame(Consumer<CarComponent> carBehavior) {
 		this.carBehavior = carBehavior;
 	}
 
-	public Consumer<IPlayer> getCarBehavior() {
+	public Consumer<CarComponent> getCarBehavior() {
 		return this.carBehavior;
 	}
 

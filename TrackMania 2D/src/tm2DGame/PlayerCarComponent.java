@@ -1,23 +1,23 @@
 package tm2DGame;
 
+import ia.ga.impl.car.KeyEventGame;
 import tm2D.Constants;
 
-public class PlayerCarComponent extends CarComponent implements Constants, IPlayer {
-
+public class PlayerCarComponent extends CarComponent implements Constants {
 
 	public PlayerCarComponent(Voiture voiture) {
 		super(voiture);
 	}
 
 	public PlayerCarComponent(IPlayer voiture) {
-		super((CarComponent)voiture);
+		super((CarComponent) voiture);
 	}
 
 	@Override
 	public void initPosition(int startX, int startY) {
 		super.initPosition(startX, startY);
 	}
-	@Override
+
 	public void keyPressed(int key) {
 		if (key == this.getKeyUp()) {
 			this.setDirection(1);
@@ -34,12 +34,11 @@ public class PlayerCarComponent extends CarComponent implements Constants, IPlay
 		if (key == this.getKeyLeft()) {
 			this.setRotateDirection(-1);
 			this.setRotate(true);
-		}	
+		}
 	}
 
-	@Override
 	public void keyReleased(int key) {
-		
+
 		if (key == this.getKeyUp() || key == this.getKeyDown()) {
 			this.setAccelerate(false);
 		}
@@ -47,5 +46,4 @@ public class PlayerCarComponent extends CarComponent implements Constants, IPlay
 			this.setRotate(false);
 		}
 	}
-	
 }

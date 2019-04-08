@@ -10,11 +10,11 @@ public class SimulationBoard extends AbstractBoard {
 
 	public SimulationBoard(GameBoard board) {
 		this.circuit = board.getCircuit();
-		this.voiture = board.getVoiture();
+		this.voiture = board.getVoiture().getCar();
 		this.astarPath = board.getAstarPath();
 	}
 
-	public void setVoiture(IPlayer voiture) {
+	public void setVoiture(CarComponent voiture) {
 		this.voiture = voiture;
 	}
 

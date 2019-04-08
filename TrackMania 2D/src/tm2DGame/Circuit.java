@@ -71,7 +71,7 @@ public class Circuit {
 		return circuitMatrix[5][55];
 	}
 	
-	public List<Terrain> getCollisionTerrains(IPlayer car) {
+	public List<Terrain> getCollisionTerrains(CarComponent car) {
 		final List<Terrain> collisionTerrains = new ArrayList<>();
 		for (int i = Math.max((int) car.getBounds().getMinX() / 10, 0); i < Math.min(car.getBounds().getMaxX() / 10,
 				circuitMatrix.length); i++) {
