@@ -19,6 +19,7 @@ import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import ia.ga.impl.car.KeyEventGame;
 import pathfinding.Astar;
 import tm2D.Constants;
 import tm2D.MenuEnd;
@@ -30,29 +31,29 @@ import tm2DGame.terrain.Terrain;
 public class GameBoard extends JPanel implements KeyListener, ActionListener, Constants {
 	int frame = 40;
 	Timer timer = new Timer(frame, this);
-	double currentTime=0;
+	double currentTime = 0;
 
 	int level = 1;
 	int nombreCoup = 0;
-	
+
 	public static int nombreCoupT;
 
 	private Circuit circuit;
-	
+
 	IPlayer player1;
 	IPlayer player2;
 	List<IPlayer> cars;
-	
+
 	Font levelFont = new Font("SansSerif", Font.BOLD, 15);
 	Frame gFrame;
-	
+
 	private List<Terrain> path;
-	
-//	private Astar astar;
-	
-//	Queue<KeyEventGame> actions;
-//
-//	CircuitSolution gaAlgorithm;
+
+	// private Astar astar;
+
+	// Queue<KeyEventGame> actions;
+	//
+	// CircuitSolution gaAlgorithm;
 
 	boolean showAstar = false;
 
@@ -64,12 +65,12 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 		this.cars.add(this.player1);
 
 		if (playercars.size() == 2) {
-			this.player2 = playercars.get(1);
+			// this.player2 = playercars.get(1);
+			this.player2 = new IaCarPlayer(playercars.get(1).getCar(), this);
 			this.player2.getCar().initPosition(40, 540);
 			this.player2.getCar().setKeys(KeyEvent.VK_Z, KeyEvent.VK_S, KeyEvent.VK_Q, KeyEvent.VK_D);
 			this.cars.add(player2);
 		}
-
 
 		loadTrack();
 
@@ -81,13 +82,14 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 
 	public void loadTrack() {
 		this.cars.stream().map(IPlayer::getCar).forEach(CarComponent::initPosition);
-		try {			FileReader fr = new FileReader(RELATIVE_PATH_TRACKS + "Track" + level);
+		try {
+			FileReader fr = new FileReader(RELATIVE_PATH_TRACKS + "Track" + level);
 
 			circuit = new Circuit(fr);
-			
+
 			new Thread(() -> {
 				path = new Astar(circuit).call();
-//				gaAlgorithm = new CircuitSolution(this);
+				// gaAlgorithm = new CircuitSolution(this);
 			}).start();
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -95,9 +97,10 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 
 		repaint();
 	}
-	
+
 	int mouseX = 0;
 	int mouseY = 0;
+
 	@Override
 	public void paint(Graphics g) {
 
@@ -111,22 +114,22 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 		StringBuilder legends = new StringBuilder();
 		legends.append("Level : ");
 		legends.append(level);
-		legends.append("|| time : " );
-		legends.append(Math.floor(currentTime/1000));
-		
+		legends.append("|| time : ");
+		legends.append(Math.floor(currentTime / 1000));
+
 		g.drawString(legends.toString(), 15, 585);
 		g.setColor(Color.cyan);
-		if(showAstar){
-			path.stream().forEach(terr->g.drawRect(terr.getX(), terr.getY(), 10, 10));
+		if (showAstar) {
+			path.stream().forEach(terr -> g.drawRect(terr.getX(), terr.getY(), 10, 10));
 		}
 		cars.stream().map(IPlayer::getCar).forEach(car -> {
 			Graphics2D g2d = (Graphics2D) g.create();
-			g2d.setColor(Color.black);	
+			g2d.setColor(Color.black);
 			g2d.rotate(car.getCurrentAngle(), car.getpX(), car.getpY());
 			g2d.drawImage(car.getImage(), car.getImageX(), car.getImageY(), null);
 
 			g2d.dispose();
-//			debugCollision(g, car);
+			// debugCollision(g, car);
 		});
 	}
 
@@ -140,7 +143,7 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 	}
 
 	public void nextTrack() {
-		
+
 		cars.stream().map(IPlayer::getCar).forEach(car -> {
 			Rectangle voitureRec;
 			voitureRec = car.getBounds();
@@ -152,7 +155,7 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 						@SuppressWarnings("unused")
 						MenuEnd f = new MenuEnd(currentTime);
 						gFrame.dispose();
-					}else{
+					} else {
 						loadTrack();
 					}
 					break;
@@ -172,40 +175,45 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 					speedCoefs.add(terrain.getSpeedDecreaseCoef());
 				}
 			}
-			if(collisions.size() != 0 ){
+			if (collisions.size() != 0) {
 				double speedCoef = speedCoefs.stream().mapToDouble(d -> d.doubleValue()).sum() / speedCoefs.size();
 				car.setSpeedDecreaseCoef(speedCoef);
 			}
 		});
 	}
-//for testing the ia. To REMOVE ONCE IA IMPLEMENTED
-//	int count = 0;
-	
+	// for testing the ia. To REMOVE ONCE IA IMPLEMENTED
+	// int count = 0;
+
 	@Override
 	public void actionPerformed(ActionEvent ev) {
 
-//		if (count == 0) {
-//			if (actions == null || actions.isEmpty()) {
-//
-//				try {
-//					long start = System.currentTimeMillis();
-//					actions = new LinkedList<>(gaAlgorithm.call().subList(0, 3));
-//					System.out.println(System.currentTimeMillis() - start);
-//				} catch (InstantiationException | IllegalAccessException | InvocationTargetException
-//						| NoSuchMethodException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//			}
-//			actions.poll().getCarBehavior().accept(voiture1);
-////      astar.setCarTerrain(circuit.getTerrain(voiture1.getpX(), voiture1.getpY()));
-//			// new Thread(()-> path = astar.call()).start();
-//		}
-//
-//		count = (count + 1) % 10;
+		// if (count == 0) {
+		// if (actions == null || actions.isEmpty()) {
+		//
+		// try {
+		// long start = System.currentTimeMillis();
+		// actions = new LinkedList<>(gaAlgorithm.call().subList(0, 3));
+		// System.out.println(System.currentTimeMillis() - start);
+		// } catch (InstantiationException | IllegalAccessException |
+		// InvocationTargetException
+		// | NoSuchMethodException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		// }
+		// actions.poll().getCarBehavior().accept(voiture1);
+		//// astar.setCarTerrain(circuit.getTerrain(voiture1.getpX(),
+		// voiture1.getpY()));
+		// // new Thread(()-> path = astar.call()).start();
+		// }
+		//
+		// count = (count + 1) % 10;
 
 		currentTime += frame + .0;
-		cars.stream().map(IPlayer::getCar).forEach(car -> {
+		cars.stream().forEach(player -> {
+			CarComponent car = player.getCar();
+			KeyEventGame action = player.getAction();
+			action.getCarBehavior().accept(car);
 			car.accelerate(frame);
 
 			if (car.isRotate()) {

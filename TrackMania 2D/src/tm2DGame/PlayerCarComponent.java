@@ -9,7 +9,7 @@ public class PlayerCarComponent extends CarComponent implements Constants {
 		super(voiture);
 	}
 
-	public PlayerCarComponent(IPlayer voiture) {
+	public PlayerCarComponent(CarComponent voiture) {
 		super((CarComponent) voiture);
 	}
 
