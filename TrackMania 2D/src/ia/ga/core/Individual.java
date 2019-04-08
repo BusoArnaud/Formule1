@@ -10,7 +10,7 @@ public abstract class Individual<T> {
 
 	private final int genomeLength;
 
-	private Integer fitness;
+	protected Integer fitness;
 
 	protected Individual() {
 		this.genomeLength = lengthSupplier();

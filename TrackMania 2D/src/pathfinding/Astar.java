@@ -57,7 +57,7 @@ public class Astar implements Callable<List<Terrain>>{
     if(carTerrain == null) {
       carTerrain = circuit.getStart();
     }
-    openList.add(new Node(carTerrain, null, gSupplier, hSupplier));
+    openList.add(new Node(carTerrain, null, gSupplier, hSupplier, false));
     while (!isEmpty(openList)) {
       Node currentNode = openList.poll();
       closed.add(currentNode.getTerrain());
@@ -82,9 +82,11 @@ public class Astar implements Callable<List<Terrain>>{
    * @param closed   the closed
    */
   private void addValidAdjacentNodesToOpen(Node node, PriorityQueue<Node> openList, Set<Terrain> closed) {
-    for (Terrain terrain : circuit.getAdjacentTiles(node.getTerrain())) {
-      if (!terrain.isBlock() && !closed.contains(terrain)) {
-        Node newNode = new Node(terrain, node, gSupplier, hSupplier);
+    List<Terrain> adjacents = circuit.getAdjacentTiles(node.getTerrain());
+    boolean hasBlock = adjacents.stream().anyMatch(Terrain::isBlock);
+    for (Terrain terrain : adjacents) {
+      if (terrain != null && !terrain.isBlock() && !closed.contains(terrain)) {
+        Node newNode = new Node(terrain, node, gSupplier, hSupplier, hasBlock);
         Optional<Node> existingTerrain = openList.stream().filter(newNode::equals).findFirst();
         if (existingTerrain.isPresent() && existingTerrain.get().getG() > newNode.getG()) {
           openList.remove(newNode);

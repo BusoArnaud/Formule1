@@ -50,24 +50,35 @@ public class SubjectEvolutionAlgorithm<T, K extends Individual<GeneComplex>> ext
 			// well that will be our next generation with all the radioactive babies
 			newPopulation.add(newIndividual);
 		}
+		newPopulation.add(pop.getFittest());
 
 		return newPopulation;
 	}
 
 	@Override
-	protected BehaviorSubject crossover(BehaviorSubject indiv1, BehaviorSubject indiv2) {
+	protected BehaviorSubject crossover(BehaviorSubject parent1, BehaviorSubject parent2) {
 
 		try {
 			BehaviorSubject newSol = type.getConstructor().newInstance();
-			// Preparing the baby
-			for (int i = 0; i < indiv1.size(); i++) {
-				// DNA mixing
-				if (rand.nextDouble() <= crossoverRate) {
-					newSol.add(indiv1.getGene(i));
-				} else {
-					newSol.add(indiv2.getGene(i));
-				}
+			newSol.add(new GeneComplex());
+			 
+			if (rand.nextDouble() >= crossoverRate) {
+				newSol.getGene(0).setDistanceEval(parent1.getGene(0).getDistanceEval());
+			} else {
+				newSol.getGene(0).setDistanceEval(parent2.getGene(0).getDistanceEval());
 			}
+
+			parent1.getGene(0).getChromosomes().entrySet().forEach(entry -> {
+				if (rand.nextDouble() >= crossoverRate) {
+					newSol.getGene(0).getChromosomes().put(entry.getKey(), entry.getValue());
+				}
+			});
+			parent2.getGene(0).getChromosomes().entrySet().forEach(entry -> {
+				if (rand.nextDouble() < crossoverRate) {
+					newSol.getGene(0).getChromosomes().put(entry.getKey(), entry.getValue());
+				}
+			});
+
 			return newSol;
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
 				| NoSuchMethodException | SecurityException e) {

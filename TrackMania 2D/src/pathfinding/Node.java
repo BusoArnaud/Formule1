@@ -18,10 +18,11 @@ public class Node {
   
   private final double g;
   
-  public Node(Terrain terrain, Node parent, ToDoubleFunction<Terrain> gSupplier, ToDoubleFunction<Terrain> hSupplier) {
+  public Node(Terrain terrain, Node parent, ToDoubleFunction<Terrain> gSupplier, ToDoubleFunction<Terrain> hSupplier, boolean hasBlock) {
     this.terrain = terrain;
     this.parent = parent;
-    this.g = (parent != null? parent.getG() : 0) + gSupplier.applyAsDouble(terrain);
+    double newG = gSupplier.applyAsDouble(terrain);
+    this.g = (parent != null? parent.getG() : 0) +  (hasBlock ? newG * 2 : newG);
     this.h = hSupplier.applyAsDouble(terrain);
     this.f = this.g + this.h;
   }

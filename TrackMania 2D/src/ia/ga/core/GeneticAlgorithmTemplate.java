@@ -13,13 +13,13 @@ import java.util.List;
 //T here is the Gene, K is the individual that has the gene
 public class GeneticAlgorithmTemplate<T, K extends Individual<T>> {
 
-	private FitnessCalc<T> fitnessCalc;
+	protected FitnessCalc<T> fitnessCalc;
 
-	private EvolutionAlgorithm<T, K> evolutionAlgorithm;
+	protected EvolutionAlgorithm<T, K> evolutionAlgorithm;
 
 	private final int maxNumberOfGeneration;
 
-	private final int populationSize;
+	protected final int populationSize;
 
 	private Class<K> clazz;
 
@@ -54,6 +54,7 @@ public class GeneticAlgorithmTemplate<T, K extends Individual<T>> {
 			pop = evolutionAlgorithm.evolvePopulation(pop);
 			fittest = pop.getFittest();
 		}
+		System.out.println("fittest.getFitness()"  + fittest.getFitness() );
 		return new LinkedList<>(fittest.getChromosome());
 	}
 

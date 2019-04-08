@@ -24,7 +24,7 @@ public class MenuMain extends JFrame implements ActionListener {
 
 	private void build() {
 		this.setTitle("TrackMania 2D");
-		this.setSize(300, 300);
+		this.setSize(300, 400);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
 		this.setResizable(false);

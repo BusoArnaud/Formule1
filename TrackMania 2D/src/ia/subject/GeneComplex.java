@@ -7,17 +7,35 @@ import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
+import ia.ga.impl.car.KeyEventGame;
 import tm2D.Constants;
+import tm2DGame.IPlayer;
+import tm2DGame.terrain.Phatom;
+import tm2DGame.terrain.Terrain;
 
 public class GeneComplex implements Constants, Gene {
 
   ThreadLocalRandom random = ThreadLocalRandom.current();
   Map<Double, Chromosome> chromosomes;
+  KeyEventGame key;
   int distanceEval;
   public GeneComplex() {
     this.chromosomes = new HashMap<>();
   }
 
+  /**
+   * @return the key
+   */
+  public KeyEventGame getKey() {
+    return key;
+  }
+
+  /**
+   * @param key the key to set
+   */
+  public void setKey(KeyEventGame key) {
+    this.key = key;
+  }
   /**
    * @return the chromosomes
    */
@@ -40,7 +58,7 @@ public class GeneComplex implements Constants, Gene {
   
   public void init() {
     this.distanceEval = random.nextInt(DISTANCE_MAX);
-    int geneCount = random.nextInt(5) + 1;
+    int geneCount = random.nextInt(ANGLE);
     chromosomes = new HashMap<>();
     for (int i = 0; i < geneCount; i++) {
       addGene();
@@ -55,15 +73,6 @@ public class GeneComplex implements Constants, Gene {
   public GeneComplex(GeneComplex old, double mutationProbability) {
     this.chromosomes = old.chromosomes.entrySet().stream()
         .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-    List<Double> keysAsArray = new ArrayList<>(this.chromosomes.keySet());
-    if (random.nextDouble() < mutationProbability) {
-      if (random.nextInt(2) == 1) {
-        addGene();
-      } else {
-        this.chromosomes.remove(keysAsArray.get(random.nextInt(keysAsArray.size())));
-      }
-
-    }
     if (random.nextDouble() > mutationProbability) {
       this.distanceEval = old.distanceEval;
     } else {
@@ -99,5 +108,41 @@ public class GeneComplex implements Constants, Gene {
     }
     
     return chromosomes.get(targetkey);
+  }
+
+  public double getEval(Terrain dest, IPlayer car) {
+    
+    // this.scoreDistance += distancePathAstar;
+    // System.out.println(scoreDistance);
+    double targetX = (dest.getX() - car.getpX());
+    double targetY = (dest.getY() - car.getpY());
+    float angle = (float) Math.toDegrees(Math.atan2(targetY - 0, targetX - 1));
+    float carAngle = (float) Math.toDegrees(car.getCurrentAngle());
+    double newradian = Math.toRadians((angle - carAngle) % 360) + Math.PI / 2;
+
+    return newradian;
+  }
+
+  public KeyEventGame getActions(Terrain dest, IPlayer car) {
+
+    boolean accelerate = false;
+    boolean rotate = false;
+    int direction = 0;
+    int rotationDirection = 0;
+    Chromosome chromosome = this.eval(getEval(dest, car));
+    if (chromosome == null) {
+      return KeyEventGame.NOTHING;
+    }
+    if (car.getSpeed() < chromosome.getTargetSpeed()) {
+      direction = 1;
+      accelerate = true;
+    } else if (car.getSpeed() > chromosome.getTargetSpeed() + 2) {
+      direction = -1;
+      accelerate = true;
+    }
+    rotationDirection = chromosome.getTargetRotation();
+    rotate = chromosome.getTargetRotation() != 0;
+
+    return KeyEventGame.find(accelerate, rotate, direction, rotationDirection);
   }
 }

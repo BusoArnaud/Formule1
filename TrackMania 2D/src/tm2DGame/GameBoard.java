@@ -16,13 +16,20 @@ import java.awt.geom.Area;
 import java.awt.geom.Path2D;
 import java.io.Console;
 import java.io.FileReader;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import ia.ga.impl.CarSubject.Solution;
+import ia.ga.impl.car.CircuitSolution;
+import ia.ga.impl.car.KeyEventGame;
+import ia.subject.GeneComplex;
 import pathfinding.Astar;
 import tm2D.Constants;
 import tm2D.MenuEnd;
@@ -33,29 +40,44 @@ import tm2DGame.terrain.Terrain;
 @SuppressWarnings("serial")
 public class GameBoard extends JPanel implements KeyListener, ActionListener, MouseListener, Constants {
 	int frame = 40;
-	Timer timer = new Timer(frame, this);
+	public Timer timer = new Timer(frame, this);
 	double currentTime = 0;
-
-	int level = 1;
-	int nombreCoup = 0;
-
-	public static int nombreCoupT;
-
-	private Circuit circuit;
 	
+	protected int level = 1;
+	int nombreCoup = 0;
+	
+	public static int nombreCoupT;
+	
+<<<<<<< HEAD
 	PlayerCarComponent voiture1;
 	PlayerCarComponent voiture2;
 	List<PlayerCarComponent> cars;
+=======
+	protected Circuit circuit;
+	
+	protected IPlayer voiture1;
+	IPlayer voiture2;
+	protected List<IPlayer> cars;
+	protected Solution solution;
+	protected List<GeneComplex> solutions = null;
+	CircuitSolution circuitSolution; 
+	protected int count = 0;
+	boolean simulate = false;
+>>>>>>> solution implementation with multiple track for training, fitness not relevant
 	
 	Font levelFont = new Font("SansSerif", Font.BOLD, 15);
 	Frame gFrame;
-
-	List<Terrain> path;
+	protected List<Terrain> path;
 	boolean showAstar = false;
-
-	public GameBoard(Frame gF, List<IPlayer> playercars) {
+	
+	protected String trackName = "simu";
+	private int levelMax = 8;
+	
+	public GameBoard(Frame gF, List<IPlayer> playercars, boolean simulate) {
 		addMouseListener(this);
+		this.simulate = simulate;
 		this.cars = new ArrayList<>();
+<<<<<<< HEAD
 		this.voiture1 = (PlayerCarComponent) playercars.get(0);
 		this.voiture1.initPosition(55, 550);
 		this.voiture1.setKeys(KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT);
@@ -64,24 +86,68 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Mo
 		if (playercars.size() == 2) {
 			this.voiture2 = (PlayerCarComponent)  playercars.get(1);
 			this.voiture2.initPosition(40, 540);
+=======
+		this.voiture1 = playercars.get(0);
+		// this.voiture1.initPosition(55, 550);
+		this.voiture1.initPosition(390, 280);
+		this.voiture1.setKeys(KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT);
+		this.cars.add(this.voiture1);
+
+		if (playercars.size() == 2 && !simulate) {
+			this.voiture2 = playercars.get(1);
+			//this.voiture2.initPosition(40, 540);
+>>>>>>> solution implementation with multiple track for training, fitness not relevant
 			this.voiture2.setKeys(KeyEvent.VK_Z, KeyEvent.VK_S, KeyEvent.VK_Q, KeyEvent.VK_D);
 			this.cars.add(voiture2);
 		}
 
-		loadTrack();
+		init(gF);
+	}
 
+	protected void init(Frame gF) {
+
+		loadTrack();
+		if (simulate) {
+			solution = new Solution(this);
+			circuitSolution = new CircuitSolution(this);
+		}
 		gFrame = gF;
 		setFocusable(true);
 		addKeyListener(this);
 		timer.start();
+
+		if (this.simulate) {
+			playSimulation();
+		}
+
 	}
 
 	public void loadTrack() {
+<<<<<<< HEAD
 		this.cars.forEach(CarComponent::initPosition);
 		try {
 			FileReader fr = new FileReader(RELATIVE_PATH_TRACKS + "Track" + level);
+=======
+		this.cars.forEach(IPlayer::initPosition);
+		try {
+			FileReader fr = new FileReader(RELATIVE_PATH_TRACKS + trackName + level);
+>>>>>>> solution implementation with multiple track for training, fitness not relevant
 
-			circuit = new Circuit(fr);
+			circuit = new Circuit(fr, 39, 28);
+			path = new Astar(circuit).call();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+		repaint();
+	}
+
+	public void loadTrack(String name) {
+		this.cars.forEach(IPlayer::initPosition);
+		try {
+			FileReader fr = new FileReader(RELATIVE_PATH_TRACKS + name);
+
+			circuit = new Circuit(fr, 39, 28);
 			path = new Astar(circuit).call();
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -121,7 +187,7 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Mo
 			g2d.drawImage(car.getImage(), car.getImageX(), car.getImageY(), null);
 
 			g2d.dispose();
-			debugCollision(g, car);
+			//debugCollision(g, car);
 		}
 	}
 
@@ -143,10 +209,11 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Mo
 			for (Terrain terrain : circuit.getEndTerrains()) {
 				if (voitureRec.intersects(terrain.getBounds())) {
 					level++;
-					if (level == 4) {
+					if (level >= levelMax) {
 						@SuppressWarnings("unused")
 						MenuEnd f = new MenuEnd(currentTime);
 						gFrame.dispose();
+						timer.stop();
 					} else {
 						loadTrack();
 					}
@@ -179,28 +246,11 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Mo
 	
 	@Override
 	public void actionPerformed(ActionEvent ev) {
+		
+		if(this.simulate){
+			// playSimulation();
+		}
 
-//		if (count == 0) {
-//			if (actions == null || actions.isEmpty()) {
-//
-//				try {
-//					long start = System.currentTimeMillis();
-//					actions = new LinkedList<>(gaAlgorithm.call().subList(0, 3));
-//					System.out.println(System.currentTimeMillis() - start);
-//				} catch (InstantiationException | IllegalAccessException | InvocationTargetException
-//						| NoSuchMethodException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//			}
-//			actions.poll().getCarBehavior().accept(voiture1);
-////      astar.setCarTerrain(circuit.getTerrain(voiture1.getpX(), voiture1.getpY()));
-//			// new Thread(()-> path = astar.call()).start();
-//		}
-//
-//		count = (count + 1) % 10;
-
-		currentTime += frame + .0;
 		cars.forEach(car -> {
 			car.accelerate(frame);
 
@@ -218,6 +268,34 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Mo
 		collision();
 		nextTrack();
 		repaint();
+	}
+
+	protected void playSimulation() {
+		if (count == 0) {
+			LinkedList<KeyEventGame> actions = null;
+			if (actions == null || actions.isEmpty()) {
+
+				try {
+					long start = System.currentTimeMillis();
+					solutions = solution.call();
+					actions = new LinkedList<>(solutions.stream().map(GeneComplex::getKey).collect(Collectors.toList()));
+					// actions = new LinkedList<>(circuitSolution.call().subList(0, 3));
+					System.out.println(System.currentTimeMillis() - start);
+				} catch (InstantiationException | IllegalAccessException | InvocationTargetException
+						| NoSuchMethodException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			actions.poll().getCarBehavior().accept(voiture1);
+			// astar.setCarTerrain(circuit.getTerrain(voiture1.getpX(), voiture1.getpY()));
+			// new Thread(()-> path = astar.call()).start();
+		}
+
+		count = (count + 1) % 10;
+
+		currentTime += frame + .0;
+
 	}
 
 	@Override
@@ -257,7 +335,7 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Mo
 	}
 	
   public List<Terrain> getAstarPath() {
-    return Collections.unmodifiableList(this.path);
+    return this.path;
   }
 
   public CarComponent getVoiture() {

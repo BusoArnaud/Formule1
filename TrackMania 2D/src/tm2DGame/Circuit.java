@@ -22,7 +22,17 @@ public class Circuit {
 
 	private Terrain startPoint;
 
-	public Circuit(FileReader fr) {
+	private int startX;
+
+	private int startY;
+
+	public Circuit(FileReader fr, int startX, int startY) {
+		this.startX = startX;
+		this.startY = startY;
+		init(fr);
+	}
+
+	private void init(FileReader fr) {
 		int x = 0;
 		int y = 0;
 		int i = 0;
@@ -58,7 +68,7 @@ public class Circuit {
 	}
 
 	public Terrain getStart() {
-		return circuitMatrix[5][55];
+		return circuitMatrix[startX][startY];
 	}
 	
 	public List<Terrain> getCollisionTerrains(CarComponent car) {

@@ -29,7 +29,7 @@ public class Chromosome implements Constants, Gene {
   public Chromosome(){
     knownAngle = Math.toRadians(random.nextInt(ANGLE) * 22.5);
     targetRotation = ROTATIONS[random.nextInt(3)];
-    targetSpeed = random.nextInt(SPEED_MAX);
+    targetSpeed = random.nextInt(SPEED_MAX) + 1;
   }
 
   private Chromosome(double knownAngle, int targetRotation, int targetSpeed, double mutationProbability){
