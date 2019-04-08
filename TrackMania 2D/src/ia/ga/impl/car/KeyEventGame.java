@@ -47,7 +47,7 @@ public enum KeyEventGame {
 		voiture.setDirection(-1);
 		voiture.setRotateDirection(-1);
 	}), NOTHING(voiture -> {
-		voiture.setAccelerate(true);
+		voiture.setAccelerate(false);
 		voiture.setRotate(false);
 	});
 

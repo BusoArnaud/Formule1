@@ -29,13 +29,13 @@ public class IaCarPlayer implements IPlayer{
 
 	@Override
 	public KeyEventGame getAction() {
-
+		KeyEventGame action = KeyEventGame.UP;
 		if (count == 0) {
 			if (actions == null || actions.isEmpty()) {
 			
 				try {
 					long start = System.currentTimeMillis();
-					actions = new LinkedList<>(gaAlgorithm.call().subList(0, 3));
+					actions = new LinkedList<>(gaAlgorithm.call());
 					System.out.println(System.currentTimeMillis() - start);
 				} catch (InstantiationException | IllegalAccessException |
 					InvocationTargetException
@@ -48,10 +48,11 @@ public class IaCarPlayer implements IPlayer{
 			// astar.setCarTerrain(circuit.getTerrain(voiture1.getpX(),
 			// voiture1.getpY()));
 			// new Thread(()-> path = astar.call()).start();
+			action = actions.poll();
 		}
 		
-		count = (count + 1) % actions.size();
-		return actions.poll();
+		count = (count + 1) % (actions.size() + 1);
+		return action;
 	}
 
 	@Override

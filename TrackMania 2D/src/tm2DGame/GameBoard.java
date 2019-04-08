@@ -155,6 +155,7 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 						@SuppressWarnings("unused")
 						MenuEnd f = new MenuEnd(currentTime);
 						gFrame.dispose();
+						timer.stop();
 					} else {
 						loadTrack();
 					}

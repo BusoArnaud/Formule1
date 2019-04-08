@@ -13,7 +13,7 @@ public class RealCarPlayer implements IPlayer{
 
 	@Override
 	public KeyEventGame getAction() {
-		return KeyEventGame.find(car.isAccelerate(), car.isRotate(), car.getDirection(), car.getRotateDirection());
+		return car.getKeyEventGame();
 	}
 
 	@Override

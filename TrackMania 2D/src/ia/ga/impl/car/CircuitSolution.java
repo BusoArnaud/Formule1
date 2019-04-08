@@ -23,7 +23,7 @@ public class CircuitSolution {
 	private static final int SELECTION_SIZE = 10;
 
 	public CircuitSolution(GameBoard gameBoard, CarComponent car) {
-		this.car = car;
+		this.car = new CarComponent(car);
 		this.gameBoard = gameBoard;
 	}
 
@@ -36,7 +36,7 @@ public class CircuitSolution {
 				CROSSOVER_RATE, MUTATION_RATE, SELECTION_SIZE, fitnessCalc, BehaviorIndividual.class);
 
 		GeneticAlgorithmTemplate<KeyEventGame, BehaviorIndividual> algorithm = new GeneticAlgorithmTemplate<>(
-				fitnessCalc, evolutionAlgo, BehaviorIndividual.class, 20, 15);
+				fitnessCalc, evolutionAlgo, BehaviorIndividual.class, 50, 30);
 
 		return algorithm.getSolution();
 	}
