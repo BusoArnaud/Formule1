@@ -7,9 +7,9 @@ import javax.swing.JFrame;
 @SuppressWarnings("serial")
 public class GameFrame extends JFrame {
 
-	public GameFrame(List<CarComponent> cars) {
+	public GameFrame(List<IPlayer> cars) {
 		this.setTitle("TrackMania 2D");
-		this.setSize(806, 628);
+		this.setSize(800, 635);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.add(new GameBoard(this, cars));
 		this.setVisible(true);

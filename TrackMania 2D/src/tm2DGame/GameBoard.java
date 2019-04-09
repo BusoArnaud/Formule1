@@ -12,17 +12,13 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.Path2D;
 import java.io.FileReader;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import ia.ga.impl.car.CircuitSolution;
 import ia.ga.impl.car.KeyEventGame;
 import pathfinding.Astar;
 import tm2D.Constants;
@@ -35,46 +31,46 @@ import tm2DGame.terrain.Terrain;
 public class GameBoard extends JPanel implements KeyListener, ActionListener, Constants {
 	int frame = 40;
 	Timer timer = new Timer(frame, this);
-	double currentTime=0;
+	double currentTime = 0;
 
 	int level = 1;
 	int nombreCoup = 0;
-	
+
 	public static int nombreCoupT;
 
 	private Circuit circuit;
-	
-	CarComponent voiture1;
-	CarComponent voiture2;
-	List<CarComponent> cars;
-	
+
+	IPlayer player1;
+	IPlayer player2;
+	List<IPlayer> cars;
+
 	Font levelFont = new Font("SansSerif", Font.BOLD, 15);
 	Frame gFrame;
-	
+
 	private List<Terrain> path;
-	
-//	private Astar astar;
-	
-//	Queue<KeyEventGame> actions;
-//
-//	CircuitSolution gaAlgorithm;
+
+	// private Astar astar;
+
+	// Queue<KeyEventGame> actions;
+	//
+	// CircuitSolution gaAlgorithm;
 
 	boolean showAstar = false;
 
-	public GameBoard(Frame gF, List<CarComponent> playercars) {
+	public GameBoard(Frame gF, List<IPlayer> playercars) {
 		this.cars = new ArrayList<>();
-		this.voiture1 = playercars.get(0);
-		this.voiture1.initPosition(55, 550);
-		this.voiture1.setKeys(KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT);
-		this.cars.add(this.voiture1);
+		this.player1 = playercars.get(0);
+		this.player1.getCar().initPosition(55, 550);
+		this.player1.getCar().setKeys(KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT);
+		this.cars.add(this.player1);
 
 		if (playercars.size() == 2) {
-			this.voiture2 = playercars.get(1);
-			this.voiture2.initPosition(40, 540);
-			this.voiture2.setKeys(KeyEvent.VK_Z, KeyEvent.VK_S, KeyEvent.VK_Q, KeyEvent.VK_D);
-			this.cars.add(voiture2);
+			// this.player2 = playercars.get(1);
+			this.player2 = new IaCarPlayer(playercars.get(1).getCar(), this);
+			this.player2.getCar().initPosition(40, 540);
+			this.player2.getCar().setKeys(KeyEvent.VK_Z, KeyEvent.VK_S, KeyEvent.VK_Q, KeyEvent.VK_D);
+			this.cars.add(player2);
 		}
-
 
 		loadTrack();
 
@@ -85,14 +81,15 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 	}
 
 	public void loadTrack() {
-		this.cars.forEach(CarComponent::initPosition);
-		try {			FileReader fr = new FileReader(RELATIVE_PATH_TRACKS + "Track" + level);
+		this.cars.stream().map(IPlayer::getCar).forEach(CarComponent::initPosition);
+		try {
+			FileReader fr = new FileReader(RELATIVE_PATH_TRACKS + "Track" + level);
 
 			circuit = new Circuit(fr);
-			
+
 			new Thread(() -> {
 				path = new Astar(circuit).call();
-//				gaAlgorithm = new CircuitSolution(this);
+				// gaAlgorithm = new CircuitSolution(this);
 			}).start();
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -100,9 +97,10 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 
 		repaint();
 	}
-	
+
 	int mouseX = 0;
 	int mouseY = 0;
+
 	@Override
 	public void paint(Graphics g) {
 
@@ -116,28 +114,28 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 		StringBuilder legends = new StringBuilder();
 		legends.append("Level : ");
 		legends.append(level);
-		legends.append("|| time : " );
-		legends.append(Math.floor(currentTime/1000));
-		
+		legends.append("|| time : ");
+		legends.append(Math.floor(currentTime / 1000));
+
 		g.drawString(legends.toString(), 15, 585);
 		g.setColor(Color.cyan);
-		if(showAstar){
-			path.stream().forEach(terr->g.drawRect(terr.getX(), terr.getY(), 10, 10));
+		if (showAstar) {
+			path.stream().forEach(terr -> g.drawRect(terr.getX(), terr.getY(), 10, 10));
 		}
-		for(CarComponent car :cars){
+		cars.stream().map(IPlayer::getCar).forEach(car -> {
 			Graphics2D g2d = (Graphics2D) g.create();
-			g2d.setColor(Color.black);	
+			g2d.setColor(Color.black);
 			g2d.rotate(car.getCurrentAngle(), car.getpX(), car.getpY());
 			g2d.drawImage(car.getImage(), car.getImageX(), car.getImageY(), null);
 
 			g2d.dispose();
-//			debugCollision(g, car);
-		}
+			// debugCollision(g, car);
+		});
 	}
 
-	private void debugCollision(Graphics g, CarComponent car) {
+	private void debugCollision(Graphics g, IPlayer player) {
 		Graphics2D g2d2 = (Graphics2D) g.create();
-		Path2D a1 = car.getArea();
+		Path2D a1 = player.getCar().getArea();
 		g2d2.setColor(Color.RED);
 		g2d2.fill(a1);
 
@@ -146,7 +144,7 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 
 	public void nextTrack() {
 
-		for(CarComponent car :cars){
+		cars.stream().map(IPlayer::getCar).forEach(car -> {
 			Rectangle voitureRec;
 			voitureRec = car.getBounds();
 
@@ -157,17 +155,18 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 						@SuppressWarnings("unused")
 						MenuEnd f = new MenuEnd(currentTime);
 						gFrame.dispose();
-					}else{
+						timer.stop();
+					} else {
 						loadTrack();
 					}
 					break;
 				}
 			}
-		}
+		});
 	}
 
 	public void collision() {
-		cars.forEach(car -> {
+		cars.stream().map(IPlayer::getCar).forEach(car -> {
 			List<Double> speedCoefs = new ArrayList<>();
 			List<Terrain> collisions = circuit.getCollisionTerrains(car);
 			for (Terrain terrain : collisions) {
@@ -177,47 +176,50 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 					speedCoefs.add(terrain.getSpeedDecreaseCoef());
 				}
 			}
-			if(collisions.size() != 0 ){
+			if (collisions.size() != 0) {
 				double speedCoef = speedCoefs.stream().mapToDouble(d -> d.doubleValue()).sum() / speedCoefs.size();
 				car.setSpeedDecreaseCoef(speedCoef);
 			}
 		});
 	}
-//for testing the ia. To REMOVE ONCE IA IMPLEMENTED
-//	int count = 0;
-	
+	// for testing the ia. To REMOVE ONCE IA IMPLEMENTED
+	// int count = 0;
+
 	@Override
 	public void actionPerformed(ActionEvent ev) {
 
-//		if (count == 0) {
-//			if (actions == null || actions.isEmpty()) {
-//
-//				try {
-//					long start = System.currentTimeMillis();
-//					actions = new LinkedList<>(gaAlgorithm.call().subList(0, 3));
-//					System.out.println(System.currentTimeMillis() - start);
-//				} catch (InstantiationException | IllegalAccessException | InvocationTargetException
-//						| NoSuchMethodException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//			}
-//			actions.poll().getCarBehavior().accept(voiture1);
-////      astar.setCarTerrain(circuit.getTerrain(voiture1.getpX(), voiture1.getpY()));
-//			// new Thread(()-> path = astar.call()).start();
-//		}
-//
-//		count = (count + 1) % 10;
+		// if (count == 0) {
+		// if (actions == null || actions.isEmpty()) {
+		//
+		// try {
+		// long start = System.currentTimeMillis();
+		// actions = new LinkedList<>(gaAlgorithm.call().subList(0, 3));
+		// System.out.println(System.currentTimeMillis() - start);
+		// } catch (InstantiationException | IllegalAccessException |
+		// InvocationTargetException
+		// | NoSuchMethodException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		// }
+		// actions.poll().getCarBehavior().accept(voiture1);
+		//// astar.setCarTerrain(circuit.getTerrain(voiture1.getpX(),
+		// voiture1.getpY()));
+		// // new Thread(()-> path = astar.call()).start();
+		// }
+		//
+		// count = (count + 1) % 10;
 
 		currentTime += frame + .0;
-		cars.forEach(car -> {
+		cars.stream().forEach(player -> {
+			CarComponent car = player.getCar();
+			KeyEventGame action = player.getAction();
+			action.getCarBehavior().accept(car);
 			car.accelerate(frame);
 
 			if (car.isRotate()) {
 				car.turn();
 			}
-		});
-		cars.forEach(car -> {
 			car.rotate(frame);
 			car.move();
 			car.position();
@@ -232,23 +234,8 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 	@Override
 	public void keyPressed(KeyEvent arg0) {
 		int key = arg0.getKeyCode();
-		cars.forEach(car -> {
-			if (key == car.getKeyUp()) {
-				car.setDirection(1);
-				car.setAccelerate(true);
-			}
-			if (key == car.getKeyDown()) {
-				car.setDirection(-1);
-				car.setAccelerate(true);
-			}
-			if (key == car.getKeyRight()) {
-				car.setRotateDirection(1);
-				car.setRotate(true);
-			}
-			if (key == car.getKeyLeft()) {
-				car.setRotateDirection(-1);
-				car.setRotate(true);
-			}
+		cars.stream().map(IPlayer::getCar).forEach(car -> {
+			((PlayerCarComponent)car).keyPressed(key);
 
 		});
 	}
@@ -257,10 +244,9 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 	public void keyReleased(KeyEvent arg0) {
 
 		int key = arg0.getKeyCode();
-		
-		
-		if (key == KeyEvent.VK_R) { 
-			cars.forEach(CarComponent::initPosition);
+
+		if (key == KeyEvent.VK_R) {
+			cars.stream().map(IPlayer::getCar).forEach(CarComponent::initPosition);
 			nombreCoup += 10;
 
 		} else if (key == KeyEvent.VK_ESCAPE) {
@@ -269,17 +255,11 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
 			timer.stop();
 			gFrame.dispose();
 		} else if (key == KeyEvent.VK_I) {
-			showAstar = ! showAstar;
+			showAstar = !showAstar;
 		}
-		cars.forEach(car -> {
-			if (key == car.getKeyUp() || key == car.getKeyDown()) {
-				car.setAccelerate(false);
-			}
-			if (key == car.getKeyRight() || key == car.getKeyLeft()) {
-				car.setRotate(false);
-			}
+		cars.stream().map(IPlayer::getCar).forEach(car -> {
+			((PlayerCarComponent) car).keyReleased(key);
 		});
-		
 
 		repaint();
 	}
@@ -292,8 +272,8 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Co
     return Collections.unmodifiableList(this.path);
   }
 
-  public CarComponent getVoiture() {
-    return this.voiture1;
+  public IPlayer getVoiture() {
+    return this.player1;
   }
 
   public Circuit getCircuit() {

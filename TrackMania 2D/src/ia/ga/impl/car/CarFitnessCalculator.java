@@ -1,13 +1,13 @@
 package ia.ga.impl.car;
 
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 import ia.ga.core.FitnessCalc;
 import ia.ga.core.Individual;
 import tm2DGame.CarComponent;
 import tm2DGame.GameBoard;
+import tm2DGame.IPlayer;
+import tm2DGame.PlayerCarComponent;
 import tm2DGame.boards.SimulationBoard;
 import tm2DGame.terrain.Terrain;
 
@@ -17,7 +17,10 @@ public class CarFitnessCalculator implements FitnessCalc<KeyEventGame> {
 
 	private final SimulationBoard simulationBoard;
 
-	public CarFitnessCalculator(GameBoard gameBoard) {
+	private CarComponent voiture;
+
+	public CarFitnessCalculator(GameBoard gameBoard, CarComponent car) {
+		this.voiture = car;
 		this.simulationBoard = new SimulationBoard(gameBoard);
 		this.realBoard = gameBoard;
 	}
@@ -27,7 +30,6 @@ public class CarFitnessCalculator implements FitnessCalc<KeyEventGame> {
 	@Override
 	public Integer getFitness(Individual<KeyEventGame> individual) {
 		final List<Terrain> astarPath = simulationBoard.getAstarPath();
-		final CarComponent voiture = new CarComponent(realBoard.getVoiture());
 		simulationBoard.setVoiture(voiture);
 		// individual.getChromosome()[ACCRIGHT, ACCRIGHT, UP, ACCLEFT, NOTHING, UP]
 //    List<KeyEventGame> upKeys = Arrays.asList(KeyEventGame.RIGHT,KeyEventGame.ACCLEFT,KeyEventGame.ACCLEFT,KeyEventGame.DOWNLEFT,KeyEventGame.DOWN);

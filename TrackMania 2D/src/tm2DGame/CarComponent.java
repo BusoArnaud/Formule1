@@ -7,6 +7,7 @@ import java.awt.geom.Path2D;
 
 import javax.swing.ImageIcon;
 
+import ia.ga.impl.car.KeyEventGame;
 import tm2D.Constants;
 
 public class CarComponent implements Constants{
@@ -303,4 +304,10 @@ public class CarComponent implements Constants{
 		pX = pX + vX;
 		pY = pY + vY;
 	}
+
+
+	public KeyEventGame getKeyEventGame() {
+		return KeyEventGame.find(accelerate, rotate, direction, rotateDirection);
+	}
+	
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import tm2D.Constants;
 import tm2DGame.CarComponent;
 import tm2DGame.Circuit;
+import tm2DGame.IPlayer;
 import tm2DGame.terrain.Mur;
 import tm2DGame.terrain.Terrain;
 

@@ -19,6 +19,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import tm2DGame.GameFrame;
+import tm2DGame.IPlayer;
+import tm2DGame.PlayerCarComponent;
+import tm2DGame.RealCarPlayer;
 import tm2DGame.CarComponent;
 
 @SuppressWarnings("serial")
@@ -80,7 +83,10 @@ public class MenuGame extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		if (arg0.getSource() == cmdStart) {
-			List<CarComponent> cars=  players.stream().map(PlayerPanel::getCar).map(CarComponent::new).collect(Collectors.toList());
+			List<IPlayer> cars=  players.stream()
+				.map(PlayerPanel::getCar)
+				.map(PlayerCarComponent::new)
+				.map(car -> new RealCarPlayer(car)).collect(Collectors.toList());
 			@SuppressWarnings("unused")
 			GameFrame f = new GameFrame(cars);
 			dispose();
