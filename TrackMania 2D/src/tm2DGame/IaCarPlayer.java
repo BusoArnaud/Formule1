@@ -51,7 +51,7 @@ public class IaCarPlayer implements IPlayer{
 			action = actions.poll();
 		}
 		
-		count = (count + 1) % (actions.size() + 1);
+		count = (count + 1) % 5;
 		return action;
 	}
 
