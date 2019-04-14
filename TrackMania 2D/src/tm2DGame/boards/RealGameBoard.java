@@ -37,7 +37,7 @@ public class RealGameBoard extends AbstractBoard {
 		if (playercars.size() == 2) {
 			this.voiture2 = playercars.get(1);
 			this.voiture2.getCar().initPosition(40, 540);
-			if (this.voiture1.getCar() instanceof PlayerCarComponent) {
+			if (this.voiture2.getCar() instanceof PlayerCarComponent) {
 				((PlayerCarComponent) this.voiture2.getCar()).setKeys(KeyEvent.VK_Z, KeyEvent.VK_S, KeyEvent.VK_Q,
 						KeyEvent.VK_D);
 			}

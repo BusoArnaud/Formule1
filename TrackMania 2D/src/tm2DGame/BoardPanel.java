@@ -130,7 +130,8 @@ public class BoardPanel extends JPanel implements KeyListener, ActionListener, C
 	@Override
 	public void keyPressed(KeyEvent arg0) {
 		int key = arg0.getKeyCode();
-		gameBoard.getCars().forEach(car -> ((PlayerCarComponent) car).keyPressed(key));
+		gameBoard.getCars().stream().filter(car -> car instanceof PlayerCarComponent)
+				.forEach(car -> ((PlayerCarComponent) car).keyPressed(key));
 	}
 
 	@Override
@@ -139,6 +140,8 @@ public class BoardPanel extends JPanel implements KeyListener, ActionListener, C
 		int key = arg0.getKeyCode();
 		if (key == KeyEvent.VK_R) {
 			gameBoard.getCars().forEach(CarComponent::initPosition);
+			gameBoard.getPlayers().stream().filter(player -> player instanceof IaCarPlayer)
+					.forEach(player -> ((IaCarPlayer) player).init(gameBoard, frame));
 			nombreCoup += 10;
 
 		} else if (key == KeyEvent.VK_ESCAPE) {
@@ -149,7 +152,8 @@ public class BoardPanel extends JPanel implements KeyListener, ActionListener, C
 		} else if (key == KeyEvent.VK_I) {
 			showAstar = !showAstar;
 		}
-		gameBoard.getCars().forEach(car -> ((PlayerCarComponent) car).keyReleased(key));
+		gameBoard.getCars().stream().filter(car -> car instanceof PlayerCarComponent)
+				.forEach(car -> ((PlayerCarComponent) car).keyReleased(key));
 
 		repaint();
 	}

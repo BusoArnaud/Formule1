@@ -14,13 +14,15 @@ import tm2DGame.terrain.Terrain;
 
 public class CarFitnessCalculator implements FitnessCalc<KeyEventGame> {
 
-	private final AbstractBoard realBoard;
+	private AbstractBoard realBoard;
 
 	private final SimulationBoard simulationBoard;
 
 	private final int frame;
 
 	private int carIndex;
+	
+	private final int radius = 2;
 
 	final List<Terrain> astarPath;
 
@@ -48,17 +50,34 @@ public class CarFitnessCalculator implements FitnessCalc<KeyEventGame> {
 			}
 		}
 		Terrain carTerrain = simulationBoard.getCircuit().getTerrain(car.getpX(), car.getpY());
-
-		Optional<Terrain> minTerrain = simulationBoard.getCircuit().getAdjacentTiles(carTerrain, 3).stream()
-				.filter(tile -> simulationBoard.getAstarSet().contains(tile))
-				.min((crt, nxt) -> crt.getDistance(carTerrain) < nxt.getDistance(carTerrain) ? -1 : 1);
-
-		return minTerrain.isPresent() ? simulationBoard.getAstarPath().indexOf(minTerrain.get()) : 0;
+		
+		Integer min = radius + 1;
+		Terrain minTerrain = null;
+		for(Terrain terrain : simulationBoard.getCircuit().getAdjacentTiles(carTerrain, radius)) {
+			if(simulationBoard.getAstarSet().contains(terrain)) {
+				int dist = simulationBoard.getCircuit().getTileDistance(carTerrain, terrain);
+				if(dist>0 && dist<min) {
+					min = dist;
+					minTerrain = terrain;
+				}
+			}
+		}
+		return minTerrain != null ? simulationBoard.getAstarPath().indexOf(minTerrain) : 0;
+//		
+//		Optional<Terrain> minTerrain = simulationBoard.getCircuit().getAdjacentTiles(carTerrain, 3).stream()
+//				.filter(tile -> simulationBoard.getAstarSet().contains(tile))
+//				.min((crt, nxt) -> crt.getDistance(carTerrain) < nxt.getDistance(carTerrain) ? -1 : 1);
+//
+//		return minTerrain.isPresent() ? simulationBoard.getAstarPath().indexOf(minTerrain.get()) : 0;
 	}
 
 	@Override
 	public Integer getMaxFitness() {
 		return realBoard.getAstarPath().size() + 1;
+	}
+	
+	public void setBoard(AbstractBoard board) {
+		this.realBoard =board;
 	}
 
 }

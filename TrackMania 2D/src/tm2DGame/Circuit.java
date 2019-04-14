@@ -125,5 +125,21 @@ public class Circuit {
 	public Terrain[][] getMatrix(){
 		return this.circuitMatrix;
 	}
+	
+	public int getTileDistance(Terrain terrain1, Terrain terrain2) {
+		if(terrain1.equals(terrain2)) {
+			return 0;
+		}
+		if(terrain1.isBlock()) {
+			return -1;
+		}
+		int diffX = terrain2.getX() - terrain1.getX();
+		diffX = diffX != 0 ? diffX / Math.abs(diffX) : 0;
+		int diffY = terrain2.getY() - terrain1.getY();
+		diffY = diffY != 0 ? diffY / Math.abs(diffY) : 0;
+		int distance = getTileDistance(circuitMatrix[terrain1.getX()/10 + diffX][terrain1.getY()/10 + diffY], terrain2);
+		return distance< 0 ? -1 : 1 + distance;  
+		
+	}
 
 }
