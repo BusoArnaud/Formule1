@@ -71,9 +71,15 @@ public class IaCarPlayer implements IPlayer {
 			}
 			currentAction = !actions.isEmpty() ? actions.poll() : KeyEventGame.NOTHING;
 		}
+<<<<<<< HEAD
 
 		count++;
 		return currentAction;
+=======
+		
+		count = (count + 1) % 4;
+		return action;
+>>>>>>> count --
 	}
 
 	@Override
