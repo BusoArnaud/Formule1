@@ -82,7 +82,6 @@ public class MenuGame extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		if (arg0.getSource() == cmdStart) {
-<<<<<<< HEAD
 
 			List<IPlayer> cars = new LinkedList<>();
 			int index = 0;
@@ -97,15 +96,6 @@ public class MenuGame extends JFrame implements ActionListener {
 				index++;
 			}
 
-=======
-			List<IPlayer> cars; 
-			if(simulate){
-				//cars =  players.stream().map(PlayerPanel::getCar).map(IACarComponent::new).collect(Collectors.toList());
-				cars = players.stream().map(PlayerPanel::getCar).map(PlayerCarComponent::new).collect(Collectors.toList());
-			}else{
-				cars =  players.stream().map(PlayerPanel::getCar).map(PlayerCarComponent::new).collect(Collectors.toList());
-			}
->>>>>>> solution implementation with multiple track for training, fitness not relevant
 			@SuppressWarnings("unused")
 			GameFrame f = new GameFrame(cars, simulate);
 			dispose();

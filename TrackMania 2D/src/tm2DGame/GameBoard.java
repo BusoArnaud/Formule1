@@ -48,11 +48,6 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Mo
 	
 	public static int nombreCoupT;
 	
-<<<<<<< HEAD
-	PlayerCarComponent voiture1;
-	PlayerCarComponent voiture2;
-	List<PlayerCarComponent> cars;
-=======
 	protected Circuit circuit;
 	
 	protected IPlayer voiture1;
@@ -63,7 +58,6 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Mo
 	CircuitSolution circuitSolution; 
 	protected int count = 0;
 	boolean simulate = false;
->>>>>>> solution implementation with multiple track for training, fitness not relevant
 	
 	Font levelFont = new Font("SansSerif", Font.BOLD, 15);
 	Frame gFrame;
@@ -77,16 +71,6 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Mo
 		addMouseListener(this);
 		this.simulate = simulate;
 		this.cars = new ArrayList<>();
-<<<<<<< HEAD
-		this.voiture1 = (PlayerCarComponent) playercars.get(0);
-		this.voiture1.initPosition(55, 550);
-		this.voiture1.setKeys(KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT);
-		this.cars.add(this.voiture1);
-
-		if (playercars.size() == 2) {
-			this.voiture2 = (PlayerCarComponent)  playercars.get(1);
-			this.voiture2.initPosition(40, 540);
-=======
 		this.voiture1 = playercars.get(0);
 		// this.voiture1.initPosition(55, 550);
 		this.voiture1.initPosition(390, 280);
@@ -96,7 +80,6 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Mo
 		if (playercars.size() == 2 && !simulate) {
 			this.voiture2 = playercars.get(1);
 			//this.voiture2.initPosition(40, 540);
->>>>>>> solution implementation with multiple track for training, fitness not relevant
 			this.voiture2.setKeys(KeyEvent.VK_Z, KeyEvent.VK_S, KeyEvent.VK_Q, KeyEvent.VK_D);
 			this.cars.add(voiture2);
 		}
@@ -123,15 +106,9 @@ public class GameBoard extends JPanel implements KeyListener, ActionListener, Mo
 	}
 
 	public void loadTrack() {
-<<<<<<< HEAD
-		this.cars.forEach(CarComponent::initPosition);
-		try {
-			FileReader fr = new FileReader(RELATIVE_PATH_TRACKS + "Track" + level);
-=======
 		this.cars.forEach(IPlayer::initPosition);
 		try {
 			FileReader fr = new FileReader(RELATIVE_PATH_TRACKS + trackName + level);
->>>>>>> solution implementation with multiple track for training, fitness not relevant
 
 			circuit = new Circuit(fr, 39, 28);
 			path = new Astar(circuit).call();
