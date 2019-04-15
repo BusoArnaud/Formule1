@@ -1,58 +1,79 @@
 package tm2DGame;
 
-import java.awt.Image;
-import java.awt.Rectangle;
-import java.awt.geom.Path2D;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.locks.ReentrantLock;
 
 import ia.ga.impl.car.CircuitSolution;
 import ia.ga.impl.car.KeyEventGame;
+import tm2DGame.boards.RealGameBoard;
+import tm2DGame.boards.SimulationBoard;
 
-public class IaCarPlayer implements IPlayer{
+public class IaCarPlayer implements IPlayer {
 
 	CarComponent car;
-	private int count;
-	private LinkedList<KeyEventGame> actions;
+	final int carIndex;
+	private long count;
+	private Queue<KeyEventGame> actions = new LinkedList<>();
 	CircuitSolution gaAlgorithm;
+	private KeyEventGame currentAction;
+	private final int frequency = 10;
+	private boolean ended = false;
+	private SimulationPlayer simulationPlayer;
+	
+	private ReentrantLock lock = new ReentrantLock();
+	private SimulationBoard simulationBoard;
 
-	public IaCarPlayer(CarComponent car, GameBoard gameBoard) {
+	public IaCarPlayer(CarComponent car, int carIndex) {
+		this.carIndex = carIndex;
 		this.car = car;
-		count = 0;
-		gaAlgorithm = new CircuitSolution(gameBoard, car);
 	}
 
-	public void  updateAlgorithm(GameBoard gameBoard){
-		gaAlgorithm = new CircuitSolution(gameBoard, car);
+	public void init(RealGameBoard gameBoard, int frame) {
+		ended = false;
+		currentAction = null;
+		actions = new LinkedList<>();
+		gaAlgorithm = new CircuitSolution(gameBoard, 0, frame);
+		count = 0;
+		simulationPlayer = new SimulationPlayer(new CarComponent(gameBoard.getCars().get(carIndex)));
+		
+		simulationBoard = new SimulationBoard(gameBoard);
+		simulationBoard.setVoiture(Collections.singletonList(simulationPlayer));
+		gaAlgorithm.setBoard(simulationBoard);
 	}
 
 	@Override
 	public KeyEventGame getAction() {
-		KeyEventGame action = KeyEventGame.UP;
-		if (count == 0) {
-			if (actions == null || actions.isEmpty()) {
-			
-				try {
-					long start = System.currentTimeMillis();
-					actions = new LinkedList<>(gaAlgorithm.call());
-					System.out.println(System.currentTimeMillis() - start);
-				} catch (InstantiationException | IllegalAccessException |
-					InvocationTargetException
-					| NoSuchMethodException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+		if (count % frequency == 0) {
+			if (!ended) {
+				new Thread(() -> {
+					if (!lock.isLocked()) {
+						lock.lock();
+						List<KeyEventGame> tempActions;
+						try {
+							tempActions = gaAlgorithm.call();
+							actions.addAll(tempActions);
+							for (KeyEventGame action : tempActions) {
+								simulationPlayer.setAction(action);
+								ended = simulationBoard.advance(40);
+							}
+						} catch (InstantiationException | IllegalAccessException | InvocationTargetException
+								| NoSuchMethodException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						lock.unlock();
+					}
+				}).start();
 			}
-			//actions.poll().getCarBehavior().accept(car);
-			// astar.setCarTerrain(circuit.getTerrain(voiture1.getpX(),
-			// voiture1.getpY()));
-			// new Thread(()-> path = astar.call()).start();
-			action = actions.poll();
+			currentAction = !actions.isEmpty() ? actions.poll() : KeyEventGame.NOTHING;
 		}
-		
-		count = (count + 1) % 5;
-		return action;
+
+		count++;
+		return currentAction;
 	}
 
 	@Override

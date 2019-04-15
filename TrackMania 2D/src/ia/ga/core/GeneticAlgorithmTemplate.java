@@ -43,15 +43,16 @@ public class GeneticAlgorithmTemplate<T, K extends Individual<T>> {
 	 */
 	public List<T> getSolution() throws InstantiationException, IllegalAccessException,
 			InvocationTargetException, NoSuchMethodException {
+		
 		Population<T, K> pop = initializePopulation(populationSize, clazz);
 		// Evolve our population until we reach an optimum solution
 		int generationCount = 0;
 
-		K fittest = pop.getSortedList().get(0);
+		K fittest = pop.getFittest();
 		while (fittest.getFitness() < fitnessCalc.getMaxFitness() && generationCount < maxNumberOfGeneration) {
 			generationCount++;
 			pop = evolutionAlgorithm.evolvePopulation(pop);
-			fittest = pop.getSortedList().get(0);
+			fittest = pop.getFittest();
 		}
 		return new LinkedList<>(fittest.getChromosome());
 	}

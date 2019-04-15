@@ -1,30 +1,40 @@
 package tm2DGame.boards;
 
-import tm2DGame.CarComponent;
-import tm2DGame.GameBoard;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import tm2DGame.IPlayer;
+import tm2DGame.terrain.Terrain;
 
 public class SimulationBoard extends AbstractBoard {
 
 	public final int numberOfTicksInAThirdSecond = 10;
 
-	public SimulationBoard(GameBoard board) {
+	public final Set<Terrain> astarSet;
+
+	public SimulationBoard(AbstractBoard board) {
 		this.circuit = board.getCircuit();
-		this.voiture = board.getVoiture().getCar();
+		this.players = board.getPlayers();
 		this.astarPath = board.getAstarPath();
+		this.astarSet = new HashSet<>(this.astarPath);
 	}
 
-	public void setVoiture(CarComponent voiture) {
-		this.voiture = voiture;
+	public void setVoiture(List<IPlayer> cars) {
+		this.players = cars;
 	}
 
 	@Override
-	public boolean advance() {
+	public boolean advance(int frame) {
 		for (int i = 0; i < numberOfTicksInAThirdSecond; i++) {
-			if (super.advance())
+			if (super.advance(frame))
 				return true;
 		}
 		return false;
+	}
+
+	public Set<Terrain> getAstarSet() {
+		return this.astarSet;
 	}
 
 }

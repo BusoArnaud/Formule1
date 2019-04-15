@@ -10,7 +10,7 @@ import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
@@ -30,6 +30,8 @@ public class PlayerPanel extends JPanel implements ActionListener {
 	Voiture car3;
 	int playercount;
 
+	private boolean ia;
+	
 	public PlayerPanel(int playerNum) {
 		super();
 		this.cars = new HashMap<>();
@@ -46,6 +48,10 @@ public class PlayerPanel extends JPanel implements ActionListener {
 	public Voiture getCar() {
 		return car;
 	}
+	
+	public boolean isIA() {
+	  return this.ia;
+	}
 	private void build(int playerNum) {
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		this.setVisible(true);
@@ -57,7 +63,9 @@ public class PlayerPanel extends JPanel implements ActionListener {
 		this.add(car(car1, true));
 		this.add(car(car2, false));
 		this.add(car(car3, false));
-		
+		JCheckBox iaCheckbox = new JCheckBox("IA selected");
+		iaCheckbox.addActionListener(this);
+		this.add(iaCheckbox);
 		this.setBackground(Color.cyan);
 	}
 	
@@ -73,7 +81,6 @@ public class PlayerPanel extends JPanel implements ActionListener {
 		}
 		panel.add(carButton);
 		panel.add(barPanel(car));
-
 		panel.setBackground(Color.cyan);
 		return panel;
 	}
@@ -124,7 +131,7 @@ public class PlayerPanel extends JPanel implements ActionListener {
 			((JButton) arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color.red, 3));
 			car = car3;
 		}
-
+		this.ia = arg0.getSource() instanceof JCheckBox && ((JCheckBox)arg0.getSource()).isSelected();
 	}
 
 }

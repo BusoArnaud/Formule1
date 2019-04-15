@@ -1,63 +1,83 @@
 package ia.ga.impl.car;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import ia.ga.core.FitnessCalc;
 import ia.ga.core.Individual;
 import tm2DGame.CarComponent;
-import tm2DGame.GameBoard;
-import tm2DGame.IPlayer;
-import tm2DGame.PlayerCarComponent;
+import tm2DGame.SimulationPlayer;
+import tm2DGame.boards.AbstractBoard;
 import tm2DGame.boards.SimulationBoard;
 import tm2DGame.terrain.Terrain;
 
 public class CarFitnessCalculator implements FitnessCalc<KeyEventGame> {
 
-	private final GameBoard realBoard;
+	private AbstractBoard realBoard;
 
 	private final SimulationBoard simulationBoard;
 
-	private CarComponent voiture;
+	private final int frame;
 
-	public CarFitnessCalculator(GameBoard gameBoard, CarComponent car) {
-		this.voiture = car;
+	private int carIndex;
+	
+	private final int radius = 2;
+
+	final List<Terrain> astarPath;
+
+	public CarFitnessCalculator(AbstractBoard gameBoard, int carIndex, int frame) {
+		this.frame = frame;
+		this.carIndex = carIndex;
 		this.simulationBoard = new SimulationBoard(gameBoard);
 		this.realBoard = gameBoard;
+		this.astarPath = gameBoard.getAstarPath();
 	}
 
 	// we could see what the kd algorithm is and how it is used;
 	// it could be faster than this implementation
 	@Override
 	public Integer getFitness(Individual<KeyEventGame> individual) {
-		final List<Terrain> astarPath = simulationBoard.getAstarPath();
-		simulationBoard.setVoiture(voiture);
-		// individual.getChromosome()[ACCRIGHT, ACCRIGHT, UP, ACCLEFT, NOTHING, UP]
-//    List<KeyEventGame> upKeys = Arrays.asList(KeyEventGame.RIGHT,KeyEventGame.ACCLEFT,KeyEventGame.ACCLEFT,KeyEventGame.DOWNLEFT,KeyEventGame.DOWN);
+		// copy the original car
+		CarComponent car = new CarComponent(realBoard.getCars().get(carIndex));
+		final SimulationPlayer player = new SimulationPlayer(car);
+		simulationBoard.setVoiture(Collections.singletonList(player));
+
 		for (KeyEventGame play : individual.getChromosome()) {
-			play.carBehavior.accept(voiture);
-			if (simulationBoard.advance()) {
-				return astarPath.size() + 1;
+			player.setAction(play);
+			if (simulationBoard.advance(frame)) {
+				return simulationBoard.getAstarPath().size() + 1;
 			}
 		}
-		Terrain carTerrain = simulationBoard.getCircuit().getTerrain(voiture.getpX(), voiture.getpY());
-		double min = astarPath.get(0).getDistance(carTerrain);
-		int index = 0;
-		for (Terrain terrain : simulationBoard.getCircuit().getAdjacentTiles(carTerrain, 2)) {
-			int temp;
-			if ((temp = astarPath.indexOf(terrain)) > -1) {
-				double distance = astarPath.get(temp).getDistance(carTerrain);
-				if (distance < min) {
-					min = distance;
-					index = temp;
+		Terrain carTerrain = simulationBoard.getCircuit().getTerrain(car.getpX(), car.getpY());
+		
+		Integer min = radius + 1;
+		Terrain minTerrain = null;
+		for(Terrain terrain : simulationBoard.getCircuit().getAdjacentTiles(carTerrain, radius)) {
+			if(simulationBoard.getAstarSet().contains(terrain)) {
+				int dist = simulationBoard.getCircuit().getTileDistance(carTerrain, terrain);
+				if(dist>0 && dist<min) {
+					min = dist;
+					minTerrain = terrain;
 				}
 			}
 		}
-		return index;
+		return minTerrain != null ? simulationBoard.getAstarPath().indexOf(minTerrain) : 0;
+//		
+//		Optional<Terrain> minTerrain = simulationBoard.getCircuit().getAdjacentTiles(carTerrain, 3).stream()
+//				.filter(tile -> simulationBoard.getAstarSet().contains(tile))
+//				.min((crt, nxt) -> crt.getDistance(carTerrain) < nxt.getDistance(carTerrain) ? -1 : 1);
+//
+//		return minTerrain.isPresent() ? simulationBoard.getAstarPath().indexOf(minTerrain.get()) : 0;
 	}
 
 	@Override
 	public Integer getMaxFitness() {
 		return realBoard.getAstarPath().size() + 1;
+	}
+	
+	public void setBoard(AbstractBoard board) {
+		this.realBoard =board;
 	}
 
 }

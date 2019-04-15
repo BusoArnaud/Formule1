@@ -1,6 +1,5 @@
 package tm2DGame;
 
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ public class Circuit {
 	
 	private int height = 60;
 	
-	Terrain[][] circuitMatrix = new Terrain[width][height];
+	private Terrain[][] circuitMatrix = new Terrain[width][height];
 
 	private final List<Terrain> endTerrains = new ArrayList<>();
 
@@ -54,15 +53,6 @@ public class Circuit {
 		}
 	}
 
-	public void paint(Graphics2D g2d) {
-		for (int i = 0; i < circuitMatrix.length; i++) {
-			for (int j = 0; j < circuitMatrix[i].length; j++) {
-				g2d.drawImage(circuitMatrix[i][j].getImage(), circuitMatrix[i][j].getX(), circuitMatrix[i][j].getY(),
-						null);
-			}
-		}
-	}
-
 	public List<Terrain> getEndTerrains() {
 		return Collections.unmodifiableList(endTerrains);
 	}
@@ -72,10 +62,11 @@ public class Circuit {
 	}
 	
 	public List<Terrain> getCollisionTerrains(CarComponent car) {
-		final List<Terrain> collisionTerrains = new ArrayList<>();
-		for (int i = Math.max((int) car.getBounds().getMinX() / 10, 0); i < Math.min(car.getBounds().getMaxX() / 10,
+		final List<Terrain> collisionTerrains = new LinkedList<>();
+		Rectangle bounds = car.getBounds();
+		for (int i = Math.max((int) bounds.getMinX() / 10, 0); i < Math.min(bounds.getMaxX() / 10,
 				circuitMatrix.length); i++) {
-			for (int j = Math.max((int) car.getBounds().getMinY() / 10, 0); j < Math.min(car.getBounds().getMaxY() / 10,
+			for (int j = Math.max((int) bounds.getMinY() / 10, 0); j < Math.min(bounds.getMaxY() / 10,
 					circuitMatrix[i].length); j++) {
 				Rectangle rec = circuitMatrix[i][j].getBounds();
 				if (car.getArea().intersects(rec)) {
@@ -129,6 +120,26 @@ public class Circuit {
 
 	public Terrain getTerrain(double x, double y) {
 		return circuitMatrix[(int) x / 10][(int) y / 10];
+	}
+	
+	public Terrain[][] getMatrix(){
+		return this.circuitMatrix;
+	}
+	
+	public int getTileDistance(Terrain terrain1, Terrain terrain2) {
+		if(terrain1.equals(terrain2)) {
+			return 0;
+		}
+		if(terrain1.isBlock()) {
+			return -1;
+		}
+		int diffX = terrain2.getX() - terrain1.getX();
+		diffX = diffX != 0 ? diffX / Math.abs(diffX) : 0;
+		int diffY = terrain2.getY() - terrain1.getY();
+		diffY = diffY != 0 ? diffY / Math.abs(diffY) : 0;
+		int distance = getTileDistance(circuitMatrix[terrain1.getX()/10 + diffX][terrain1.getY()/10 + diffY], terrain2);
+		return distance< 0 ? -1 : 1 + distance;  
+		
 	}
 
 }
