@@ -7,12 +7,10 @@ import java.util.Map;
 import ia.ga.core.FitnessCalc;
 import ia.ga.core.Individual;
 import ia.ga.impl.car.KeyEventGame;
-import ia.subject.Chromosome;
 import ia.subject.GeneComplex;
 import pathfinding.Astar;
-import tm2DGame.GameBoard;
+import tm2DGame.CarComponent;
 import tm2DGame.IPlayer;
-import tm2DGame.PlayerCarComponent;
 import tm2DGame.boards.AbstractBoard;
 import tm2DGame.boards.LongSimulationBoard;
 import tm2DGame.terrain.Phatom;
@@ -22,15 +20,15 @@ public class SubjectFitnessCalc implements FitnessCalc<GeneComplex> {
 
   double scoreDistance = 0d;
   double scoreSpeed = 0d;
-  int round=0;
+  int round = 0;
   List<Terrain> pathAstar;
-  private final GameBoard realBoard;
+  private final LongSimulationBoard realBoard;
 
   private AbstractBoard simulationBoard;
 
-  String[] tracks = { "simu1", "simu2", "simu3", "simu4", "simu5", "simu6", "simu7", "simu8"};
+  String[] tracks = { "simu1", "simu2", "simu3", "simu4", "simu5", "simu6", "simu7", "simu8" };
 
-  public SubjectFitnessCalc(GameBoard gameBoard ) {
+  public SubjectFitnessCalc(LongSimulationBoard gameBoard) {
     gameBoard.loadTrack(tracks[0]);
     this.simulationBoard = new LongSimulationBoard(gameBoard);
     this.realBoard = gameBoard;
@@ -45,7 +43,8 @@ public class SubjectFitnessCalc implements FitnessCalc<GeneComplex> {
 
   @Override
   public Integer getFitness(Individual<GeneComplex> individual) {
-    final IPlayer car = new PlayerCarComponent(realBoard.getVoiture());
+    final IPlayer player = realBoard.getPlayers().get(0);
+    CarComponent car = player.getCar();
     GeneComplex gene = individual.getGene(0);
     int fitness = 0;
     Map<String, Integer> trackFitness= new HashMap<>();
@@ -55,16 +54,14 @@ public class SubjectFitnessCalc implements FitnessCalc<GeneComplex> {
       round = 0;
       updateTrack(var);
       car.initPosition(290, 380);
-      simulationBoard.setWallCollisionCount(0);
-      simulationBoard.setVoiture(car);
       for (int j = 0; j < 300; j++) {
-        Terrain target = findTarget(car, gene);
-        KeyEventGame play = gene.getActions(target, car);
+        Terrain target = findTarget(player, gene);
+        KeyEventGame play = gene.getActions(target, player);
 
         gene.setKey(play);
         // System.out.println(var + " "+ play);
         play.getCarBehavior().accept(car);
-        if (simulationBoard.advance()) {
+        if (simulationBoard.advance(40)) {
           fitness = 200;
           break;
         } else {
@@ -77,7 +74,8 @@ public class SubjectFitnessCalc implements FitnessCalc<GeneComplex> {
     return trackFitness.values().stream().reduce(0, (int1, int2) -> int1 + int2);
   }
 
-  private Terrain findTarget(final IPlayer car, GeneComplex gene) {
+  private Terrain findTarget(final IPlayer player, GeneComplex gene) {
+    CarComponent car = player.getCar();
     Terrain myTerrain = new Phatom((int) Math.round(car.getpX()), (int) Math.round(car.getpY()));
     Terrain dest = pathAstar.get(0);
     double distance = pathAstar.get(0).getDistance(myTerrain);

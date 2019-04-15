@@ -6,11 +6,11 @@ import java.util.List;
 import ia.ga.core.EvolutionAlgorithm;
 import ia.ga.core.Population;
 import ia.subject.GeneComplex;
-import tm2DGame.GameBoard;
+import tm2DGame.boards.LongSimulationBoard;
 
 public class Solution {
 
-	public final GameBoard gameBoard;
+	public final LongSimulationBoard gameBoard;
 
 	private Population<GeneComplex, BehaviorSubject> pop = null;
 
@@ -22,7 +22,7 @@ public class Solution {
 
 	
 
-	public Solution(GameBoard gameBoard) {
+	public Solution(LongSimulationBoard gameBoard) {
 		this.gameBoard = gameBoard;
 	}
 	

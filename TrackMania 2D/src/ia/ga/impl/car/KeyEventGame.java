@@ -6,7 +6,6 @@ import java.util.Random;
 import java.util.function.Consumer;
 
 import tm2DGame.CarComponent;
-import tm2DGame.IPlayer;
 
 public enum KeyEventGame {
 

@@ -1,7 +1,5 @@
 package ia.ga.impl.CarSubject;
 
-import java.util.HashMap;
-import java.util.Map;
 
 import ia.ga.core.FitnessCalc;
 import ia.ga.core.Individual;

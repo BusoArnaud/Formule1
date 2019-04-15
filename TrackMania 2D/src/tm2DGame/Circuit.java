@@ -20,8 +20,6 @@ public class Circuit {
 
 	private final List<Terrain> endTerrains = new ArrayList<>();
 
-	private Terrain startPoint;
-
 	private int startX;
 
 	private int startY;

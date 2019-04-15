@@ -9,7 +9,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import ia.ga.impl.car.CircuitSolution;
 import ia.ga.impl.car.KeyEventGame;
-import tm2DGame.boards.RealGameBoard;
+import tm2DGame.boards.AbstractBoard;
 import tm2DGame.boards.SimulationBoard;
 
 public class IaCarPlayer implements IPlayer {
@@ -32,7 +32,7 @@ public class IaCarPlayer implements IPlayer {
 		this.car = car;
 	}
 
-	public void init(RealGameBoard gameBoard, int frame) {
+public void init(AbstractBoard gameBoard, int frame) {
 		ended = false;
 		currentAction = null;
 		actions = new LinkedList<>();
@@ -80,5 +80,4 @@ public class IaCarPlayer implements IPlayer {
 	public CarComponent getCar() {
 		return car;
 	}
-
 }

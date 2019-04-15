@@ -7,7 +7,6 @@ import ia.ga.core.EvolutionAlgorithm;
 import ia.ga.core.GeneticAlgorithmTemplate;
 import ia.ga.impl.SimpleEvolutionAlgorithm;
 import tm2DGame.boards.AbstractBoard;
-import tm2DGame.boards.RealGameBoard;
 
 public class CircuitSolution {
 
@@ -29,7 +28,7 @@ public class CircuitSolution {
 	
 	private CarFitnessCalculator fitnessCalc; 
 
-	public CircuitSolution(RealGameBoard gameBoard, int carIndex, int frame) {
+	public CircuitSolution(AbstractBoard gameBoard, int carIndex, int frame) {
 		this.gameBoard = gameBoard;
 		fitnessCalc = new CarFitnessCalculator(gameBoard, carIndex, frame);
 

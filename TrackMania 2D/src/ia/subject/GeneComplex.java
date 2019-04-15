@@ -1,16 +1,14 @@
 package ia.subject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 import ia.ga.impl.car.KeyEventGame;
 import tm2D.Constants;
+import tm2DGame.CarComponent;
 import tm2DGame.IPlayer;
-import tm2DGame.terrain.Phatom;
 import tm2DGame.terrain.Terrain;
 
 public class GeneComplex implements Constants, Gene {
@@ -110,8 +108,8 @@ public class GeneComplex implements Constants, Gene {
     return chromosomes.get(targetkey);
   }
 
-  public double getEval(Terrain dest, IPlayer car) {
-    
+  public double getEval(Terrain dest, IPlayer player) {
+    CarComponent car = player.getCar();
     // this.scoreDistance += distancePathAstar;
     // System.out.println(scoreDistance);
     double targetX = (dest.getX() - car.getpX());
@@ -123,13 +121,14 @@ public class GeneComplex implements Constants, Gene {
     return newradian;
   }
 
-  public KeyEventGame getActions(Terrain dest, IPlayer car) {
+  public KeyEventGame getActions(Terrain dest, IPlayer player) {
+    CarComponent car = player.getCar();
 
     boolean accelerate = false;
     boolean rotate = false;
     int direction = 0;
     int rotationDirection = 0;
-    Chromosome chromosome = this.eval(getEval(dest, car));
+    Chromosome chromosome = this.eval(getEval(dest, player));
     if (chromosome == null) {
       return KeyEventGame.NOTHING;
     }

@@ -2,8 +2,6 @@ package ia.ga.impl.car;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
-
 import ia.ga.core.FitnessCalc;
 import ia.ga.core.Individual;
 import tm2DGame.CarComponent;

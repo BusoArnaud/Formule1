@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import tm2D.Constants;
+import tm2DGame.CarComponent;
 import tm2DGame.Circuit;
 import tm2DGame.IPlayer;
 import tm2DGame.terrain.Mur;
@@ -81,21 +82,4 @@ public abstract class AbstractBoard implements Constants {
 		return astarPath;
 	}
 
-	public void setVoiture(IPlayer car) {
-		this.voiture = car;
-	}
-
-	/**
-	 * @return the wallCollisionCount
-	 */
-	public int getWallCollisionCount() {
-		return wallCollisionCount;
-	}
-
-	/**
-	 * @param wallCollisionCount the wallCollisionCount to set
-	 */
-	public void setWallCollisionCount(int wallCollisionCount) {
-		this.wallCollisionCount = wallCollisionCount;
-	}
 }

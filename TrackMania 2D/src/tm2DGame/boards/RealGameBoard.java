@@ -52,7 +52,7 @@ public class RealGameBoard extends AbstractBoard {
 		try {
 			FileReader fr = new FileReader(RELATIVE_PATH_TRACKS + "Track" + level);
 
-			circuit = new Circuit(fr);
+			circuit = new Circuit(fr, 5, 55);
 
 			astarPath = new Astar(circuit).call();
 
